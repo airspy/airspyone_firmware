@@ -64,7 +64,7 @@ typedef struct {
 } set_freq_params_t;
 
 set_freq_params_t set_freq_params;
-airspy_samplerate_t sample_rate_conf_no;
+uint32_t sample_rate_conf_no;
 uint32_t usb_req_set_sample_rate_cmd;
 
 usb_request_status_t usb_vendor_request(usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage);
@@ -401,7 +401,7 @@ const usb_transfer_stage_t stage)
 
   if( stage == USB_TRANSFER_STAGE_SETUP )
   {
-    if(endpoint->setup.index > (AIRSPY_SAMPLERATE_END-1))
+    if(endpoint->setup.index > (AIRSPY_CONF_NB-1))
     {
         return USB_REQUEST_STATUS_STALL;
     }else

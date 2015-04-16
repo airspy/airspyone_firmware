@@ -30,7 +30,7 @@ extern usb_endpoint_t usb_endpoint_control_in;
 extern usb_endpoint_t usb_endpoint_control_out;
 extern usb_device_t usb_device;
 
-extern uint8_t sample_rate_conf_no;
+extern uint32_t sample_rate_conf_no;
 extern uint32_t usb_req_set_sample_rate_cmd;
 
 void airspy_usb_req_init(void);

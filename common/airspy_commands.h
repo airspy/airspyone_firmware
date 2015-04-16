@@ -35,13 +35,7 @@ typedef enum
 	RECEIVER_MODE_RX = 1
 } receiver_mode_t;
 
-typedef enum 
-{
-	AIRSPY_SAMPLERATE_10MSPS = 0, /* 12bits 10MHz IQ */
-	AIRSPY_SAMPLERATE_2_5MSPS = 1,  /* 12bits 2.5MHz IQ */
-	AIRSPY_SAMPLERATE_END = 2     /* End index for sample rate (corresponds to number of samplerate) */
-} airspy_samplerate_t;
-#define AIRSPY_CONF_CMD_SHIFT_BIT (3) // Up to 3bits=8 samplerates (airspy_samplerate_t enum shall not exceed 7)
+#define AIRSPY_CONF_CMD_SHIFT_BIT (3) // Up to 3bits=8 samplerates (uint32_t enum shall not exceed 7)
 
 // Commands (usb vendor request) shared between Firmware and Host.
 #define AIRSPY_CMD_MAX (25)

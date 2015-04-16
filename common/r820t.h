@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2013 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy.
  *

@@ -4,7 +4,7 @@
  * Copyright (C) 2013 Youssef Touil <youssef@airspy.com>
  * Copyright (C) 2013 Steve Markgraf <steve@steve-m.de>
  * Copyright (C) 2013 Mauro Carvalho Chehab <mchehab@redhat.com>
- * Copyright (C) 2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright (C) 2014 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This driver is a heavily lifted version of the driver found in the rtlsdr repository:
  * http://cgit.osmocom.org/rtl-sdr/tree/src/tuner_r82xx.c

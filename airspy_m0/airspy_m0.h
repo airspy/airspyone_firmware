@@ -24,9 +24,9 @@
 
 #include "airspy_commands.h"
 
-void ADCHS_start(airspy_samplerate_t conf_num);
-void ADCHS_stop(airspy_samplerate_t conf_num);
+void ADCHS_start(uint32_t conf_num);
+void ADCHS_stop(uint32_t conf_num);
 
-void set_samplerate_m4(airspy_samplerate_t conf_num);
+void set_samplerate_m4(uint32_t conf_num);
 
 #endif//__AIRSPY_M0_H__

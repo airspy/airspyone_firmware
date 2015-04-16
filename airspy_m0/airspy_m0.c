@@ -89,7 +89,7 @@ typedef struct {
 
 set_sample_r_params_t set_sample_r_params;
 
-__attribute__ ((always_inline)) static inline void start_stop_adchs_m4(airspy_samplerate_t conf_num, uint8_t command)
+__attribute__ ((always_inline)) static inline void start_stop_adchs_m4(uint32_t conf_num, uint8_t command)
 {
   uint32_t conf;
 
@@ -106,7 +106,7 @@ __attribute__ ((always_inline)) static inline void start_stop_adchs_m4(airspy_sa
   }
 }
 
-void set_samplerate_m4(airspy_samplerate_t conf_num)
+void set_samplerate_m4(uint32_t conf_num)
 {
   uint32_t conf;
 
@@ -137,7 +137,7 @@ void usb_configuration_changed(usb_device_t* const device)
   }
 }
 
-void ADCHS_start(airspy_samplerate_t conf_num)
+void ADCHS_start(uint32_t conf_num)
 {
   start_stop_adchs_m4(conf_num, START_ADCHS_CMD);
 
@@ -153,7 +153,7 @@ void ADCHS_start(airspy_samplerate_t conf_num)
   phase = 1;
 }
 
-void ADCHS_stop(airspy_samplerate_t conf_num)
+void ADCHS_stop(uint32_t conf_num)
 {
   start_stop_adchs_m4(conf_num, STOP_ADCHS_CMD);
 

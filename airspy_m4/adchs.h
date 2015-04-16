@@ -33,7 +33,7 @@ void ADCHS_deinit(void);
 void ADCHS_init(void);
 void ADCHS_DMA_init(uint32_t dest_addr);
 void ADCHS_desc_init(uint8_t chan_num);
-void ADCHS_stop(airspy_samplerate_t conf_num);
+void ADCHS_stop(uint32_t conf_num);
 
 void adchs_isr(void);
 void dma_isr(void);

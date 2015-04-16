@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2014 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy.
  *
@@ -31,22 +31,22 @@ extern "C"
 #endif
 
 /* Configure I2C0 to 400kHz (140MHz/(2*175)=0.4MHz) */
-/* Configure I2C0 to 111kHz (40MHz/(2*175)=0.111MHz) */
 #define AIRSPY_I2C0_PLL1_LS_HS_CONF_VAL (175)
 
 /* Configure I2C1 to 400kHz (140MHz/(2*175)=0.4MHz) */
 #define AIRSPY_I2C1_PLL1_HS_CONF_VAL (175)
+
 /* Configure I2C1 to 400kHz (40MHz/(2*50)=0.4MHz) */
 #define AIRSPY_I2C1_PLL1_LS_CONF_VAL (50)
 
-#define AIRSPY_SAMPLERATE_DEFAULT_CONF (AIRSPY_SAMPLERATE_10MSPS)
+#define AIRSPY_SAMPLERATE_DEFAULT_CONF (0)
 
- /* See airspy_commands.h number of items in airspy_samplerate_t */
-#define AIRSPY_CONF_NB (AIRSPY_SAMPLERATE_END)
+ /* See airspy_commands.h number of items in uint32_t */
+#define AIRSPY_CONF_NB (2)
 
 #define AIRSPY_SAMPLERATE_CMD_SHIFT_BIT (3) // Up to 8 conf
 
-/* For each configuration the index corresponds to airspy_samplerate_t */
+/* For each configuration the index corresponds to uint32_t */
 
 typedef struct
 {

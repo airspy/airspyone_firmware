@@ -130,7 +130,7 @@ static __inline__ void ack_start_stop_adchs(void)
   start_adchs[0] = 0;
 }
 
-static __inline__ uint32_t get_samplerate(airspy_samplerate_t *conf_number)
+static __inline__ uint32_t get_samplerate(uint32_t *conf_number)
 {
   uint32_t val;
   uint32_t cmd;
@@ -261,7 +261,7 @@ void dma_isr(void)
 
 void m0core_isr(void)
 {
-  airspy_samplerate_t adchs_conf;
+  uint32_t adchs_conf;
   uint32_t adchs_start_stop_cmd;
   uint32_t samplerate_cmd;
 
