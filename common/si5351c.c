@@ -22,10 +22,8 @@
  */
 
 #include "si5351c.h"
+#include "airspy_conf.h"
 #include <libopencm3/lpc43xx/i2c.h>
-
-/* si5351c_config data shall be defined externally */
-extern uint8_t si5351c_config[180];
 
 /*
 For configuration only Write Reg 15-92 and 149-170 (in 2 steps).
@@ -37,7 +35,7 @@ Like defined in http://community.silabs.com/t5/Silicon-Labs-Knowledge-Base/How-t
 #define SI5351C_WRITE_CONF_STEP2_REG (149)
 #define SI5351C_WRITE_CONF_STEP2_SIZE (22) /* 170 - 149 + 1 */
 
-void si5351c_airspy_config(void)
+void si5351c_airspy_config(int si5351c_config_num)
 {
   int i;
 
@@ -48,7 +46,7 @@ void si5351c_airspy_config(void)
   i2c0_tx_byte(SI5351C_WRITE_CONF_STEP1_REG);
   for(i = SI5351C_WRITE_CONF_STEP1_REG; i < (SI5351C_WRITE_CONF_STEP1_REG+SI5351C_WRITE_CONF_STEP1_SIZE); i++)
   {
-    i2c0_tx_byte(si5351c_config[i]);
+    i2c0_tx_byte(si5351c_config[si5351c_config_num][i]);
   }
   i2c0_stop();
   
@@ -59,7 +57,7 @@ void si5351c_airspy_config(void)
   i2c0_tx_byte(SI5351C_WRITE_CONF_STEP2_REG);
   for (i = SI5351C_WRITE_CONF_STEP2_REG; i < (SI5351C_WRITE_CONF_STEP2_REG+SI5351C_WRITE_CONF_STEP2_SIZE); i++)
   {
-    i2c0_tx_byte(si5351c_config[i]);
+    i2c0_tx_byte(si5351c_config[si5351c_config_num][i]);
   }
   i2c0_stop();
 }

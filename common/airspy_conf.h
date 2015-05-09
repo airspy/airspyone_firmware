@@ -30,6 +30,9 @@ extern "C"
 {
 #endif
 
+#define AIRSPY_SI5351C_CONFIG_XTAL (0)
+#define AIRSPY_SI5351C_CONFIG_CLKIN (1)
+
 /* Configure I2C0 to 400kHz (140MHz/(2*175)=0.4MHz) */
 #define AIRSPY_I2C0_PLL1_LS_HS_CONF_VAL (175)
 
@@ -60,6 +63,9 @@ extern const airspy_sys_samplerate_t airspy_m4_conf[AIRSPY_CONF_NB];
 
 /* Configuration for M0 core (r820t_set_if_bandwidth() r820t_bw parameter) see airspy_conf_m0.c */
 extern const airspy_m0_conf_t airspy_m0_conf[AIRSPY_CONF_NB];
+
+/* Configuration for SI5351C */
+extern uint8_t si5351c_config[2][180];
 
 #ifdef __cplusplus
 }

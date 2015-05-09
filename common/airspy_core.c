@@ -381,8 +381,6 @@ void sys_clock_init(const airspy_sys_clock_t* const pt_airspy_sys_conf)
   /* Configure I2C0 (for SI5351C) to about 375kHz (12MHz/(2*16)=0.375MHz) when we switch over to APB1 clock = 12MHz */
   i2c0_init(16);
 
-  si5351c_read[0] = si5351c_read_single(0);
-
   si5351c_disable_oeb_pin_control();
 
   /* Programming the Si5351 via I2C http://community.silabs.com/t5/Silicon-Labs-Knowledge-Base/Programming-the-Si5351-via-I2C/ta-p/112251
@@ -391,10 +389,16 @@ void sys_clock_init(const airspy_sys_clock_t* const pt_airspy_sys_conf)
   si5351c_init_fanout();
   si5351c_power_down_all_clocks();
   si5351c_init_xtal();
-  si5351c_read[1] = si5351c_read_single(0);
+  si5351c_read[0] = si5351c_read_single(0);
 
   /* Configure and enable SI5351C clocks */
-  si5351c_airspy_config();
+  si5351c_read[1] = (si5351c_read_single(0) & SI5351C_REG0_CLKIN_LOS);
+  /* CLKIN Loss Of Signal (LOS) ? */
+  if(si5351c_read[1] == SI5351C_REG0_CLKIN_LOS)
+      si5351c_airspy_config(AIRSPY_SI5351C_CONFIG_XTAL);
+  else
+      si5351c_airspy_config(AIRSPY_SI5351C_CONFIG_CLKIN);
+
   si5351c_read[2] = si5351c_read_single(0);
 
   si5351c_init_pll_soft_reset();

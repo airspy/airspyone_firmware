@@ -36,7 +36,9 @@ extern "C"
 
 #define SI5351C_CLK_POWERDOWN (1<<7)
 
-void si5351c_airspy_config(void);
+#define SI5351C_REG0_CLKIN_LOS (1<<4)
+
+void si5351c_airspy_config(int si5351c_config_num);
 
 void si5351c_disable_all_outputs(void);
 void si5351c_disable_oeb_pin_control(void);
