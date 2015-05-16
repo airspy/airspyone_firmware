@@ -476,53 +476,48 @@ int r820t_set_pll(r820t_priv_t *priv, uint32_t freq)
   const uint32_t pll_ref = XTAL_FREQ_HZ;
   const uint32_t pll_ref_2x = (XTAL_FREQ_HZ*2);
   const uint32_t vco_min = 1770000000;
-  const uint32_t vco_max = 3800000000;
+  const uint32_t vco_max = 3900000000;
 
   int rc;
-  uint64_t vco_temp;
   uint32_t vco_exact;
-  uint32_t vco_rough;
   uint32_t vco_frac;
   uint32_t con_frac;
   uint32_t div_num;
-  uint32_t n_sdm = 2;
-  uint16_t sdm = 0;
-  uint8_t mix_div;
+  uint32_t n_sdm;
+  uint16_t sdm;
   uint8_t ni;
   uint8_t si;
   uint8_t nint;
 
   /* Calculate divider */
-  mix_div = 2;
-  for(div_num = 0; div_num < 5; div_num++)
+  for (div_num = 0; div_num < 5; div_num++)
   {
-      vco_temp = (uint64_t)freq * (uint64_t) mix_div;
-      if(vco_temp >= vco_min && vco_temp <= vco_max)
-      {
-          break;
-      }
-      mix_div <<= 1;
+    vco_exact = freq << (div_num + 1);
+    if (vco_exact >= vco_min && vco_exact <= vco_max)
+    {
+      break;
+    }
   }
 
-  vco_exact = freq * mix_div;
-  nint = (uint8_t)(vco_exact / pll_ref_2x);
-  vco_rough = pll_ref_2x * nint;
-  vco_frac = vco_exact - vco_rough;
+  vco_exact = freq << (div_num + 1);
+  nint = (uint8_t) ((vco_exact + (pll_ref >> 16)) / pll_ref_2x);
+  vco_frac = vco_exact - pll_ref_2x * nint;
+
   nint -= 13;
   ni = (nint >> 2);
   si = nint - (ni << 2);
 
   /* Set the phase splitter */
-  rc = r820t_write_reg_mask(priv, 0x10, (uint8_t)(div_num << 5), 0xe0);
+  rc = r820t_write_reg_mask(priv, 0x10, (uint8_t) (div_num << 5), 0xe0);
   if(rc < 0)
     return rc;
 
   /* Set the rough VCO frequency */
-  rc = r820t_write_reg(priv, 0x14, (uint8_t)(ni + (si << 6)));
+  rc = r820t_write_reg(priv, 0x14, (uint8_t) (ni + (si << 6)));
   if(rc < 0)
     return rc;
 
-  if(vco_frac == 0)
+  if (vco_frac == 0)
   {
     /* Disable frac pll */
     rc = r820t_write_reg_mask(priv, 0x12, 0x08, 0x08);
@@ -531,12 +526,14 @@ int r820t_set_pll(r820t_priv_t *priv, uint32_t freq)
   }
   else
   {
+    vco_frac += pll_ref >> 16;
+    sdm = 0;
     for(n_sdm = 0; n_sdm < 16; n_sdm++)
     {
         con_frac = pll_ref >> n_sdm;
         if (vco_frac >= con_frac)
         {
-            sdm |= (ushort)(0x8000 >> n_sdm);
+            sdm |= (uint16_t) (0x8000 >> n_sdm);
             vco_frac -= con_frac;
             if (vco_frac == 0)
                 break;
@@ -544,9 +541,11 @@ int r820t_set_pll(r820t_priv_t *priv, uint32_t freq)
     }
 
 /*
-    if (vco_frac > 0)
+    actual_freq = (((nint << 16) + sdm) * (uint64_t) pll_ref_2x) >> (div_num + 1 + 16);
+    delta = freq - actual_freq
+    if (actual_freq != freq)
     {
-      fprintf(stderr,"Tunning delta: {%d} Hz", vco_frac / (2*mix_div));
+      fprintf(stderr,"Tunning delta: %d Hz", delta);
     }
 */
     rc = r820t_write_reg(priv, 0x15, (uint8_t)(sdm & 0xff));
@@ -696,7 +695,7 @@ void r820t_set_if_bandwidth(r820t_priv_t *priv, uint8_t bw)
 {
     const uint8_t modes[] = { 0xE0, 0x80, 0x60, 0x00 };
     const uint8_t opt[] = { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-    uint8_t a = 0xA0 | opt[bw & 0x0F];
+    uint8_t a = 0xB0 | opt[bw & 0x0F];
     uint8_t b = 0x0F | modes[bw >> 4];
     r820t_write_reg(priv, 0x0A, a);
     r820t_write_reg(priv, 0x0B, b);
