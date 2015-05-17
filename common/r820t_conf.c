@@ -42,7 +42,7 @@ r820t_priv_t r820t_conf_rw =
     /* 0D */ 0x63, // LNA AGC settings: [0..3]: Lower threshold; [4..7]: High threshold
     /* 0E */ 0x75,
     /* 0F */ 0xF8, // Filter Widest, LDO_5V OFF, clk out OFF,
-    /* 10 */ 0x6C,
+    /* 10 */ 0x7C,
     /* 11 */ 0x83,
     /* 12 */ 0x80,
     /* 13 */ 0x00,

@@ -473,8 +473,8 @@ static int r820t_set_tf(r820t_priv_t *priv, uint32_t freq)
 
 int r820t_set_pll(r820t_priv_t *priv, uint32_t freq)
 {
-  const uint32_t pll_ref = XTAL_FREQ_HZ;
-  const uint32_t pll_ref_2x = (XTAL_FREQ_HZ*2);
+  const uint32_t pll_ref = (XTAL_FREQ_HZ >> 1);
+  const uint32_t pll_ref_2x = (pll_ref * 2);
   const uint32_t vco_min = 1770000000;
   const uint32_t vco_max = 3900000000;
 
@@ -679,7 +679,6 @@ int r820t_init(r820t_priv_t *priv, const uint32_t if_freq)
   airspy_r820t_write(REG_SHADOW_START, priv->regs, NUM_REGS);
 
   r820t_write_reg_mask(priv, 0x12, 0x00, 0xe0);
-  r820t_write_reg_mask(priv, 0x10, 0, 0x10);
 
   /* Calibrate the IF filter */
   rc = r820t_calibrate(priv);
