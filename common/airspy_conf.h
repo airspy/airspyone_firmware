@@ -49,8 +49,9 @@ extern "C"
 
 #define AIRSPY_SAMPLERATE_CMD_SHIFT_BIT (3) // Up to 8 conf
 
-/* For each configuration the index corresponds to uint32_t */
+#define AIRSPY_PACKING (0) /* 0=No Packing, 1=Packing Enabled */
 
+/* For each configuration the index corresponds to uint32_t */
 typedef struct
 {
   uint32_t r820t_if_freq;

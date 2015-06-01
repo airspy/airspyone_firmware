@@ -769,6 +769,17 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
   }
 }
 
+usb_request_status_t usb_vendor_request_get_packing_command(
+usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
+{
+  if (stage == USB_TRANSFER_STAGE_SETUP) {
+    endpoint->buffer[0] = AIRSPY_PACKING;
+    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+    usb_transfer_schedule_ack(endpoint->out);
+  }
+  return USB_REQUEST_STATUS_OK;
+}
+
 /* ID 1 to X corresponds to user endpoint->setup.request */
 usb_request_handler_fn vendor_request_handler[AIRSPY_CMD_MAX+1];
 
@@ -824,6 +835,7 @@ void airspy_usb_req_init(void)
   vendor_request_handler[AIRSPY_GPIODIR_READ] = usb_vendor_request_gpiodir_read_command;
 
   vendor_request_handler[AIRSPY_GET_SAMPLERATES] = usb_vendor_request_get_samplerates_command;
+  vendor_request_handler[AIRSPY_GET_PACKING] = usb_vendor_request_get_packing_command;
 }
 
 usb_request_status_t usb_vendor_request(usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)

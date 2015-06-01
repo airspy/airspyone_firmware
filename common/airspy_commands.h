@@ -38,7 +38,7 @@ typedef enum
 #define AIRSPY_CONF_CMD_SHIFT_BIT (3) // Up to 3bits=8 samplerates (uint32_t enum shall not exceed 7)
 
 // Commands (usb vendor request) shared between Firmware and Host.
-#define AIRSPY_CMD_MAX (25)
+#define AIRSPY_CMD_MAX (26)
 typedef enum
 {
 	AIRSPY_INVALID                    = 0 ,
@@ -66,7 +66,8 @@ typedef enum
 	AIRSPY_GPIO_READ                  = 22,
 	AIRSPY_GPIODIR_WRITE              = 23,
 	AIRSPY_GPIODIR_READ               = 24,
-	AIRSPY_GET_SAMPLERATES            = AIRSPY_CMD_MAX
+	AIRSPY_GET_SAMPLERATES            = 25,
+	AIRSPY_GET_PACKING                = AIRSPY_CMD_MAX
 } airspy_vendor_request;
 
 typedef enum
