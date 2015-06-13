@@ -78,8 +78,12 @@ volatile uint32_t *start_adchs = (&cm0_data_share);
 volatile uint32_t *set_samplerate = ((&cm0_data_share)+1);
 #define SET_SAMPLERATE_CMD  (1)
 
-#define CMD_MASK ((1 << 2)-1)
-#define CONF_MASK ((1 << AIRSPY_SAMPLERATE_CMD_SHIFT_BIT)-1)
+// These bit masks are used to separate commands passed between M0 and M4. 
+// AIRSPY_SAMPLERATE_CMD_SHIFT_BIT is currently #defined as 3
+// Commands are therefore encoded in bits [2..0] (up to 7 commands), and 
+// parameters are encoded in bits [7..3] (values up to 63)   
+#define CMD_MASK  ((1 <<      AIRSPY_SAMPLERATE_CMD_SHIFT_BIT)-1)
+#define CONF_MASK ((1 << (8 - AIRSPY_SAMPLERATE_CMD_SHIFT_BIT))-1)
 
 volatile int first_start = 0;
 
