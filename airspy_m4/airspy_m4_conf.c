@@ -59,36 +59,105 @@ const airspy_sys_clock_t airspy_m4_init_conf =
   },
 };
  
-/*
-SampleRate configuration with GP_CLKIN=20MHz
-Configuration of PLL0AUDIO shall not exceed 80MHz for ADCHS
-For PLL0AUDIO sys_clock_samplerate() set SEL_EXT to 1 => MDEC enabled. Fractional divider not used.
-For PLL0AUDIO see UM10503 Rev1.8 "Fig 34. PLL0 with fractional divider" Page 184 / 1420 for more details.
-Configuration of IDIVB => Integer divider B divider values (1/(IDIV + 1))
-*/
-const airspy_sys_samplerate_t airspy_m4_conf[AIRSPY_CONF_NB] =
-{
-  /* Conf 0 => AIRSPY_SAMPLERATE_10MSPS = 0 => airspy_samplerate_t
-  CGU_SRC_GP_CLKIN=20MHz from SI5351C CLK7 LPC4370 GP_CLKIN (see airspy_m4_init_conf)
-  */
-  {
-    /* PLL0AUDIO */
+//
+// SampleRate configuration with GP_CLKIN=20MHz
+// Configuration of PLL0AUDIO shall not exceed 80MHz for ADCHS
+// For PLL0AUDIO sys_clock_samplerate() set SEL_EXT to 1 => MDEC enabled. Fractional divider not used.
+// For PLL0AUDIO see UM10503 Rev1.8 "Fig 34. PLL0 with fractional divider" Page 184 / 1420 for more details.
+// Configuration of IDIVB => Integer divider B divider values (1 /(IDIV + 1))
+//
+const airspy_sys_samplerate_t airspy_m4_conf[AIRSPY_CONF_NB] = {
+// CGU_SRC_GP_CLKIN=20MHz from SI5351C CLK7 LPC4370 GP_CLKIN (see airspy_m4_init_conf)
+  { // Conf 0 => 20MSPS = AIRSPY_SAMPLERATE_10MSPS
     0x00000000, // uint32_t pll0audio_mdiv;
     0x00000000, // uint32_t pll0audio_npdiv;
-    0x00000000, // uint32_t pll0audio_ctrl_flags; DirectI=PLL0AUDIO_CTRL_FLAG_DIRECT_I or/and DirectO=PLL0AUDIO_CTRL_FLAG_DIRECT_O */
-    /* IDIVB (from GP_CLKIN) */
-    0, // uint8_t adchs_idivb; /* 0 to 15 (0 means direct connection GP_CLKIN to ADCHS_CLK) */
-    { 0, 0, 0 } /* uint8_t padding[3] */
+    0x00000000, // uint32_t pll0audio_ctrl_flags;
+    0x00,       // uint8_t  adchs_idivb;  ADCHS_CLK = GP_CLKIN
+    { 0, 0, 0 } // uint8_t  padding[3]
   },
-  /* Conf 1 => AIRSPY_SAMPLERATE_2_5MSPS = 1 */
-  {
-    /* PLL0AUDIO */
+  { // Conf 1 => 5MSPS = AIRSPY_SAMPLERATE_2_5MSPS
     0x00000000, // uint32_t pll0audio_mdiv;
     0x00000000, // uint32_t pll0audio_npdiv;
-    0x00000000, // uint32_t pll0audio_ctrl_flags; DirectI=PLL0AUDIO_CTRL_FLAG_DIRECT_I or/and DirectO=PLL0AUDIO_CTRL_FLAG_DIRECT_O */
-    /* IDIVB not used set it to 0 */
-    3, // uint8_t adchs_idivb; /* 0 to 15 (0 means direct connection GP_CLKIN to ADCHS_CLK) */
-    { 0, 0, 0 } /* uint8_t padding[3] */
+    0x00000000, // uint32_t pll0audio_ctrl_flags;
+    0x03,       // uint8_t  adchs_idivb;  ADCHS_CLK = GP_CLKIN / (0x03 + 1)
+    { 0, 0, 0 } // uint8_t  padding[3]
+  },
+  { // Conf 2 => 40MSPS = AIRSPY_SAMPLERATE_20MSPS
+    63,                           // uint32_t pll0audio_mdiv;  M = 8         (MDEC = 63)
+    2,                            // uint32_t pll0audio_npdiv; N = 1, P = 4  (NDEC = 0,  PDEC = 2)
+    PLL0AUDIO_CTRL_FLAG_DIRECT_I, // uint32_t pll0audio_ctrl_flags; PLL0AUDIO_CTRL_FLAG_DIRECT_I
+    0x00,                         // uint8_t  adchs_idivb;
+    { 0, 0, 0 }                   // uint8_t  padding[3]
+  },
+  { // Conf 3 => 32MSPS = AIRSPY_SAMPLERATE_16MSPS
+    63,                           // uint32_t pll0audio_mdiv;  M = 8         (MDEC = 63)
+    5,                            // uint32_t pll0audio_npdiv; N = 1, P = 5  (NDEC = 0,  PDEC = 5)
+    PLL0AUDIO_CTRL_FLAG_DIRECT_I, // uint32_t pll0audio_ctrl_flags; PLL0AUDIO_CTRL_FLAG_DIRECT_I
+    0x00,                         // uint8_t  adchs_idivb;
+    { 0, 0, 0 }                   // uint8_t  padding[3]
+  },
+  { // Conf 4 => 24MSPS = AIRSPY_SAMPLERATE_12MSPS
+    1023,                         // uint32_t pll0audio_mdiv;  M = 12         (MDEC = 1023)
+    14,                           // uint32_t pll0audio_npdiv; N = 1, P = 10  (NDEC = 0,  PDEC = 14)
+    PLL0AUDIO_CTRL_FLAG_DIRECT_I, // uint32_t pll0audio_ctrl_flags; PLL0AUDIO_CTRL_FLAG_DIRECT_I
+    0x00,                         // uint8_t  adchs_idivb;
+    { 0, 0, 0 }                   // uint8_t  padding[3]
+  },
+  { // Conf 5 => 16MSPS = AIRSPY_SAMPLERATE_8_0MSPS
+    63,                           // uint32_t pll0audio_mdiv;  M = 8         (MDEC = 63)
+    14,                           // uint32_t pll0audio_npdiv; N = 1, P = 10 (NDEC = 0,  PDEC = 14)
+    PLL0AUDIO_CTRL_FLAG_DIRECT_I, // uint32_t pll0audio_ctrl_flags; PLL0AUDIO_CTRL_FLAG_DIRECT_I
+    0x00,                         // uint8_t  adchs_idivb;
+    { 0, 0, 0 }                   // uint8_t  padding[3]
+  },
+  { // Conf 6 => 12MSPS = AIRSPY_SAMPLERATE_6_0MSPS
+    127,                          // uint32_t pll0audio_mdiv;  M = 9         (MDEC = 127)
+    24,                           // uint32_t pll0audio_npdiv; N = 1, P = 15 (NDEC = 0,  PDEC = 24)
+    PLL0AUDIO_CTRL_FLAG_DIRECT_I, // uint32_t pll0audio_ctrl_flags; PLL0AUDIO_CTRL_FLAG_DIRECT_I
+    0x00,                         // uint8_t  adchs_idivb;
+    { 0, 0, 0 }                   // uint8_t  padding[3]
+  },
+  { // Conf 7 => 10MSPS = AIRSPY_SAMPLERATE_5_0MSPS
+    0x00000000, // uint32_t pll0audio_mdiv;
+    0x00000000, // uint32_t pll0audio_npdiv;
+    0x00000000, // uint32_t pll0audio_ctrl_flags;
+    0x01,       // uint8_t  adchs_idivb;  ADCHS_CLK = GP_CLKIN / (0x01 + 1)
+    { 0, 0, 0 } // uint8_t  padding[3]
+  },
+  { // Conf 8 => 8MSPS = AIRSPY_SAMPLERATE_4_0MSPS
+    63,                           // uint32_t pll0audio_mdiv;  M = 8         (MDEC = 63)
+    31,                           // uint32_t pll0audio_npdiv; N = 1, P = 20 (NDEC = 0,  PDEC = 31)
+    PLL0AUDIO_CTRL_FLAG_DIRECT_I, // uint32_t pll0audio_ctrl_flags; PLL0AUDIO_CTRL_FLAG_DIRECT_I
+    0x00,                         // uint8_t  adchs_idivb;
+    { 0, 0, 0 }                   // uint8_t  padding[3]
+  },
+  { // Conf 9 => 6MSPS = AIRSPY_SAMPLERATE_3_0MSPS
+    127,                          // uint32_t pll0audio_mdiv;  M = 9         (MDEC = 127)
+    18,                           // uint32_t pll0audio_npdiv; N = 1, P = 30 (NDEC = 0,  PDEC = 18)
+    PLL0AUDIO_CTRL_FLAG_DIRECT_I, // uint32_t pll0audio_ctrl_flags; PLL0AUDIO_CTRL_FLAG_DIRECT_I
+    0x00,                         // uint8_t  adchs_idivb;
+    { 0, 0, 0 }                   // uint8_t  padding[3]
+  },
+  { // Conf 10 => 4.8MSPS = AIRSPY_SAMPLERATE_2_4MSPS
+    10918,                        // uint32_t pll0audio_mdiv;  M = 36        (MDEC = 10918)
+    18 | (5 << 12),               // uint32_t pll0audio_npdiv; N = 5, P = 30 (NDEC = 5,  PDEC = 18)
+    0x00000000,                   // uint32_t pll0audio_ctrl_flags; PLL0AUDIO_CTRL_FLAG_DIRECT_I
+    0x00,                         // uint8_t  adchs_idivb;
+    { 0, 0, 0 }                   // uint8_t  padding[3]
+  },
+  { // Conf 11 => 4MSPS = AIRSPY_SAMPLERATE_2_0MSPS
+    0x00000000, // uint32_t pll0audio_mdiv;
+    0x00000000, // uint32_t pll0audio_npdiv;
+    0x00000000, // uint32_t pll0audio_ctrl_flags; 
+    0x04,       // uint8_t  adchs_idivb;  ADCHS_CLK = GP_CLKIN / (0x04 + 1)
+    { 0, 0, 0 } // uint8_t  padding[3]
+  },
+  { // Conf 12 => 2MSPS = AIRSPY_SAMPLERATE_1_0MSPS
+    0x00000000, // uint32_t pll0audio_mdiv;
+    0x00000000, // uint32_t pll0audio_npdiv;
+    0x00000000, // uint32_t pll0audio_ctrl_flags;
+    0x09,       // uint8_t  adchs_idivb;  ADCHS_CLK = GP_CLKIN / (0x09 + 1)
+    { 0, 0, 0 } // uint8_t  padding[3]
   }
 };
  
