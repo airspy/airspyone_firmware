@@ -33,11 +33,15 @@ extern "C"
 #define AIRSPY_SI5351C_CONFIG_XTAL (0)
 #define AIRSPY_SI5351C_CONFIG_CLKIN (1)
 
-/* Configure I2C0 to 400kHz (140MHz/(2*175)=0.4MHz) */
+#ifdef USE_PACKING
+/* Configure I2C0 & IC21 to about 400kHz (180MHz/(2*280)=0.32MHz) */
+#define AIRSPY_I2C0_PLL1_LS_HS_CONF_VAL (280)
+#define AIRSPY_I2C1_PLL1_HS_CONF_VAL (280)
+#else
+/* Configure I2C0 & IC21 to 400kHz (140MHz/(2*175)=0.4MHz) */
 #define AIRSPY_I2C0_PLL1_LS_HS_CONF_VAL (175)
-
-/* Configure I2C1 to 400kHz (140MHz/(2*175)=0.4MHz) */
 #define AIRSPY_I2C1_PLL1_HS_CONF_VAL (175)
+#endif
 
 /* Configure I2C1 to 400kHz (40MHz/(2*50)=0.4MHz) */
 #define AIRSPY_I2C1_PLL1_LS_CONF_VAL (50)
@@ -49,7 +53,12 @@ extern "C"
 
 #define AIRSPY_SAMPLERATE_CMD_SHIFT_BIT (3) // Up to 8 conf
 
-#define AIRSPY_PACKING (0) /* 0=No Packing, 1=Packing Enabled */
+#ifdef USE_PACKING
+/* 0=No Packing, 1=Packing Enabled */
+#define AIRSPY_PACKING (1) 
+#else
+#define AIRSPY_PACKING (0) 
+#endif
 
 /* For each configuration the index corresponds to uint32_t */
 typedef struct

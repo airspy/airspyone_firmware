@@ -1,6 +1,7 @@
 /*
  * Copyright 2012 Jared Boone
  * Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2015 Ian Gilmour <ian@sdrsharp.com>
  *
  * This file is part of AirSpy (based on HackRF project).
  *
@@ -215,7 +216,39 @@ int main(void)
   while(true)
   {
     signal_wfe();
-
+#ifdef USE_PACKING
+	switch(get_usb_buffer_offset())
+	{
+	case 0:
+		if(phase == 0)
+		{
+			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x0000], 0x1800, NULL, NULL);
+			phase = 1;
+		}
+		break;
+	case 1:
+		if(phase == 1)
+		{
+			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x2000], 0x1800, NULL, NULL);
+			phase = 2;
+		}
+		break;
+	case 2:
+		if(phase == 2)
+		{
+			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x4000], 0x1800, NULL, NULL);
+			phase = 3;
+		}
+		break;
+	case 3:
+		if(phase == 3)
+		{
+			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x6000], 0x1800, NULL, NULL);
+			phase = 0;
+		}
+		break;
+	}
+#else
     if( (get_usb_buffer_offset() >= 16384) && 
         (phase == 1) )
     {
@@ -229,5 +262,6 @@ int main(void)
       usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x4000], 0x4000, NULL, NULL);
       phase = 1;  
     }
+#endif	
   }
 }

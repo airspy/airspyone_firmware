@@ -35,11 +35,18 @@ const airspy_sys_clock_t airspy_m4_init_conf =
   0x00000000, // uint32_t pll0_usb_npdiv;
   (PLL0USB_CTRL_FLAG_DIRECT_I | PLL0USB_CTRL_FLAG_DIRECT_O), // uint32_t pll0usb_ctrl_flags; DirectI=PLL0USB_CTRL_FLAG_DIRECT_I or/and DirectO=PLL0USB_CTRL_FLAG_DIRECT_O */
   /* PLL1 clock from GP_CLKIN */
-  /* PLL1 High Speed Mode Set PLL1 to 20MHz * (6+1) = 140MHz */
+  /* Packing Enabled:
+     PLL1 High Speed Mode Set PLL1 to 20MHz * (8+1) = 180MHz
+     No Packing:
+     PLL1 High Speed Mode Set PLL1 to 20MHz * (6+1) = 140MHz */
   {
     0, // uint32_t pll1_hs_psel;
     0, // uint32_t pll1_hs_nsel;
-    6, // uint32_t pll1_hs_msel;
+#ifdef USE_PACKING	
+    8, // uint32_t pll1_hs_msel;
+#else
+	6, // uint32_t pll1_hs_msel;
+#endif
   },
   /* PLL1 Low Speed Mode => Set PLL1 to 20MHz * (1+1) = 40MHz */
   {

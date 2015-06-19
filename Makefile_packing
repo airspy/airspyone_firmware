@@ -23,13 +23,13 @@
 #export BOARD ?= AIRSPY_DEMO
 #export VERSION_STRING ?= -D'VERSION_STRING="AirSpy DEMO"'
 
-export PACKING ?= NO_PACKING
+export PACKING ?= USE_PACKING
 export BOARD ?= AIRSPY_NOS
-export VERSION_STRING ?= -D'VERSION_STRING="AirSpy NOS"'
+export VERSION_STRING ?= -D'VERSION_STRING="AirSpy NOS PACK"'
 
 TARGETS = airspy_m0 \
 		  airspy_m0s \
-		  airspy_rom_to_ram
+		  airspy_rom_to_ram_packing
 
 all: build
 
