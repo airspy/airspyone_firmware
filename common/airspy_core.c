@@ -2,6 +2,7 @@
  * Copyright 2012 Michael Ossmann <mike@ossmann.com>
  * Copyright 2012 Jared Boone <jared@sharebrained.com>
  * Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2015 Ian Gilmour <ian@sdrsharp.com>
  *
  * This file is part of AirSpy (based on HackRF project).
  *
@@ -633,6 +634,15 @@ void cpu_clock_pll1_high_speed(const airspy_pll1_hs_t* const pt_airspy_pll1_hs_c
           CGU_PLL1_CTRL_BYPASS | /* BYPASS */
           CGU_PLL1_CTRL_DIRECT | /* DIRECT */
           CGU_PLL1_CTRL_PSEL_MASK | CGU_PLL1_CTRL_MSEL_MASK | CGU_PLL1_CTRL_NSEL_MASK ); /* PSEL, MSEL, NSEL- divider ratios */
+  
+#ifdef USE_PACKING
+	pll_reg |= CGU_PLL1_CTRL_CLK_SEL(CGU_SRC_GP_CLKIN)
+        | CGU_PLL1_CTRL_PSEL(pll1_psel)
+        | CGU_PLL1_CTRL_NSEL(pll1_nsel)
+        | CGU_PLL1_CTRL_MSEL(4)
+        | CGU_PLL1_CTRL_FBSEL
+		| CGU_PLL1_CTRL_DIRECT;
+#else  
   /* Set PLL1 to High Speed/2 */
   pll_reg |= CGU_PLL1_CTRL_CLK_SEL(CGU_SRC_GP_CLKIN)
         | CGU_PLL1_CTRL_PSEL(pll1_psel)
@@ -640,6 +650,7 @@ void cpu_clock_pll1_high_speed(const airspy_pll1_hs_t* const pt_airspy_pll1_hs_c
         | CGU_PLL1_CTRL_MSEL(pll1_msel)
         | CGU_PLL1_CTRL_FBSEL;
   CGU_PLL1_CTRL = pll_reg;
+#endif
   /* wait until stable */
   while (!(CGU_PLL1_STAT & CGU_PLL1_STAT_LOCK));
 

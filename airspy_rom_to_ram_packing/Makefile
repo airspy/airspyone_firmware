@@ -1,6 +1,6 @@
 # Hey Emacs, this is a -*- makefile -*-
 #
-# Copyright 2013 Benjamin Vernoux <bvernoux@sdrsharp.com>
+# Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
 #
 # This file is part of AirSpy (based on HackRF project).
 #
@@ -20,36 +20,29 @@
 # Boston, MA 02110-1301, USA.
 #
 
-#export BOARD ?= AIRSPY_DEMO
-#export VERSION_STRING ?= -D'VERSION_STRING="AirSpy DEMO"'
+BINARY = airspy_rom_to_ram_packing
 
-export PACKING ?= NO_PACKING
-export BOARD ?= AIRSPY_NOS
-export VERSION_STRING ?= -D'VERSION_STRING="AirSpy NOS"'
+SRC_DIR = airspy_m4
 
-TARGETS = airspy_m0 \
-		  airspy_m0s \
-		  airspy_rom_to_ram
+SRC = airspy_m4.c adchs.c airspy_m4_conf.c
 
-all: build
+OBJ = m0_bin.o m0s_bin.o
 
-build: airspy_fw
+# Source from ../common dir
+VPATH += ../common
+SRC += \
+	fault_handler.c \
+	airspy_core.c \
+	si5351c.c \
+	w25q80bv.c \
+	rom_iap.c \
+	signal_mcu.c
 
-airspy_fw:
-	$(Q)for i in $(TARGETS); do \
-		if [ -d $$i ]; then \
-			printf "  BUILD   $$i\n"; \
-			$(MAKE) -C $$i || exit $?; \
-		fi; \
-	done
+LDSCRIPT = ../common/LPC4370_M4_rom_to_ram.ld
 
-clean:
-	$(Q)for i in $(addprefix lib/,$(TARGETS)) \
-		     $(TARGETS); do \
-		if [ -d $$i ]; then \
-			printf "  CLEAN   $$i\n"; \
-			$(MAKE) -C $$i clean || exit $?; \
-		fi; \
-	done
+%.o: ../$(SRC_DIR)/%.c  Makefile
+	@printf "  CC      $(subst $(shell pwd)/,,$(@))\n"
+	$(Q)$(CC) $(CFLAGS) -o $@ -c $<
 
-.PHONY: build airspy_fw
+include ../common/Makefile_inc.mk
+
