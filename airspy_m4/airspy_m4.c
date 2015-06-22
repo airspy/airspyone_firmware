@@ -431,10 +431,19 @@ int main(void)
   usb_bulk_buffer_offset_m4 = &usb_bulk_buffer_offset_uint32_m4;
 #endif
 
-  while(true)
+#ifdef PERF_DEBUG
+  GPIO_DIR(PORT_EN_M4_ACTIVE) |= PIN_EN_M4_ACTIVE; // Set M4_ACTIVE pin as output.
+  while(true) 
+  {
+    GPIO_CLR(PORT_EN_M4_ACTIVE) = PIN_EN_M4_ACTIVE; // Clear M4_ACTIVE pin low before we go to sleep
+    signal_wfe();
+    GPIO_SET(PORT_EN_M4_ACTIVE) = PIN_EN_M4_ACTIVE; // Set M4_ACTIVE pin high as we awake
+#else
+  while(true) 
   {
     signal_wfe();
-  
+#endif 
+
 #ifdef USE_PACKING
   /* Thanks to Pierre HB9FUF for the initial packing proof-of-concept */
   /* The following expands the PoC to use 4 buffers with an improved packing routine above */
