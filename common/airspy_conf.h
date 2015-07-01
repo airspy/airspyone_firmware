@@ -33,15 +33,9 @@ extern "C"
 #define AIRSPY_SI5351C_CONFIG_XTAL (0)
 #define AIRSPY_SI5351C_CONFIG_CLKIN (1)
 
-#ifdef USE_PACKING
-/* Configure I2C0 & IC21 to about 400kHz (180MHz/(2*280)=0.32MHz) */
-#define AIRSPY_I2C0_PLL1_LS_HS_CONF_VAL (280)
-#define AIRSPY_I2C1_PLL1_HS_CONF_VAL (280)
-#else
 /* Configure I2C0 & IC21 to 400kHz (140MHz/(2*175)=0.4MHz) */
 #define AIRSPY_I2C0_PLL1_LS_HS_CONF_VAL (175)
 #define AIRSPY_I2C1_PLL1_HS_CONF_VAL (175)
-#endif
 
 /* Configure I2C1 to 400kHz (40MHz/(2*50)=0.4MHz) */
 #define AIRSPY_I2C1_PLL1_LS_CONF_VAL (50)

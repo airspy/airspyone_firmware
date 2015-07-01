@@ -42,11 +42,7 @@ const airspy_sys_clock_t airspy_m4_init_conf =
   {
     0, // uint32_t pll1_hs_psel;
     0, // uint32_t pll1_hs_nsel;
-#ifdef USE_PACKING	
-    8, // uint32_t pll1_hs_msel;
-#else
 	6, // uint32_t pll1_hs_msel;
-#endif
   },
   /* PLL1 Low Speed Mode => Set PLL1 to 20MHz * (1+1) = 40MHz */
   {

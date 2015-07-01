@@ -122,6 +122,7 @@ uint32_t data_counter = 0;
 #endif
 
 #ifdef USE_PACKING
+/*
 __attribute__ ((always_inline)) static void pack(uint16_t* input, uint32_t* output, uint32_t length)
 {
   uint32_t i;
@@ -139,7 +140,42 @@ __attribute__ ((always_inline)) static void pack(uint16_t* input, uint32_t* outp
 
     output += 3;
   }
+}*/
+
+__attribute__ ((always_inline)) static void pack(uint32_t* input, uint32_t* output, uint32_t length)
+{
+	register uint32_t *a0 asm("r0") = input;
+	register uint32_t *a1 asm("r1") = output;
+	register uint32_t a2 asm("r2") = length;
+	
+	asm volatile("1:\n\t"
+				 "ldm.w %0!, {r4, r5, r6, r7}\n\t"
+				 
+				 "lsr	r8, r4, #16\n\t"
+				 "ubfx	r3, r5, #4, #12\n\t"
+				 "orr	r8, r3, r8, lsl #8\n\t"
+				 "orr	r8, r8, r4, lsl #20\n\t"
+				 "lsrs	r3, r5, #16\n\t"
+				 "lsls	r5, r5, #28\n\t"
+				 "orr	r5, r5, r3, lsl #16\n\t"
+				 "orr	r5, r5, r6, lsr #24\n\t"
+				 "uxth	r9, r6\n\t"
+				 "orr	r9, r5, r9, lsl #4\n\t"
+				 "lsrs	r6, r6, #16\n\t"
+				 "uxth	r10, r7\n\t"
+				 "lsl	r10, r10, #12\n\t"
+				 "orr	r10, r10, r6, lsl #24\n\t"	
+				 "orr	r10, r10, r7, lsr #16\n\t"
+		
+				 "stm.w %1!, {r8, r9, r10}\n\t"
+
+				 "subs	%2, %2, #8\n\t"
+				 "bne 1b\n\t"
+				: "+r"(a0), "+r"(a1), "+r"(a2)
+				:: "memory", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10");	
+				
 }
+
 #endif
 
 static __inline__ void clr_usb_buffer_offset(void)
@@ -443,7 +479,7 @@ int main(void)
   case 0:
     if(phase == 0)
     {
-      pack((uint16_t*) &usb_bulk_buffer[0x0000], (uint32_t*) &usb_bulk_buffer[0x0000], 0x1000);
+      pack((uint32_t*) &usb_bulk_buffer[0x0000], (uint32_t*) &usb_bulk_buffer[0x0000], 0x1000);
     
       set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), 1) );    
       signal_sev();
@@ -453,7 +489,7 @@ int main(void)
   case 1:
     if(phase == 1)
     {
-      pack((uint16_t*) &usb_bulk_buffer[0x2000], (uint32_t*) &usb_bulk_buffer[0x2000], 0x1000);
+      pack((uint32_t*) &usb_bulk_buffer[0x2000], (uint32_t*) &usb_bulk_buffer[0x2000], 0x1000);
     
       set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), 1) );    
       signal_sev();
@@ -463,7 +499,7 @@ int main(void)
   case 2:
     if(phase == 2)
     {
-      pack((uint16_t*) &usb_bulk_buffer[0x4000], (uint32_t*) &usb_bulk_buffer[0x4000], 0x1000);
+      pack((uint32_t*) &usb_bulk_buffer[0x4000], (uint32_t*) &usb_bulk_buffer[0x4000], 0x1000);
     
       set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), 1) );    
       signal_sev();
@@ -473,7 +509,7 @@ int main(void)
   case 3:
     if(phase == 3)
     {
-      pack((uint16_t*) &usb_bulk_buffer[0x6000], (uint32_t*) &usb_bulk_buffer[0x6000], 0x1000);
+      pack((uint32_t*) &usb_bulk_buffer[0x6000], (uint32_t*) &usb_bulk_buffer[0x6000], 0x1000);
     
       set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), 1) );    
       signal_sev();
