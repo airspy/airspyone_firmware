@@ -55,9 +55,7 @@
 extern uint32_t cm4_data_share; /* defined in linker script */
 extern uint32_t cm0_data_share; /* defined in linker script */
 
-volatile unsigned int phase = 0;
-
-volatile uint32_t *usb_bulk_buffer_offset = (&cm4_data_share);
+volatile airspy_m0_queue_t* m0_queue = (airspy_m0_queue_t*) (&cm4_data_share);
 volatile uint32_t *start_adchs = (&cm0_data_share);
 
 #define START_ADCHS_CMD  (1)
@@ -66,12 +64,12 @@ volatile uint32_t *start_adchs = (&cm0_data_share);
 volatile uint32_t *set_samplerate = ((&cm0_data_share)+1);
 #define SET_SAMPLERATE_CMD  (1)
 
-#define get_usb_buffer_offset() (usb_bulk_buffer_offset[0])
-
 #define MASTER_TXEV_FLAG  ((uint32_t *) 0x40043130)
 #define MASTER_TXEV_QUIT()  { *MASTER_TXEV_FLAG = 0x0; }
 
-uint8_t* const usb_bulk_buffer = (uint8_t*)0x20004000;
+#define USB_BULK_BUFFER_START     (0x20008000)
+#define USB_BULK_BUFFER_SIZE_BYTE (16384)
+uint8_t* const usb_bulk_buffer = (uint8_t*) USB_BULK_BUFFER_START;
 
 uint8_t spiflash_buffer[W25Q80BV_PAGE_LEN];
 char version_string[] = VERSION_STRING " " AIRSPY_FW_GIT_TAG " " AIRSPY_FW_BUILD_DATE;
@@ -150,8 +148,6 @@ void ADCHS_start(uint32_t conf_num)
 
   r820t_init(&r820t_conf_rw, airspy_m0_conf[conf_num].r820t_if_freq);
   r820t_set_if_bandwidth(&r820t_conf_rw, airspy_m0_conf[conf_num].r820t_if_bw);
-
-  phase = 1;
 }
 
 void ADCHS_stop(uint32_t conf_num)
@@ -215,6 +211,31 @@ int main(void)
 
   while(true)
   {
+    uint32_t q_word, q_tail, buffer_off, buffer_len ;
+    signal_wfe();
+    // While there is/are new commands coming from M4
+    while ((q_tail = m0_queue->q_tail) != m0_queue->q_head)
+    {
+      // get the data from the queue
+      q_word = m0_queue->q[q_tail & M0_QUEUE_MASK];
+
+      // update the queue tail to free the entry we've just removed
+      m0_queue->q_tail = ((q_tail + 1) & M0_QUEUE_MASK);
+
+      // separate the buffer offset and length that M4 want's us to transmit on USB 
+      buffer_len = (q_word & 0x0000FFFF); 
+      buffer_off = (q_word >> 16);
+
+      // perform a sanity check on the values : (len != 0) && (offset+len < size_of_buffer)
+      if ( (buffer_len) && ((buffer_off + buffer_len) <= USB_BULK_BUFFER_SIZE_BYTE))
+      { // schedule the requested data for transmission
+        usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[buffer_off], buffer_len, NULL, NULL);
+      }
+    }
+  }
+/*
+  while(true)
+  {
     signal_wfe();
 #ifdef USE_PACKING
 	switch(get_usb_buffer_offset())
@@ -264,4 +285,5 @@ int main(void)
     }
 #endif	
   }
+*/
 }
