@@ -38,14 +38,17 @@ void ADCHS_stop(uint32_t conf_num);
 void adchs_isr(void);
 void dma_isr(void);
 
-#define USB_BULK_BUFFER_START (0x20004000)
+#define USB_BULK_BUFFER_START     (0x20008000)
+#define USB_BULK_BUFFER_SIZE_BYTE (16384)
+#define USB_BULK_BUFFER_SIZE_MASK (USB_BULK_BUFFER_SIZE_BYTE-1)
 
-#define ADCHS_DATA_BUFFER_SIZE_BYTE (32768)
-#define ADCHS_DATA_BUFFER (USB_BULK_BUFFER_START)
+#define ADCHS_DATA_BUFFER           (0x20004000)
+#define ADCHS_DATA_BUFFER_SIZE_BYTE (16384)
+#define ADCHS_DATA_BUFFER_SIZE_MASK (ADCHS_DATA_BUFFER_SIZE_BYTE-1)
 
-#define ADCHS_DMA_NUM_LLI (4) /* Corresponds to number of transfer */
-#define ADCHS_DMA_NB_BUFFER ( (ADCHS_DMA_NUM_LLI/2) )
-#define ADCHS_DATA_TRANSFER_SIZE_BYTE ( ((ADCHS_DATA_BUFFER_SIZE_BYTE/ADCHS_DMA_NUM_LLI)*2) ) /* Size of Each Transfer in Byte */
+#define ADCHS_DMA_NUM_LLI             (2)                                                 // Corresponds to number of transfer
+#define ADCHS_DMA_NB_BUFFER           (ADCHS_DMA_NUM_LLI)
+#define ADCHS_DATA_TRANSFER_SIZE_BYTE (ADCHS_DATA_BUFFER_SIZE_BYTE / ADCHS_DMA_NB_BUFFER) // Size of Each Transfer in Bytes
 
 #define ADCHS_DMA_WRITE 7
 #define ADCHS_DMA_READ  8
