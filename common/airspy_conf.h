@@ -67,6 +67,18 @@ typedef struct
   uint8_t r820t_if_bw; /* from 0 to 63 */
 } airspy_m0_conf_t;
 
+//
+// M4 adds data to q[q_head]
+// M0 removes data from q[q_tail]
+//
+#define M0_QUEUE_SIZE (4)
+#define M0_QUEUE_MASK (M0_QUEUE_SIZE-1)
+typedef struct {
+  uint32_t q_head;
+  uint32_t q_tail;
+  uint32_t q[M0_QUEUE_SIZE];
+} airspy_m0_queue_t;
+
 /* Configuration for M4 core see airspy_conf_m4.c */
 extern const airspy_sys_clock_t airspy_m4_init_conf;
 extern const airspy_sys_samplerate_t airspy_m4_conf[AIRSPY_CONF_NB];

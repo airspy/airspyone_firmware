@@ -97,17 +97,17 @@ void ADCHS_DMA_init(uint32_t dest_addr)
                                (0x1 << 25)  |
                                (0x0 << 26)  |
                                (0x1 << 27)  |
-#ifdef USE_PACKING							   
+//#ifdef USE_PACKING							   
                                (0x1UL << 31);
-#else							 
-                               (0x0UL << 31);
-#endif							  
+//#else							 
+//                             (0x0UL << 31);
+//#endif							  
   }
 
-#ifndef USE_PACKING
-  adchs_dma_lli[(ADCHS_DMA_NUM_LLI/2)-1].control |= (0x1UL << 31);
-  adchs_dma_lli[i-1].control |= (0x1UL << 31);
-#endif  
+//#ifndef USE_PACKING
+//  adchs_dma_lli[(ADCHS_DMA_NUM_LLI/2)-1].control |= (0x1UL << 31);
+//  adchs_dma_lli[i-1].control |= (0x1UL << 31);
+//#endif  
 
   LPC_GPDMA->C0SRCADDR = adchs_dma_lli[0].src_addr;
   LPC_GPDMA->C0DESTADDR = adchs_dma_lli[0].dst_addr;
