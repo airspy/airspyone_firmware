@@ -1,6 +1,6 @@
 /*
  * Copyright 2012 Jared Boone
- * Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2013-2015 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy (based on HackRF project).
  *
@@ -162,7 +162,7 @@ const usb_transfer_stage_t stage)
     {
       const uint8_t value = si5351c_read_single(endpoint->setup.index);
       endpoint->buffer[0] = value;
-      usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+      usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
       usb_transfer_schedule_ack(endpoint->out);
       return USB_REQUEST_STATUS_OK;
     }
@@ -203,7 +203,7 @@ const usb_transfer_stage_t stage)
     {
       const uint8_t value = airspy_r820t_read_single(&r820t_conf_rw, endpoint->setup.index);
       endpoint->buffer[0] = value;
-      usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+      usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
       usb_transfer_schedule_ack(endpoint->out);
       return USB_REQUEST_STATUS_OK;
     }
@@ -246,7 +246,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
       return USB_REQUEST_STATUS_STALL;
     } else
     {
-      usb_transfer_schedule_block(endpoint->out, &spiflash_buffer[0], len, NULL, NULL);
+      usb_transfer_schedule_block(endpoint->out, &spiflash_buffer[0], len);
       w25q80bv_setup();
       return USB_REQUEST_STATUS_OK;
     }
@@ -309,7 +309,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
           spiflash_buffer[i] = u8_addr_pt[i];
         }
       }
-      usb_transfer_schedule_block(endpoint->in, &spiflash_buffer[0], len, NULL, NULL);
+      usb_transfer_schedule_block(endpoint->in, &spiflash_buffer[0], len);
       return USB_REQUEST_STATUS_OK;
     }
   } else if (stage == USB_TRANSFER_STAGE_DATA) 
@@ -336,7 +336,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
 {
   if (stage == USB_TRANSFER_STAGE_SETUP) {
     endpoint->buffer[0] = BOARD_ID;
-    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
     usb_transfer_schedule_ack(endpoint->out);
   }
   return USB_REQUEST_STATUS_OK;
@@ -346,7 +346,7 @@ usb_request_status_t usb_vendor_request_read_version_string(
 usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
 {
   if (stage == USB_TRANSFER_STAGE_SETUP) {
-    usb_transfer_schedule_block(endpoint->in, version_string, version_string_strlen, NULL, NULL);
+    usb_transfer_schedule_block(endpoint->in, version_string, version_string_strlen);
     usb_transfer_schedule_ack(endpoint->out);
   }
   return USB_REQUEST_STATUS_OK;
@@ -387,7 +387,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
     read_partid_serialno.serial_no[3] = iap_cmd_res.status_res.iap_result[3];
     
     length = (uint8_t)sizeof(read_partid_serialno_t);
-    usb_transfer_schedule_block(endpoint->in, &read_partid_serialno, length, NULL, NULL);
+    usb_transfer_schedule_block(endpoint->in, &read_partid_serialno, length);
     usb_transfer_schedule_ack(endpoint->out);
   }
   return USB_REQUEST_STATUS_OK;
@@ -423,7 +423,7 @@ const usb_transfer_stage_t stage)
     }
 
     endpoint->buffer[0] = 1;
-    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
     usb_transfer_schedule_ack(endpoint->out);
     return USB_REQUEST_STATUS_OK;
   }
@@ -436,7 +436,7 @@ const usb_transfer_stage_t stage)
 {
   if (stage == USB_TRANSFER_STAGE_SETUP) 
   {
-    usb_transfer_schedule_block(endpoint->out, &set_freq_params, sizeof(set_freq_params_t), NULL, NULL);
+    usb_transfer_schedule_block(endpoint->out, &set_freq_params, sizeof(set_freq_params_t));
     return USB_REQUEST_STATUS_OK;
   } else if (stage == USB_TRANSFER_STAGE_DATA) 
   {
@@ -462,7 +462,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
     value = r820t_set_lna_gain(&r820t_conf_rw, endpoint->setup.index);
     endpoint->buffer[0] = value;
 
-    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
     usb_transfer_schedule_ack(endpoint->out);
     return USB_REQUEST_STATUS_OK;
   }
@@ -479,7 +479,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
     value = r820t_set_mixer_gain(&r820t_conf_rw, endpoint->setup.index);
     endpoint->buffer[0] = value;
 
-    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
     usb_transfer_schedule_ack(endpoint->out);
     return USB_REQUEST_STATUS_OK;
   }
@@ -496,7 +496,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
     value = r820t_set_vga_gain(&r820t_conf_rw, endpoint->setup.index);
     endpoint->buffer[0] = value;
 
-    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
     usb_transfer_schedule_ack(endpoint->out);
     return USB_REQUEST_STATUS_OK;
   }
@@ -513,7 +513,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
     value = r820t_set_lna_agc(&r820t_conf_rw, endpoint->setup.index);
     endpoint->buffer[0] = value;
 
-    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
     usb_transfer_schedule_ack(endpoint->out);
     return USB_REQUEST_STATUS_OK;
   }
@@ -530,7 +530,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
     value = r820t_set_mixer_agc(&r820t_conf_rw, endpoint->setup.index);
     endpoint->buffer[0] = value;
 
-    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
     usb_transfer_schedule_ack(endpoint->out);
     return USB_REQUEST_STATUS_OK;
   }
@@ -544,13 +544,13 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
   {
      if (endpoint->setup.index == 0x04)
      {  
-        usb_transfer_schedule_block(endpoint->in, &usb_descriptor_CompatIDDescriptor, endpoint->setup.length, NULL, NULL);
+        usb_transfer_schedule_block(endpoint->in, &usb_descriptor_CompatIDDescriptor, endpoint->setup.length);
         usb_transfer_schedule_ack(endpoint->out);
         return USB_REQUEST_STATUS_OK;
      }
      if (endpoint->setup.index == 0x05)
      {
-        usb_transfer_schedule_block(endpoint->in, &usb_descriptor_ExtProps, endpoint->setup.length, NULL, NULL);
+        usb_transfer_schedule_block(endpoint->in, &usb_descriptor_ExtProps, endpoint->setup.length);
         usb_transfer_schedule_ack(endpoint->out);
         return USB_REQUEST_STATUS_OK;
      }  
@@ -644,7 +644,7 @@ const usb_transfer_stage_t stage)
         value = gpio_get(port_num, pin_num);
       }
       endpoint->buffer[0] = value;
-      usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+      usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
       usb_transfer_schedule_ack(endpoint->out);
       return USB_REQUEST_STATUS_OK;
     }
@@ -720,7 +720,7 @@ const usb_transfer_stage_t stage)
         value = 0;
       }
       endpoint->buffer[0] = value;
-      usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+      usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
       usb_transfer_schedule_ack(endpoint->out);
       return USB_REQUEST_STATUS_OK;
     }
@@ -750,7 +750,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
     {
       /* Return the number of samplerates available */
       samplerates_buffer[0] = AIRSPY_CONF_NB;
-      usb_transfer_schedule_block(endpoint->in, &samplerates_buffer[0], 4, NULL, NULL);
+      usb_transfer_schedule_block(endpoint->in, &samplerates_buffer[0], 4);
     } else
     {
       /* Return each samplerate available */
@@ -759,7 +759,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
         samplerates_buffer[i] = airspy_m0_conf[i].r820t_if_freq * 2; /* samplerate = IF_freq * 2 */
       }
       schedule_block_len = nb_samplerate * sizeof(uint32_t);
-      usb_transfer_schedule_block(endpoint->in, &samplerates_buffer[0], schedule_block_len, NULL, NULL);
+      usb_transfer_schedule_block(endpoint->in, &samplerates_buffer[0], schedule_block_len);
     }
     usb_transfer_schedule_ack(endpoint->out);
     return USB_REQUEST_STATUS_OK;
@@ -774,7 +774,7 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
 {
   if (stage == USB_TRANSFER_STAGE_SETUP) {
     endpoint->buffer[0] = AIRSPY_PACKING;
-    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
     usb_transfer_schedule_ack(endpoint->out);
   }
   return USB_REQUEST_STATUS_OK;

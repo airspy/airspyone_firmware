@@ -1,6 +1,6 @@
 /*
  * Copyright 2012 Jared Boone
- * Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2013-2015 Benjamin Vernoux <bvernoux@airspy.com>
  * Copyright 2015 Ian Gilmour <ian@sdrsharp.com>
  *
  * This file is part of AirSpy (based on HackRF project).
@@ -222,28 +222,28 @@ int main(void)
 	case 0:
 		if(phase == 0)
 		{
-			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x0000], 0x1800, NULL, NULL);
+			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x0000], 0x1800);
 			phase = 1;
 		}
 		break;
 	case 1:
 		if(phase == 1)
 		{
-			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x2000], 0x1800, NULL, NULL);
+			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x2000], 0x1800);
 			phase = 2;
 		}
 		break;
 	case 2:
 		if(phase == 2)
 		{
-			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x4000], 0x1800, NULL, NULL);
+			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x4000], 0x1800);
 			phase = 3;
 		}
 		break;
 	case 3:
 		if(phase == 3)
 		{
-			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x6000], 0x1800, NULL, NULL);
+			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x6000], 0x1800);
 			phase = 0;
 		}
 		break;
@@ -252,14 +252,14 @@ int main(void)
     if( (get_usb_buffer_offset() >= 16384) && 
         (phase == 1) )
     {
-      usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x0000], 0x4000, NULL, NULL);
+      usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x0000], 0x4000);
       phase = 0;
     }
 
     if( (get_usb_buffer_offset() < 16384) && 
         (phase == 0) )
     {
-      usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x4000], 0x4000, NULL, NULL);
+      usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x4000], 0x4000);
       phase = 1;  
     }
 #endif	

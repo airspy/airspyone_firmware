@@ -1,6 +1,7 @@
 /*
  * Copyright 2012 Jared Boone
  * Copyright 2013 Ben Gamari
+ * Copyright 2015 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy (based on HackRF project).
  *
@@ -19,7 +20,6 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-
 #ifndef __USB_QUEUE_H__
 #define __USB_QUEUE_H__
 
@@ -29,7 +29,6 @@
 
 typedef struct _usb_transfer_t usb_transfer_t;
 typedef struct _usb_queue_t usb_queue_t;
-typedef void (*transfer_completion_cb)(void*, unsigned int);
 
 // This is an opaque datatype. Thou shall not touch these members.
 struct _usb_transfer_t
@@ -38,8 +37,6 @@ struct _usb_transfer_t
   usb_transfer_descriptor_t td ATTR_ALIGNED(64);
   unsigned int maximum_length;
   struct _usb_queue_t* queue;
-  transfer_completion_cb completion_cb;
-  void* user_data;
 };
 
 // This is an opaque datatype. Thou shall not touch these members.
@@ -66,17 +63,13 @@ void usb_queue_flush_endpoint(const usb_endpoint_t* const endpoint);
 int usb_transfer_schedule(
   const usb_endpoint_t* const endpoint,
   void* const data,
-  const uint32_t maximum_length,
-  const transfer_completion_cb completion_cb,
-  void* const user_data
+  const uint32_t maximum_length
 );
 
 int usb_transfer_schedule_block(
   const usb_endpoint_t* const endpoint,
   void* const data,
-  const uint32_t maximum_length,
-  const transfer_completion_cb completion_cb,
-  void* const user_data
+  const uint32_t maximum_length
 );
 
 int usb_transfer_schedule_ack(const usb_endpoint_t* const endpoint);

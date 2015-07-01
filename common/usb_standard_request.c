@@ -1,5 +1,6 @@
 /*
  * Copyright 2012 Jared Boone
+ * Copyright 2015 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy (based on HackRF project).
  *
@@ -18,7 +19,6 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-
 #include <stdint.h>
 #include <stddef.h>
 
@@ -137,8 +137,7 @@ static usb_request_status_t usb_send_descriptor(
   usb_transfer_schedule_block(
     endpoint->in,
     (uint8_t* const) descriptor_data,
-    (setup_length > descriptor_length) ? descriptor_length : setup_length,
-    NULL, NULL);
+    (setup_length > descriptor_length) ? descriptor_length : setup_length);
   usb_transfer_schedule_ack(endpoint->out);
   return USB_REQUEST_STATUS_OK;
 }
@@ -324,7 +323,7 @@ static usb_request_status_t usb_standard_request_get_configuration_setup(
     {
       endpoint->buffer[0] = endpoint->device->configuration->number;
     }
-    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1, NULL, NULL);
+    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
     usb_transfer_schedule_ack(endpoint->out);
     return USB_REQUEST_STATUS_OK;
   } else {
@@ -353,7 +352,7 @@ static usb_request_status_t usb_standard_request_get_status_endpoint(usb_endpoin
 {
   const uint_fast8_t endpoint_number = usb_endpoint_number(endpoint->setup.index);
   USB_EpStatus = (USB0_ENDPTCTRL(endpoint_number) & (USB0_ENDPTCTRL_RXS | USB0_ENDPTCTRL_TXS)) ? 1 : 0;
-  usb_transfer_schedule_block(endpoint->in, &USB_EpStatus, 2, NULL, NULL);
+  usb_transfer_schedule_block(endpoint->in, &USB_EpStatus, 2);
   usb_transfer_schedule_ack(endpoint->out);
   return USB_REQUEST_STATUS_OK;
 }
@@ -366,12 +365,12 @@ static usb_request_status_t usb_standard_request_get_status(
     switch (endpoint->setup.request_type & USB_SETUP_REQUEST_TYPE_RECIPIENT_mask)
     {
       case USB_SETUP_REQUEST_TYPE_RECIPIENT_DEVICE:
-        usb_transfer_schedule_block(endpoint->in, &USB_DeviceStatus, 2, NULL, NULL);
+        usb_transfer_schedule_block(endpoint->in, &USB_DeviceStatus, 2);
         usb_transfer_schedule_ack(endpoint->out);
         return USB_REQUEST_STATUS_OK;
         break;
       case USB_SETUP_REQUEST_TYPE_RECIPIENT_INTERFACE:
-        usb_transfer_schedule_block(endpoint->in, &USB_InterfaceStatus, 2, NULL, NULL);
+        usb_transfer_schedule_block(endpoint->in, &USB_InterfaceStatus, 2);
         usb_transfer_schedule_ack(endpoint->out);
         return USB_REQUEST_STATUS_OK;
         break;
@@ -395,7 +394,7 @@ static usb_request_status_t usb_standard_request_get_interface(
         break;
 
       case USB_SETUP_REQUEST_TYPE_RECIPIENT_INTERFACE:
-        usb_transfer_schedule_block(endpoint->in, &USB_CurrentInterface, 1, NULL, NULL);
+        usb_transfer_schedule_block(endpoint->in, &USB_CurrentInterface, 1);
         usb_transfer_schedule_ack(endpoint->out);
         return USB_REQUEST_STATUS_OK;
         break;
