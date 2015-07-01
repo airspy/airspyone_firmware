@@ -187,8 +187,10 @@ void ADCHS_init(void)
   LPC_ADCHS->THR_B = 0x00FFF000;
 
   /* Configure Interrupt 0 & 1 Enable register to default value (even if not used) */
-  LPC_ADCHS->MASK0 = 0x00000000;
-  LPC_ADCHS->MASK1 = 0x00000000;
+  LPC_ADCHS->CLR_EN0   = STATUS0_CLEAR_MASK;
+  LPC_ADCHS->CLR_STAT0 = STATUS0_CLEAR_MASK;
+  LPC_ADCHS->CLR_EN1   = STATUS1_CLEAR_MASK;
+  LPC_ADCHS->CLR_STAT1 = STATUS1_CLEAR_MASK;
 
 }
 
