@@ -561,7 +561,7 @@ void sys_clock_init(const airspy_sys_clock_t* const pt_airspy_sys_conf)
   /* ******************************************** */
   /*  ADCHS Configuration (GP_CLKIN clock source) */
   /* ******************************************** */
-  sys_clock_samplerate(&pt_airspy_sys_conf->airspy_sys_samplerate);
+  sys_clock_samplerate(&airspy_m4_conf[0]);
 }
 
 /*

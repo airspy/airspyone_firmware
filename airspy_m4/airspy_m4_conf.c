@@ -49,17 +49,7 @@ const airspy_sys_clock_t airspy_m4_init_conf =
     0, // uint32_t pll1_ls_psel;
     0, // uint32_t pll1_ls_nsel;
     1, // uint32_t pll1_ls_msel;
-  },
-  {
-    /* ADCHS samplerate */
-    /* PLL0AUDIO (from GP_CLKIN) */
-    0, // uint32_t pll0audio_mdiv;
-    0, // uint32_t pll0audio_npdiv;
-    PLL0AUDIO_CTRL_FLAG_DIRECT_I, // uint32_t pll0audio_ctrl_flags; DirectI=PLL0AUDIO_CTRL_FLAG_DIRECT_I or/and DirectO=PLL0AUDIO_CTRL_FLAG_DIRECT_O */
-    /* IDIVB (from 20MHz GP_CLKIN) not used set it to 0 */
-    0, // uint8_t adchs_idivb; /* 0 to 15 (0 means direct connection GP_CLKIN to ADCHS_CLK) */
-    { 0, 0, 0 } /* uint8_t padding[3] */
-  },
+  }
 };
  
 /*
