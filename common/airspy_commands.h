@@ -1,5 +1,5 @@
 /*
- * Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2013-2015 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy.
  *
@@ -34,8 +34,6 @@ typedef enum
 	RECEIVER_MODE_OFF = 0,
 	RECEIVER_MODE_RX = 1
 } receiver_mode_t;
-
-#define AIRSPY_CONF_CMD_SHIFT_BIT (3) // Up to 3bits=8 samplerates (uint32_t enum shall not exceed 7)
 
 // Commands (usb vendor request) shared between Firmware and Host.
 #define AIRSPY_CMD_MAX (26)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Benjamin Vernoux <bvernoux@airspy.com>
+ * Copyright 2014-2015 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy.
  *
@@ -42,10 +42,7 @@ extern "C"
 
 #define AIRSPY_SAMPLERATE_DEFAULT_CONF (0)
 
- /* See airspy_commands.h number of items in uint32_t */
-#define AIRSPY_CONF_NB (2)
-
-#define AIRSPY_SAMPLERATE_CMD_SHIFT_BIT (3) // Up to 8 conf
+#define AIRSPY_CONF_NB (2) /* Up to 256 maximum */
 
 #ifdef USE_PACKING
 /* 0=No Packing, 1=Packing Enabled */

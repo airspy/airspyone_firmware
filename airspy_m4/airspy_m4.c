@@ -84,15 +84,8 @@ volatile int adchs_started = 0;
 volatile uint32_t *usb_bulk_buffer_offset = &cm4_data_share;
 uint8_t* const usb_bulk_buffer = (uint8_t*)USB_BULK_BUFFER_START;
 
-volatile uint32_t *start_adchs = (&cm0_data_share);
-#define START_ADCHS_CMD  (1)
-#define STOP_ADCHS_CMD   (2)
-
-volatile uint32_t *set_samplerate = ((&cm0_data_share)+1);
-#define SET_SAMPLERATE_CMD  (1)
-
-#define CMD_MASK ((1 << 2)-1)
-#define CONF_MASK ((1 << AIRSPY_SAMPLERATE_CMD_SHIFT_BIT)-1)
+volatile airspy_mcore_t *start_adchs = (airspy_mcore_t *)(&cm0_data_share);
+volatile airspy_mcore_t *set_samplerate = (airspy_mcore_t *)((&cm0_data_share)+1);
 
 volatile int first_start = 0;
 
@@ -190,37 +183,25 @@ static __inline__ void clr_usb_buffer_offset(void)
 
 static __inline__ uint32_t get_start_stop_adchs(void)
 {
-  uint32_t val;
-  uint32_t cmd;
-
-  val = start_adchs[0];
-  cmd = (val & CMD_MASK);
-
-  return(cmd);
+  return(start_adchs->cmd);
 }
 
 /* Acknowledge Start/Stop ADCHS by clearing the data */
 static __inline__ void ack_start_stop_adchs(void)
 {
-  start_adchs[0] = 0;
+  start_adchs->raw  = 0;
 }
 
-static __inline__ uint32_t get_samplerate(uint32_t *conf_number)
+static __inline__ uint8_t get_samplerate(uint8_t *conf_number)
 {
-  uint32_t val;
-  uint32_t cmd;
-
-  val = set_samplerate[0];
-  cmd = (val & CMD_MASK);
-  *conf_number = ((val >> AIRSPY_SAMPLERATE_CMD_SHIFT_BIT) & CONF_MASK);
-
-  return(cmd);
+  *conf_number = set_samplerate->conf;
+  return(set_samplerate->cmd);
 }
 
 /* Acknowledge set_samplerate by clearing the data */
 static __inline__ void ack_samplerate(void)
 {
-  set_samplerate[0] = 0;
+  set_samplerate->raw = 0;
 }
 
 void adchs_start(uint8_t chan_num)
@@ -345,9 +326,9 @@ void dma_isr(void)
 
 void m0core_isr(void)
 {
-  uint32_t adchs_conf;
-  uint32_t adchs_start_stop_cmd;
-  uint32_t samplerate_cmd;
+  uint8_t adchs_conf;
+  uint8_t adchs_start_stop_cmd;
+  uint8_t samplerate_cmd;
 
   SLAVE_TXEV_QUIT();
 

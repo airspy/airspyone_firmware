@@ -58,13 +58,9 @@ extern uint32_t cm0_data_share; /* defined in linker script */
 volatile unsigned int phase = 0;
 
 volatile uint32_t *usb_bulk_buffer_offset = (&cm4_data_share);
-volatile uint32_t *start_adchs = (&cm0_data_share);
 
-#define START_ADCHS_CMD  (1)
-#define STOP_ADCHS_CMD   (2)
-
-volatile uint32_t *set_samplerate = ((&cm0_data_share)+1);
-#define SET_SAMPLERATE_CMD  (1)
+volatile airspy_mcore_t *start_adchs = (airspy_mcore_t *)(&cm0_data_share);
+volatile airspy_mcore_t *set_samplerate = (airspy_mcore_t *)((&cm0_data_share)+1);
 
 #define get_usb_buffer_offset() (usb_bulk_buffer_offset[0])
 
@@ -90,36 +86,32 @@ typedef struct {
 
 set_sample_r_params_t set_sample_r_params;
 
-__attribute__ ((always_inline)) static inline void start_stop_adchs_m4(uint32_t conf_num, uint8_t command)
+__attribute__ ((always_inline)) static inline void start_stop_adchs_m4(uint8_t conf_num, uint8_t command)
 {
-  uint32_t conf;
-
-  conf = conf_num;
-  start_adchs[0] = ((conf << AIRSPY_SAMPLERATE_CMD_SHIFT_BIT) | command);
+  start_adchs->conf = conf_num;
+  start_adchs->cmd = command;
 
   signal_sev();
 
   /* Wait until M4 have finished executing the command (it set the data to 0) */
   while(1)
   {
-    if(start_adchs[0] == 0)
+    if(start_adchs->raw == 0)
       break;
   }
 }
 
-void set_samplerate_m4(uint32_t conf_num)
+void set_samplerate_m4(uint8_t conf_num)
 {
-  uint32_t conf;
-
-  conf = conf_num;
-  set_samplerate[0] = ((conf << AIRSPY_SAMPLERATE_CMD_SHIFT_BIT) | SET_SAMPLERATE_CMD);
+  set_samplerate->conf = conf_num;
+  set_samplerate->cmd = SET_SAMPLERATE_CMD;
 
   signal_sev();
 
   /* Wait until M4 have finished executing the command (it set the data to 0) */
   while(1)
   {
-    if(set_samplerate[0] == 0)
+    if(set_samplerate->raw == 0)
       break;
   }
 }
@@ -138,7 +130,7 @@ void usb_configuration_changed(usb_device_t* const device)
   }
 }
 
-void ADCHS_start(uint32_t conf_num)
+void ADCHS_start(uint8_t conf_num)
 {
   start_stop_adchs_m4(conf_num, START_ADCHS_CMD);
 
@@ -154,7 +146,7 @@ void ADCHS_start(uint32_t conf_num)
   phase = 1;
 }
 
-void ADCHS_stop(uint32_t conf_num)
+void ADCHS_stop(uint8_t conf_num)
 {
   start_stop_adchs_m4(conf_num, STOP_ADCHS_CMD);
 

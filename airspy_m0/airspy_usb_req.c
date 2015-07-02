@@ -64,8 +64,7 @@ typedef struct {
 } set_freq_params_t;
 
 set_freq_params_t set_freq_params;
-uint32_t sample_rate_conf_no;
-uint32_t usb_req_set_sample_rate_cmd;
+uint8_t sample_rate_conf_no;
 
 usb_request_status_t usb_vendor_request(usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage);
 
@@ -785,9 +784,6 @@ usb_request_handler_fn vendor_request_handler[AIRSPY_CMD_MAX+1];
 
 void airspy_usb_req_init(void)
 {
-  /* Init set_samplerate command */
-  usb_req_set_sample_rate_cmd = 0;
-
   /* Init default sample_rate conf */
   sample_rate_conf_no = AIRSPY_SAMPLERATE_DEFAULT_CONF;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2013-2015 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy.
  *
@@ -180,6 +180,25 @@ typedef struct
   /* ADCHS samplerate */
   airspy_sys_samplerate_t airspy_sys_samplerate;
 } airspy_sys_clock_t;
+
+/* Multi Core order (conf/command...) */
+#define SET_SAMPLERATE_CMD  (1)
+#define START_ADCHS_CMD  (1)
+#define STOP_ADCHS_CMD   (2)
+
+typedef struct
+{
+  union
+  {
+    struct
+    {
+      uint8_t cmd; /* Up to 255 commands (0 is reserved) */
+      uint8_t conf; /* Up to 256 configuration (example samplerate ...) */
+      uint16_t spare; /* Spare for alignment and for future use */
+    };
+    uint32_t raw;
+  };
+} airspy_mcore_t;
 
 void delay(uint32_t duration);
 
