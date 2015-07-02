@@ -517,7 +517,7 @@ void dma_isr(void)
   {
     LPC_GPDMA->INTTCCLEAR = ADCHS_DMA_INT_CH; /* Clear Chan0 */
 
-    adchs_dma_buffer_offset_isr_m4 = ((adchs_dma_buffer_offset_isr_m4 + ADCHS_DMA_TRANSFER_SIZE_BYTE) & ADCHS_DATA_BUFFER_SIZE_MASK); 
+    adchs_dma_buffer_offset_isr_m4 = ((adchs_dma_buffer_offset_isr_m4 + ADCHS_DATA_TRANSFER_SIZE_BYTE) & ADCHS_DATA_BUFFER_SIZE_MASK); 
 /*
 #ifdef USE_PACKING
     set_usb_buffer_offset_m4( inc_mask_usb_buffer_offset_m4(get_usb_buffer_offset_m4(), 1) );    
