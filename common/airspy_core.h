@@ -177,8 +177,6 @@ typedef struct
   airspy_pll1_hs_t pll1_hs;
   /* PLL1 Low Speed Mode */
   airspy_pll1_ls_t pll1_ls;
-  /* ADCHS samplerate */
-  airspy_sys_samplerate_t airspy_sys_samplerate;
 } airspy_sys_clock_t;
 
 /* Multi Core order (conf/command...) */
