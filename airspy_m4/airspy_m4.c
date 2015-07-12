@@ -44,32 +44,24 @@
 
 #include "airspy_conf.h"
 
-extern volatile uint32_t *usb_bulk_buffer_offset;
-
 #define DEFAULT_ADCHS_CHAN (0)
 
 #undef DMA_ISR_DEBUG
 //#define DMA_ISR_DEBUG
 
 #define USB_DATA_TRANSFER_SIZE_BYTE (ADCHS_DATA_TRANSFER_SIZE_BYTE)
-#ifdef USE_PACKING
-#define USB_BULK_BUFFER_MASK ((4) - 1)
-#else
 #define USB_BULK_BUFFER_MASK ((32768) - 1)
-#endif
 #define get_usb_buffer_offset() (usb_bulk_buffer_offset[0])
 #define set_usb_buffer_offset(val) (usb_bulk_buffer_offset[0] = val)
 /* Manage round robin after increment with USB_BULK_BUFFER_MASK */
 #define inc_mask_usb_buffer_offset(buff_offset, inc_value) ((buff_offset+inc_value) & USB_BULK_BUFFER_MASK)
 
-#ifdef USE_PACKING
 volatile uint32_t usb_bulk_buffer_offset_uint32_m4;
 volatile uint32_t *usb_bulk_buffer_offset_m4;
+volatile uint32_t last_offset_m4;
 #define get_usb_buffer_offset_m4() (usb_bulk_buffer_offset_m4[0])
 #define set_usb_buffer_offset_m4(val) (usb_bulk_buffer_offset_m4[0] = val)
 #define inc_mask_usb_buffer_offset_m4(buff_offset, inc_value) inc_mask_usb_buffer_offset(buff_offset, inc_value)
-volatile unsigned int phase = 0;
-#endif
 
 #define SLAVE_TXEV_FLAG ((uint32_t *) 0x40043400)
 #define SLAVE_TXEV_QUIT() { *SLAVE_TXEV_FLAG = 0x0; }
@@ -81,11 +73,17 @@ extern uint32_t cm0_data_share; /* defined in linker script */
 volatile int adchs_stopped = 0;
 volatile int adchs_started = 0;
 
+volatile int use_packing = 0;
+
 volatile uint32_t *usb_bulk_buffer_offset = &cm4_data_share;
+volatile uint32_t *usb_bulk_buffer_length = ((&cm4_data_share)+1);
+volatile uint32_t *last_offset_m0 = ((&cm4_data_share)+2);
+
 uint8_t* const usb_bulk_buffer = (uint8_t*)USB_BULK_BUFFER_START;
 
 volatile airspy_mcore_t *start_adchs = (airspy_mcore_t *)(&cm0_data_share);
 volatile airspy_mcore_t *set_samplerate = (airspy_mcore_t *)((&cm0_data_share)+1);
+volatile airspy_mcore_t *set_packing = (airspy_mcore_t *)((&cm0_data_share)+2);
 
 volatile int first_start = 0;
 
@@ -114,7 +112,6 @@ uint32_t data_counter = 0;
   t_stats_adchs stat_adchs = { 0 };
 #endif
 
-#ifdef USE_PACKING
 /*
 __attribute__ ((always_inline)) static void pack(uint16_t* input, uint32_t* output, uint32_t length)
 {
@@ -169,16 +166,20 @@ __attribute__ ((always_inline)) static void pack(uint32_t* input, uint32_t* outp
 				
 }
 
-#endif
-
 static __inline__ void clr_usb_buffer_offset(void)
-{
-#ifdef USE_PACKING 
-  usb_bulk_buffer_offset[0] = 3; 
-  usb_bulk_buffer_offset_m4[0] = 3;
-#else
-  usb_bulk_buffer_offset[0] = 0;
-#endif
+{  
+  if(use_packing)
+  {
+    usb_bulk_buffer_offset[0] = ADCHS_DATA_TRANSFER_SIZE_BYTE / 2;
+    usb_bulk_buffer_offset_m4[0] = ADCHS_DATA_TRANSFER_SIZE_BYTE;    
+  }
+  else
+  {
+    usb_bulk_buffer_offset[0] = ADCHS_DATA_TRANSFER_SIZE_BYTE;
+  }
+  
+  last_offset_m4 = 0;
+  *last_offset_m0 = 0;
 }
 
 static __inline__ uint32_t get_start_stop_adchs(void)
@@ -202,6 +203,31 @@ static __inline__ uint8_t get_samplerate(uint8_t *conf_number)
 static __inline__ void ack_samplerate(void)
 {
   set_samplerate->raw = 0;
+}
+
+static __inline__ uint8_t get_packing(uint8_t *packing_state)
+{
+  *packing_state = set_packing->conf;
+  return(set_packing->cmd);
+}
+
+static __inline__ void ack_packing(void)
+{
+  set_packing->raw = 0;
+}
+
+void set_packing_state(uint8_t state)
+{
+  if(state == 0)
+  {
+    use_packing = 0;
+	*usb_bulk_buffer_length = 0x4000;
+  }
+  else
+  {
+    use_packing = 1;
+	*usb_bulk_buffer_length = 0x1800;
+  }
 }
 
 void adchs_start(uint8_t chan_num)
@@ -229,16 +255,12 @@ void adchs_start(uint8_t chan_num)
 
   ADCHS_init();
   ADCHS_desc_init(chan_num);
-  ADCHS_DMA_init((uint32_t)ADCHS_DATA_BUFFER);
+  ADCHS_DMA_init((uint32_t)ADCHS_DATA_BUFFER, use_packing);
 
   led_on();
   LPC_ADCHS->TRIGGER = 1;
   __asm("dsb");
   
-#ifdef USE_PACKING
-  phase = 1;
-#endif
-
   /* Enable IRQ globally */
   __asm__("cpsie i");
 }
@@ -308,12 +330,15 @@ void dma_isr(void)
   {
     LPC_GPDMA->INTTCCLEAR |= INTTC0; /* Clear Chan0 */
 
-#ifdef USE_PACKING
-    set_usb_buffer_offset_m4( inc_mask_usb_buffer_offset_m4(get_usb_buffer_offset_m4(), 1) );    
-#else
-    set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), USB_DATA_TRANSFER_SIZE_BYTE) );
-    signal_sev();
-#endif
+	if(use_packing)
+	{
+      set_usb_buffer_offset_m4( inc_mask_usb_buffer_offset_m4(get_usb_buffer_offset_m4(), 8192));    
+	}
+	else
+	{
+      set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), USB_DATA_TRANSFER_SIZE_BYTE) );
+      signal_sev();
+	}
   }
 
 #ifdef DMA_ISR_DEBUG
@@ -329,6 +354,8 @@ void m0core_isr(void)
   uint8_t adchs_conf;
   uint8_t adchs_start_stop_cmd;
   uint8_t samplerate_cmd;
+  uint8_t packing_cmd;
+  uint8_t packing_state;
 
   SLAVE_TXEV_QUIT();
 
@@ -337,6 +364,13 @@ void m0core_isr(void)
   {
     sys_clock_samplerate(&airspy_m4_conf[adchs_conf]);
     ack_samplerate();
+  }
+  
+  packing_cmd = get_packing(&packing_state);
+  if(packing_cmd == SET_PACKING_CMD)
+  {
+	set_packing_state(packing_state);
+	ack_packing();
   }
 
   adchs_start_stop_cmd = get_start_stop_adchs();
@@ -426,9 +460,13 @@ int main(void)
   adchs_stop();
   adchs_stopped = 1;
   adchs_started = 0;
+  
+  use_packing = 0;
+  *usb_bulk_buffer_length = 0x4000;
 
   ack_start_stop_adchs();
   ack_samplerate();
+  ack_packing();
 
   /* Start M0 */
   m0_startup();
@@ -444,61 +482,23 @@ int main(void)
   CCU1_CLK_PERIPH_CORE_CFG &= ~(1);
 #endif
 
-#ifdef USE_PACKING
   usb_bulk_buffer_offset_m4 = &usb_bulk_buffer_offset_uint32_m4;
-#endif
-
+  
   while(true)
   {
     signal_wfe();
   
-#ifdef USE_PACKING
-  /* Thanks to Pierre HB9FUF for the initial packing proof-of-concept */
-  /* The following expands the PoC to use 4 buffers with an improved packing routine above */
-  switch(get_usb_buffer_offset_m4())
-  {
-  case 0:
-    if(phase == 0)
+    if(use_packing)
     {
-      pack((uint32_t*) &usb_bulk_buffer[0x0000], (uint32_t*) &usb_bulk_buffer[0x0000], 0x1000);
-    
-      set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), 1) );    
-      signal_sev();
-      phase = 1;
-    }
-    break;
-  case 1:
-    if(phase == 1)
-    {
-      pack((uint32_t*) &usb_bulk_buffer[0x2000], (uint32_t*) &usb_bulk_buffer[0x2000], 0x1000);
-    
-      set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), 1) );    
-      signal_sev();
-      phase = 2;
-    }
-    break;
-  case 2:
-    if(phase == 2)
-    {
-      pack((uint32_t*) &usb_bulk_buffer[0x4000], (uint32_t*) &usb_bulk_buffer[0x4000], 0x1000);
-    
-      set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), 1) );    
-      signal_sev();
-      phase = 3;
-    }
-    break;
-  case 3:
-    if(phase == 3)
-    {
-      pack((uint32_t*) &usb_bulk_buffer[0x6000], (uint32_t*) &usb_bulk_buffer[0x6000], 0x1000);
-    
-      set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), 1) );    
-      signal_sev();
-      phase = 0;
-    }
-    break;
-  }
-#endif  
-
+     /* Thanks to Pierre HB9FUF for the initial packing proof-of-concept */    
+	  uint32_t offset = get_usb_buffer_offset_m4();
+	  if(offset != last_offset_m4)
+	  {	    
+		pack((uint32_t*)&usb_bulk_buffer[offset], (uint32_t*)&usb_bulk_buffer[offset], 0x1000);
+		set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), 0x2000));    
+		signal_sev();
+		last_offset_m4 = offset;
+	  }
+	}	
   }  
 }

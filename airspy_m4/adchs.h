@@ -31,7 +31,7 @@ extern "C"
 
 void ADCHS_deinit(void);
 void ADCHS_init(void);
-void ADCHS_DMA_init(uint32_t dest_addr);
+void ADCHS_DMA_init(uint32_t dest_addr, uint8_t packed);
 void ADCHS_desc_init(uint8_t chan_num);
 void ADCHS_stop(uint8_t conf_num);
 

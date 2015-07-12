@@ -28,5 +28,6 @@ void ADCHS_start(uint8_t conf_num);
 void ADCHS_stop(uint8_t conf_num);
 
 void set_samplerate_m4(uint8_t conf_num);
+void set_packing_m4(uint8_t state);
 
 #endif//__AIRSPY_M0_H__
