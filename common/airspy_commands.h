@@ -36,7 +36,7 @@ typedef enum
 } receiver_mode_t;
 
 // Commands (usb vendor request) shared between Firmware and Host.
-#define AIRSPY_CMD_MAX (27)
+#define AIRSPY_CMD_MAX (26)
 typedef enum
 {
 	AIRSPY_INVALID                    = 0 ,
@@ -64,8 +64,7 @@ typedef enum
 	AIRSPY_GPIO_READ                  = 22,
 	AIRSPY_GPIODIR_WRITE              = 23,
 	AIRSPY_GPIODIR_READ               = 24,
-	AIRSPY_GET_SAMPLERATES            = 25,
-	AIRSPY_GET_PACKING				  = 26,
+	AIRSPY_GET_SAMPLERATES            = 25,	
 	AIRSPY_SET_PACKING                = AIRSPY_CMD_MAX
 } airspy_vendor_request;
 

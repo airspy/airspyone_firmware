@@ -44,9 +44,6 @@ extern "C"
 
 #define AIRSPY_CONF_NB (2) /* Up to 256 maximum */
 
-/* 0=No Packing, 1=Packing Supported */
-#define AIRSPY_PACKING (1) 
-
 
 /* For each configuration the index corresponds to uint32_t */
 typedef struct
