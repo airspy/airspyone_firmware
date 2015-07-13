@@ -205,9 +205,19 @@ int main(void)
 
   usb_run(&usb_device);
 
+#ifdef PERF_DEBUG
+  GPIO_DIR(PORT_EN_M0_ACTIVE) |= PIN_EN_M0_ACTIVE; // Set M0_ACTIVE pin as output.
+  while(true)
+  {
+    GPIO_CLR(PORT_EN_M0_ACTIVE) = PIN_EN_M0_ACTIVE; // Clear M0_ACTIVE pin low before we go to sleep
+    signal_wfe();
+    GPIO_SET(PORT_EN_M0_ACTIVE) = PIN_EN_M0_ACTIVE; // Set M0_ACTIVE pin high as we awake
+#else
   while(true)
   {
     signal_wfe();
+#endif
+
 #ifdef USE_PACKING
 	switch(get_usb_buffer_offset())
 	{

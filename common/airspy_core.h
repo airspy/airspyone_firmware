@@ -53,6 +53,12 @@ extern "C"
 #define PIN_EN_BIAST    (BIT13) /* GPIO1[13] on P2_13 */
 #define PORT_EN_BIAST   (GPIO1)
 
+#define PIN_EN_M4_ACTIVE  (BIT2) /* GPIO0[2] on P1_15 */
+#define PORT_EN_M4_ACTIVE (GPIO0)
+
+#define PIN_EN_M0_ACTIVE  (BIT9) /* GPIO1[9] on P1_6 */
+#define PORT_EN_M0_ACTIVE (GPIO1)
+
 /* GPIO Input PinMux */
 #define SCU_PINMUX_BOOT0    (P1_1)  /* GPIO0[8] on P1_1 */
 #define SCU_PINMUX_BOOT1    (P1_2)  /* GPIO0[9] on P1_2 */
