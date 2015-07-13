@@ -58,11 +58,15 @@ extern uint32_t cm0_data_share; /* defined in linker script */
 volatile unsigned int phase = 0;
 
 volatile uint32_t *usb_bulk_buffer_offset = (&cm4_data_share);
+volatile uint32_t *usb_bulk_buffer_length = ((&cm4_data_share)+1);
+volatile uint32_t *last_offset_m0 = ((&cm4_data_share)+2);
 
 volatile airspy_mcore_t *start_adchs = (airspy_mcore_t *)(&cm0_data_share);
 volatile airspy_mcore_t *set_samplerate = (airspy_mcore_t *)((&cm0_data_share)+1);
+volatile airspy_mcore_t *set_packing = (airspy_mcore_t *)((&cm0_data_share)+2);
 
 #define get_usb_buffer_offset() (usb_bulk_buffer_offset[0])
+#define get_usb_buffer_length() (usb_bulk_buffer_length[0])
 
 #define MASTER_TXEV_FLAG  ((uint32_t *) 0x40043130)
 #define MASTER_TXEV_QUIT()  { *MASTER_TXEV_FLAG = 0x0; }
@@ -112,6 +116,20 @@ void set_samplerate_m4(uint8_t conf_num)
   while(1)
   {
     if(set_samplerate->raw == 0)
+      break;
+  }
+}
+
+void set_packing_m4(uint8_t state)
+{
+  set_packing->conf = state;
+  set_packing->cmd = SET_PACKING_CMD;
+  
+  signal_sev();
+  
+  while(1)
+  {
+    if(set_packing->raw == 0)
       break;
   }
 }
@@ -176,9 +194,9 @@ int main(void)
 
   usb_set_configuration_changed_cb(usb_configuration_changed);
   usb_peripheral_reset();
-  
+
   usb_device_init(0, &usb_device);
-  
+
   usb_queue_init(&usb_endpoint_control_out_queue);
   usb_queue_init(&usb_endpoint_control_in_queue);
   usb_queue_init(&usb_endpoint_bulk_out_queue);
@@ -191,7 +209,7 @@ int main(void)
   iap_cmd_res.cmd_param.command_code = IAP_CMD_READ_SERIAL_NO;
   iap_cmd_call(&iap_cmd_res);
   if(iap_cmd_res.status_res.status_ret == CMD_SUCCESS)
-  { 
+  {
     /* Only retrieve 2 last 32bits for Serial Number */
     serial_number.sn_32b[0] = iap_cmd_res.status_res.iap_result[2];
     serial_number.sn_32b[1] = iap_cmd_res.status_res.iap_result[3];
@@ -208,52 +226,14 @@ int main(void)
   while(true)
   {
     signal_wfe();
-#ifdef USE_PACKING
-	switch(get_usb_buffer_offset())
-	{
-	case 0:
-		if(phase == 0)
-		{
-			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x0000], 0x1800);
-			phase = 1;
-		}
-		break;
-	case 1:
-		if(phase == 1)
-		{
-			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x2000], 0x1800);
-			phase = 2;
-		}
-		break;
-	case 2:
-		if(phase == 2)
-		{
-			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x4000], 0x1800);
-			phase = 3;
-		}
-		break;
-	case 3:
-		if(phase == 3)
-		{
-			usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x6000], 0x1800);
-			phase = 0;
-		}
-		break;
-	}
-#else
-    if( (get_usb_buffer_offset() >= 16384) && 
-        (phase == 1) )
-    {
-      usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x0000], 0x4000);
-      phase = 0;
-    }
 
-    if( (get_usb_buffer_offset() < 16384) && 
-        (phase == 0) )
+    uint32_t offset = get_usb_buffer_offset();
+    uint32_t length = get_usb_buffer_length();
+
+    if(offset != *last_offset_m0)
     {
-      usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[0x4000], 0x4000);
-      phase = 1;  
+      usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[offset], length);
+      *last_offset_m0 = offset;
     }
-#endif	
   }
 }

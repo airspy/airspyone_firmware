@@ -392,6 +392,45 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
   return USB_REQUEST_STATUS_OK;
 }
 
+usb_request_status_t usb_vendor_request_set_packing_command(
+usb_endpoint_t* const endpoint,
+const usb_transfer_stage_t stage) 
+{
+  receiver_mode_t rx_mode;
+  uint8_t state;
+
+  if( stage == USB_TRANSFER_STAGE_SETUP )
+  {
+    if(endpoint->setup.index > (AIRSPY_CONF_NB-1))
+    {
+        return USB_REQUEST_STATUS_STALL;
+    }else
+    {
+      state = endpoint->setup.index;
+    }
+
+    rx_mode = get_receiver_mode();
+    if(rx_mode == RECEIVER_MODE_RX)
+    {
+      ADCHS_stop(sample_rate_conf_no);
+    }
+
+    set_packing_m4(state);
+
+    if(rx_mode == RECEIVER_MODE_RX)
+    {
+      ADCHS_start(sample_rate_conf_no);
+    }
+
+    endpoint->buffer[0] = 1;
+    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
+    usb_transfer_schedule_ack(endpoint->out);
+    return USB_REQUEST_STATUS_OK;
+  }
+  return USB_REQUEST_STATUS_OK;
+}
+
+
 usb_request_status_t usb_vendor_request_set_samplerate(
 usb_endpoint_t* const endpoint,
 const usb_transfer_stage_t stage) 
@@ -768,17 +807,6 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
   }
 }
 
-usb_request_status_t usb_vendor_request_get_packing_command(
-usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
-{
-  if (stage == USB_TRANSFER_STAGE_SETUP) {
-    endpoint->buffer[0] = AIRSPY_PACKING;
-    usb_transfer_schedule_block(endpoint->in, &endpoint->buffer, 1);
-    usb_transfer_schedule_ack(endpoint->out);
-  }
-  return USB_REQUEST_STATUS_OK;
-}
-
 /* ID 1 to X corresponds to user endpoint->setup.request */
 usb_request_handler_fn vendor_request_handler[AIRSPY_CMD_MAX+1];
 
@@ -831,7 +859,7 @@ void airspy_usb_req_init(void)
   vendor_request_handler[AIRSPY_GPIODIR_READ] = usb_vendor_request_gpiodir_read_command;
 
   vendor_request_handler[AIRSPY_GET_SAMPLERATES] = usb_vendor_request_get_samplerates_command;
-  vendor_request_handler[AIRSPY_GET_PACKING] = usb_vendor_request_get_packing_command;
+  vendor_request_handler[AIRSPY_SET_PACKING] = usb_vendor_request_set_packing_command;
 }
 
 usb_request_status_t usb_vendor_request(usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
