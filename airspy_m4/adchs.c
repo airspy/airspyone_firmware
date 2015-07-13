@@ -102,10 +102,10 @@ void ADCHS_DMA_init(uint32_t dest_addr, uint8_t packed)
 
   if(packed)
   {
-	for(i=0; i<ADCHS_DMA_NUM_LLI; i++)
-	{
-		adchs_dma_lli[i].control |= (0x1UL << 31);
-	}
+    for(i=0; i<ADCHS_DMA_NUM_LLI; i++)
+    {
+      adchs_dma_lli[i].control |= (0x1UL << 31);
+    }
   }
   else
   {

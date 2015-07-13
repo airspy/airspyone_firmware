@@ -130,7 +130,7 @@ void set_packing_m4(uint8_t state)
   while(1)
   {
     if(set_packing->raw == 0)
-	  break;
+      break;
   }
 }
 
@@ -194,9 +194,9 @@ int main(void)
 
   usb_set_configuration_changed_cb(usb_configuration_changed);
   usb_peripheral_reset();
-  
+
   usb_device_init(0, &usb_device);
-  
+
   usb_queue_init(&usb_endpoint_control_out_queue);
   usb_queue_init(&usb_endpoint_control_in_queue);
   usb_queue_init(&usb_endpoint_bulk_out_queue);
@@ -209,7 +209,7 @@ int main(void)
   iap_cmd_res.cmd_param.command_code = IAP_CMD_READ_SERIAL_NO;
   iap_cmd_call(&iap_cmd_res);
   if(iap_cmd_res.status_res.status_ret == CMD_SUCCESS)
-  { 
+  {
     /* Only retrieve 2 last 32bits for Serial Number */
     serial_number.sn_32b[0] = iap_cmd_res.status_res.iap_result[2];
     serial_number.sn_32b[1] = iap_cmd_res.status_res.iap_result[3];
@@ -222,18 +222,18 @@ int main(void)
   nvic_enable_irq(NVIC_M4CORE_IRQ);
 
   usb_run(&usb_device);
-  
+
   while(true)
   {
     signal_wfe();
-	
-	uint32_t offset = get_usb_buffer_offset();
-	uint32_t length = get_usb_buffer_length();
-	
-	if(offset != *last_offset_m0)
-	{
-		usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[offset], length);
-		*last_offset_m0 = offset;
-	}
-  }	
+
+    uint32_t offset = get_usb_buffer_offset();
+    uint32_t length = get_usb_buffer_length();
+
+    if(offset != *last_offset_m0)
+    {
+      usb_transfer_schedule_block(&usb_endpoint_bulk_in, &usb_bulk_buffer[offset], length);
+      *last_offset_m0 = offset;
+    }
+  }
 }

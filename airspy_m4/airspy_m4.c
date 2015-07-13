@@ -134,36 +134,36 @@ __attribute__ ((always_inline)) static void pack(uint16_t* input, uint32_t* outp
 
 __attribute__ ((always_inline)) static void pack(uint32_t* input, uint32_t* output, uint32_t length)
 {
-	register uint32_t *a0 asm("r0") = input;
-	register uint32_t *a1 asm("r1") = output;
-	register uint32_t a2 asm("r2") = length;
-	
-	asm volatile("1:\n\t"
-				 "ldm.w %0!, {r4, r5, r6, r7}\n\t"
-				 
-				 "lsr	r8, r4, #16\n\t"
-				 "ubfx	r3, r5, #4, #12\n\t"
-				 "orr	r8, r3, r8, lsl #8\n\t"
-				 "orr	r8, r8, r4, lsl #20\n\t"
-				 "lsrs	r3, r5, #16\n\t"
-				 "lsls	r5, r5, #28\n\t"
-				 "orr	r5, r5, r3, lsl #16\n\t"
-				 "orr	r5, r5, r6, lsr #24\n\t"
-				 "uxth	r9, r6\n\t"
-				 "orr	r9, r5, r9, lsl #4\n\t"
-				 "lsrs	r6, r6, #16\n\t"
-				 "uxth	r10, r7\n\t"
-				 "lsl	r10, r10, #12\n\t"
-				 "orr	r10, r10, r6, lsl #24\n\t"	
-				 "orr	r10, r10, r7, lsr #16\n\t"
-		
-				 "stm.w %1!, {r8, r9, r10}\n\t"
+  register uint32_t *a0 asm("r0") = input;
+  register uint32_t *a1 asm("r1") = output;
+  register uint32_t a2 asm("r2") = length;
 
-				 "subs	%2, %2, #8\n\t"
-				 "bne 1b\n\t"
-				: "+r"(a0), "+r"(a1), "+r"(a2)
-				:: "memory", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10");	
-				
+  asm volatile("1:\n\t"
+         "ldm.w %0!, {r4, r5, r6, r7}\n\t"
+         
+         "lsr	r8, r4, #16\n\t"
+         "ubfx	r3, r5, #4, #12\n\t"
+         "orr	r8, r3, r8, lsl #8\n\t"
+         "orr	r8, r8, r4, lsl #20\n\t"
+         "lsrs	r3, r5, #16\n\t"
+         "lsls	r5, r5, #28\n\t"
+         "orr	r5, r5, r3, lsl #16\n\t"
+         "orr	r5, r5, r6, lsr #24\n\t"
+         "uxth	r9, r6\n\t"
+         "orr	r9, r5, r9, lsl #4\n\t"
+         "lsrs	r6, r6, #16\n\t"
+         "uxth	r10, r7\n\t"
+         "lsl	r10, r10, #12\n\t"
+         "orr	r10, r10, r6, lsl #24\n\t"	
+         "orr	r10, r10, r7, lsr #16\n\t"
+
+         "stm.w %1!, {r8, r9, r10}\n\t"
+
+         "subs	%2, %2, #8\n\t"
+         "bne 1b\n\t"
+        : "+r"(a0), "+r"(a1), "+r"(a2)
+        :: "memory", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10");
+        
 }
 
 static __inline__ void clr_usb_buffer_offset(void)
@@ -171,7 +171,7 @@ static __inline__ void clr_usb_buffer_offset(void)
   if(use_packing)
   {
     usb_bulk_buffer_offset[0] = ADCHS_DATA_TRANSFER_SIZE_BYTE / 2;
-    usb_bulk_buffer_offset_m4[0] = ADCHS_DATA_TRANSFER_SIZE_BYTE;    
+    usb_bulk_buffer_offset_m4[0] = ADCHS_DATA_TRANSFER_SIZE_BYTE;
   }
   else
   {
@@ -330,15 +330,15 @@ void dma_isr(void)
   {
     LPC_GPDMA->INTTCCLEAR |= INTTC0; /* Clear Chan0 */
 
-	if(use_packing)
-	{
-      set_usb_buffer_offset_m4( inc_mask_usb_buffer_offset_m4(get_usb_buffer_offset_m4(), 8192));    
-	}
-	else
-	{
-      set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), USB_DATA_TRANSFER_SIZE_BYTE) );
-      signal_sev();
-	}
+    if(use_packing)
+    {
+        set_usb_buffer_offset_m4( inc_mask_usb_buffer_offset_m4(get_usb_buffer_offset_m4(), 8192));    
+    }
+    else
+    {
+        set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), USB_DATA_TRANSFER_SIZE_BYTE) );
+        signal_sev();
+    }
   }
 
 #ifdef DMA_ISR_DEBUG
@@ -369,8 +369,8 @@ void m0core_isr(void)
   packing_cmd = get_packing(&packing_state);
   if(packing_cmd == SET_PACKING_CMD)
   {
-	set_packing_state(packing_state);
-	ack_packing();
+    set_packing_state(packing_state);
+    ack_packing();
   }
 
   adchs_start_stop_cmd = get_start_stop_adchs();
@@ -490,15 +490,15 @@ int main(void)
   
     if(use_packing)
     {
-     /* Thanks to Pierre HB9FUF for the initial packing proof-of-concept */    
-	  uint32_t offset = get_usb_buffer_offset_m4();
-	  if(offset != last_offset_m4)
-	  {	    
-		pack((uint32_t*)&usb_bulk_buffer[offset], (uint32_t*)&usb_bulk_buffer[offset], 0x1000);
-		set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), 0x2000));    
-		signal_sev();
-		last_offset_m4 = offset;
-	  }
-	}	
-  }  
+      /* Thanks to Pierre HB9FUF for the initial packing proof-of-concept */    
+      uint32_t offset = get_usb_buffer_offset_m4();
+      if(offset != last_offset_m4)
+      {
+        pack((uint32_t*)&usb_bulk_buffer[offset], (uint32_t*)&usb_bulk_buffer[offset], 0x1000);
+        set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), 0x2000));    
+        signal_sev();
+        last_offset_m4 = offset;
+      }
+    }
+  }
 }
