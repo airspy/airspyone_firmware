@@ -74,7 +74,7 @@ volatile airspy_mcore_t *set_packing = (airspy_mcore_t *)((&cm0_data_share)+2);
 uint8_t* const usb_bulk_buffer = (uint8_t*)0x20004000;
 
 uint8_t spiflash_buffer[W25Q80BV_PAGE_LEN];
-char version_string[] = VERSION_STRING " " AIRSPY_FW_GIT_TAG " " AIRSPY_FW_BUILD_DATE;
+char version_string[] = VERSION_STRING " " AIRSPY_FW_GIT_TAG " " AIRSPY_FW_CHECKIN_DATE;
 uint8_t version_string_strlen = sizeof(version_string);
 
 typedef struct {
