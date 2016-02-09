@@ -49,7 +49,6 @@
 #include "airspy_commands.h"
 #include "airspy_rx.h"
 #include "r820t.h"
-#include "r820t_conf.h"
 #include "airspy_m0.hdr"
 
 extern uint32_t cm4_data_share; /* defined in linker script */
@@ -73,9 +72,7 @@ volatile airspy_mcore_t *set_packing = (airspy_mcore_t *)((&cm0_data_share)+2);
 
 uint8_t* const usb_bulk_buffer = (uint8_t*)0x20004000;
 
-uint8_t spiflash_buffer[W25Q80BV_PAGE_LEN];
-char version_string[] = VERSION_STRING " " AIRSPY_FW_GIT_TAG " " AIRSPY_FW_CHECKIN_DATE;
-uint8_t version_string_strlen = sizeof(version_string);
+const char version_string[] = " " AIRSPY_FW_GIT_TAG " " AIRSPY_FW_CHECKIN_DATE;
 
 typedef struct {
   uint32_t freq_hz;
@@ -152,27 +149,26 @@ void ADCHS_start(uint8_t conf_num)
 {
   start_stop_adchs_m4(conf_num, START_ADCHS_CMD);
 
-  enable_r820t_power();
+  //enable_r820t_power();
 
   /* Re-Init I2C0 & I2C1 after PLL1 frequency is modified (for I2C1 also because PowerOn on R820T) */
-  i2c0_init(AIRSPY_I2C0_PLL1_LS_HS_CONF_VAL); /* Si5351C I2C peripheral */
-  i2c1_init(AIRSPY_I2C1_PLL1_HS_CONF_VAL); /* R820T I2C peripheral */
+  i2c0_init(airspy_conf->i2c_conf.i2c0_pll1_ls_hs_conf_val); /* Si5351C I2C peripheral */
+  i2c1_init(airspy_conf->i2c_conf.i2c1_pll1_hs_conf_val); /* R820T I2C peripheral */
 
-  r820t_init(&r820t_conf_rw, airspy_m0_conf[conf_num].r820t_if_freq);
-  r820t_set_if_bandwidth(&r820t_conf_rw, airspy_m0_conf[conf_num].r820t_if_bw);
+  r820t_init(&airspy_conf->r820t_conf_rw, airspy_conf->airspy_m0_m4_conf[conf_num].airspy_m0_conf.r820t_if_freq);
+  r820t_set_if_bandwidth(&airspy_conf->r820t_conf_rw, airspy_conf->airspy_m0_m4_conf[conf_num].airspy_m0_conf.r820t_if_bw);
 
   phase = 1;
 }
 
 void ADCHS_stop(uint8_t conf_num)
 {
+  r820t_standby();
   start_stop_adchs_m4(conf_num, STOP_ADCHS_CMD);
 
   /* Re-Init I2C0 & I2C1 after PLL1 frequency is modified */
-  i2c0_init(AIRSPY_I2C0_PLL1_LS_HS_CONF_VAL); /* Si5351C I2C peripheral */
-  i2c1_init(AIRSPY_I2C1_PLL1_LS_CONF_VAL); /* R820T I2C peripheral */
-
-  disable_r820t_power();
+  i2c0_init(airspy_conf->i2c_conf.i2c0_pll1_ls_hs_conf_val); /* Si5351C I2C peripheral */
+  i2c1_init(airspy_conf->i2c_conf.i2c1_pll1_ls_conf_val); /* R820T I2C peripheral */
 }
 
 /***************************/

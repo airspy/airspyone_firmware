@@ -1,7 +1,7 @@
 /*
  * Copyright 2012 Michael Ossmann <mike@ossmann.com>
  * Copyright 2012 Jared Boone <jared@sharebrained.com>
- * Copyright 2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2014-2016 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy (based on HackRF project).
  *
@@ -31,6 +31,7 @@ extern "C"
 
 #include <stdint.h>
 #include "airspy_core.h"
+#include "airspy_conf.h"
 
 #define SI5351C_I2C_ADDR (0x60 << 1)
 
@@ -38,10 +39,10 @@ extern "C"
 
 #define SI5351C_REG0_CLKIN_LOS (1<<4)
 
-void si5351c_airspy_config(int si5351c_config_num);
+void si5351c_airspy_config(const si5351c_conf_t* const pt_si5351c_conf);
 
 void si5351c_disable_all_outputs(void);
-void si5351c_disable_oeb_pin_control(void);
+bool si5351c_disable_oeb_pin_control(void);
 void si5351c_power_down_all_clocks(void);
 void si5351c_enable_clock_outputs(void);
 

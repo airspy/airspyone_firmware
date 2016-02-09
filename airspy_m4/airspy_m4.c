@@ -1,5 +1,5 @@
 /*
- * Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
  * Copyright 2015 Ian Gilmour <ian@sdrsharp.com>
  *
  * This file is part of AirSpy.
@@ -221,12 +221,12 @@ void set_packing_state(uint8_t state)
   if(state == 0)
   {
     use_packing = 0;
-	*usb_bulk_buffer_length = 0x4000;
+    *usb_bulk_buffer_length = 0x4000;
   }
   else
   {
     use_packing = 1;
-	*usb_bulk_buffer_length = 0x1800;
+    *usb_bulk_buffer_length = 0x1800;
   }
 }
 
@@ -238,10 +238,9 @@ void adchs_start(uint8_t chan_num)
   /* Disable IRQ globally */
   __asm__("cpsid i");
 
-//  cpu_clock_pll1_high_speed(&airspy_m4_init_conf.pll1_hs);
   if(first_start == 0)
   {
-    cpu_clock_pll1_high_speed(&airspy_m4_init_conf.pll1_hs);
+    cpu_clock_pll1_high_speed(&airspy_conf->airspy_m4_init_conf.pll1_hs);
     first_start = 1;
   }
 
@@ -272,7 +271,7 @@ void adchs_stop(void)
 
   ADCHS_deinit();
 
-//  cpu_clock_pll1_low_speed(&airspy_m4_init_conf.pll1_ls);
+//  cpu_clock_pll1_low_speed(&airspy_conf->airspy_m4_init_conf.pll1_ls);
 
   led_off();
 
@@ -362,7 +361,7 @@ void m0core_isr(void)
   samplerate_cmd = get_samplerate(&adchs_conf);
   if(samplerate_cmd == SET_SAMPLERATE_CMD)
   {
-    sys_clock_samplerate(&airspy_m4_conf[adchs_conf]);
+    sys_clock_samplerate(&airspy_conf->airspy_m0_m4_conf[adchs_conf].airspy_m4_conf);
     ack_samplerate();
   }
   
@@ -446,8 +445,7 @@ int main(void)
 {
   scs_dwt_cycle_counter_enabled();
   pin_setup();
-
-  sys_clock_init(&airspy_m4_init_conf);
+  sys_clock_init();
 
   nvic_set_priority(NVIC_DMA_IRQ, 255);
   nvic_set_priority(NVIC_M0CORE_IRQ, 1);

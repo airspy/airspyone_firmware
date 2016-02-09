@@ -1,6 +1,6 @@
 /*
  * Copyright 2012 Jared Boone <jared@sharebrained.com>
- * Copyright 2013 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy (based on HackRF project).
  *
@@ -40,15 +40,15 @@ __attribute__((naked))
 void hard_fault_handler(void)
 {
 #if defined(__ARM_ARCH_6M__)
-	__asm__("MOVS R4, #4");
-	__asm__("MOV  R5, LR");
-	__asm__("TST R4, R5");
-	__asm__("BEQ _MSP");
-	__asm__("MRS R0, PSP");
-	__asm__("B hard_fault_handler_c");
-	__asm__("_MSP:");
-	__asm__("MRS R0, MSP");
-	__asm__("B hard_fault_handler_c");
+  __asm__("MOVS R4, #4");
+  __asm__("MOV  R5, LR");
+  __asm__("TST R4, R5");
+  __asm__("BEQ _MSP");
+  __asm__("MRS R0, PSP");
+  __asm__("B hard_fault_handler_c");
+  __asm__("_MSP:");
+  __asm__("MRS R0, MSP");
+  __asm__("B hard_fault_handler_c");
 #elif defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
   __asm__("TST LR, #4");
   __asm__("ITE EQ");
@@ -70,12 +70,12 @@ __attribute__((used)) void hard_fault_handler_c(uint32_t* args)
   /*
   // args[0-7]: r0, r1, r2, r3, r12, lr, pc, psr
   // Other interesting registers to examine (see SCB data structure):
-	//	CFSR: Configurable Fault Status Register
-	//	HFSR: Hard Fault Status Register
-	//	DFSR: Debug Fault Status Register
-	//	AFSR: Auxiliary Fault Status Register
-	//	MMAR: MemManage Fault Address Register
-	//	BFAR: Bus Fault Address Register
+  // CFSR: Configurable Fault Status Register
+  // HFSR: Hard Fault Status Register
+  // DFSR: Debug Fault Status Register
+  // AFSR: Auxiliary Fault Status Register
+  // MMAR: MemManage Fault Address Register
+  // BFAR: Bus Fault Address Register
 
   if( SCB->HFSR & SCB_HFSR_FORCED ) {
     if( SCB->CFSR & SCB_CFSR_BFSR_BFARVALID ) {

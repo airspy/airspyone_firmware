@@ -1,7 +1,7 @@
 /*
  * Copyright 2012 Michael Ossmann <mike@ossmann.com>
  * Copyright 2012 Jared Boone <jared@sharebrained.com>
- * Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
  * Copyright 2015 Ian Gilmour <ian@sdrsharp.com>
  *
  * This file is part of AirSpy (based on HackRF project).
@@ -34,8 +34,15 @@
 #include <libopencm3/lpc43xx/ssp.h>
 #include <libopencm3/lpc43xx/rgu.h>
 
+#define ROMFLASH_BASE_ADDR (0x80000000)
+
 #define WAIT_CPU_CLOCK_INIT_DELAY (10000)  /* Wait about 150us@200Mhz, 300us@96MHz & 2400us@12Mhz (about 3cycles*20000) */
 #define WAIT_R820T_POWER_ON_DELAY (100000) /* Wait about 1500us@200Mhz, 3000us@96MHz & 24000us@12Mhz (about 3cycles*100000) */
+
+extern airspy_conf_t airspy_mini_conf;
+extern airspy_conf_t airspy_nos_conf;
+
+airspy_conf_t* airspy_conf = (airspy_conf_t*)AIRSPY_CONF_SRAM_ADDR;
 
 uint8_t si5351c_read[4] = { 0 };
 
@@ -330,8 +337,15 @@ Configure PLL1 to min speed (48MHz) => see cpu_clock_pll1_low_speed() .
 Configure PLL0USB @480MHz for USB0.
 Note: PLL1 clock is used by M4/M0 core, Peripheral, APB1, APB3.
 */
-void sys_clock_init(const airspy_sys_clock_t* const pt_airspy_sys_conf)
+void sys_clock_init(void) 
 {
+  const airspy_sys_clock_t* pt_airspy_sys_conf;
+  unsigned char* src;
+  unsigned char* dest;
+  uint32_t addr;
+  uint16_t sizeof_struct_u16;
+  uint16_t nb_struct_u16;
+  
   /* After boot the CPU runs at 96 MHz */
   /* cpu runs from: IRC (12MHz) >> PLL M = 24, FCCO @ 288 MHz direct mode >> IDIVC = 4 >> 96 MHz */
 
@@ -382,32 +396,82 @@ void sys_clock_init(const airspy_sys_clock_t* const pt_airspy_sys_conf)
   /* Configure I2C0 (for SI5351C) to about 375kHz (12MHz/(2*16)=0.375MHz) when we switch over to APB1 clock = 12MHz */
   i2c0_init(16);
 
-  si5351c_disable_oeb_pin_control();
+  if (si5351c_disable_oeb_pin_control() == true)
+  {
+    /* SI5351C detected continue init using AirSpy NOS configuration */
+    addr = (uint32_t)&airspy_nos_conf;
+    addr = (addr | ROMFLASH_BASE_ADDR); /* Fix with Addr from ROMFLASH */
+    src = (unsigned char *)addr;
+    /* Copy the configuration from Flash to SRAM */
+    for (dest = (unsigned char *)airspy_conf; (uint32_t)dest < (((uint32_t)airspy_conf) + AIRSPY_CONF_MAX_DATA_SIZE); )
+    {
+      *dest++ = *src++;
+    }
+  }else
+  {
+    /* SI5351C not detected continue init using AirSpy MINI configuration */
+    addr = (uint32_t)&airspy_mini_conf;
+    addr = (addr | ROMFLASH_BASE_ADDR); /* Fix with Addr from ROMFLASH */
+    src = (unsigned char *)addr;
+    /* Copy the configuration from Flash to SRAM */
+    for (dest = (unsigned char *)airspy_conf; (uint32_t)dest < (((uint32_t)airspy_conf) + AIRSPY_CONF_MAX_DATA_SIZE); )
+    {
+      *dest++ = *src++;
+    }
+  }
 
-  /* Programming the Si5351 via I2C http://community.silabs.com/t5/Silicon-Labs-Knowledge-Base/Programming-the-Si5351-via-I2C/ta-p/112251
-  */
-  si5351c_disable_all_outputs();
-  si5351c_init_fanout();
-  si5351c_power_down_all_clocks();
-  si5351c_init_xtal();
-  si5351c_read[0] = si5351c_read_single(0);
+  /* Compute & update 1st, 2nd & 3rd Expansion Conf Point Addr */
+  addr = ((uint32_t)(&airspy_conf->si5351c_config)) + (sizeof(void *));
+  /* 1st Expansion Conf Point M0/M4 Addr */
+  airspy_conf->airspy_m0_m4_conf = (airspy_m0_m4_conf_t*)addr;
+  sizeof_struct_u16 = airspy_conf->sizeof_airspy_m0_m4_conf_t;
+  nb_struct_u16 = airspy_conf->nb_airspy_m0_m4_conf_t;
 
-  /* Configure and enable SI5351C clocks */
-  si5351c_read[1] = (si5351c_read_single(0) & SI5351C_REG0_CLKIN_LOS);
-  /* CLKIN Loss Of Signal (LOS) ? */
-  if(si5351c_read[1] == SI5351C_REG0_CLKIN_LOS)
-      si5351c_airspy_config(AIRSPY_SI5351C_CONFIG_XTAL);
-  else
-      si5351c_airspy_config(AIRSPY_SI5351C_CONFIG_CLKIN);
+  addr += (sizeof_struct_u16 * nb_struct_u16);
+  /* 2nd Expansion Conf Point M0/M4 ALT Addr */ 
+  airspy_conf->airspy_m0_m4_alt_conf = (airspy_m0_m4_conf_t*)addr;
+  sizeof_struct_u16 = airspy_conf->sizeof_airspy_m0_m4_alt_conf_t;
+  nb_struct_u16 = airspy_conf->nb_airspy_m0_m4_alt_conf_t;
 
-  si5351c_read[2] = si5351c_read_single(0);
+  addr += (sizeof_struct_u16 * nb_struct_u16);
+  /* 3rd Expansion Conf Point SI5351C Addr */ 
+  airspy_conf->si5351c_config = (si5351c_conf_t*)addr;
 
-  si5351c_init_pll_soft_reset();
-  si5351c_enable_clock_outputs();
+  if((airspy_conf->conf_hw.hardware_type & HW_FEATURE_SI5351C) == HW_FEATURE_SI5351C)
+  {
+    /* Programming the Si5351 via I2C
+       http://community.silabs.com/t5/Silicon-Labs-Knowledge-Base/Programming-the-Si5351-via-I2C/ta-p/112251
+    */
+    si5351c_disable_all_outputs();
+    si5351c_init_fanout();
+    si5351c_power_down_all_clocks();
+    si5351c_init_xtal();
+    si5351c_read[0] = si5351c_read_single(0);
 
-  /* Wait at least 300us after SI5351C Clock Enable */
-  delay(WAIT_CPU_CLOCK_INIT_DELAY);
-  si5351c_read[3] = si5351c_read_single(0);
+    /* Configure and enable SI5351C clocks */
+    si5351c_read[1] = (si5351c_read_single(0) & SI5351C_REG0_CLKIN_LOS);
+
+    /* CLKIN Loss Of Signal (LOS) ? */
+    if(si5351c_read[1] == SI5351C_REG0_CLKIN_LOS)
+    {
+        si5351c_airspy_config(&airspy_conf->si5351c_config[AIRSPY_SI5351C_CONFIG_XTAL]);
+    }
+    else
+    {
+        si5351c_airspy_config(&airspy_conf->si5351c_config[AIRSPY_SI5351C_CONFIG_CLKIN]);
+    }
+
+    si5351c_read[2] = si5351c_read_single(0);
+
+    si5351c_init_pll_soft_reset();
+    si5351c_enable_clock_outputs();
+
+    /* Wait at least 300us after SI5351C Clock Enable */
+    delay(WAIT_CPU_CLOCK_INIT_DELAY);
+    si5351c_read[3] = si5351c_read_single(0);
+  }
+
+  pt_airspy_sys_conf = &airspy_conf->airspy_m4_init_conf;
 
   /* ********************************************************************* */
   /*  M4/M0 core, Peripheral, APB1, APB3 Configuration (PLL1 clock source) */
@@ -416,9 +480,9 @@ void sys_clock_init(const airspy_sys_clock_t* const pt_airspy_sys_conf)
   cpu_clock_pll1_low_speed(&pt_airspy_sys_conf->pll1_ls);
 
   /* Configure I2C0 (for SI5351C) to 400kHz when we switch over to APB1 clock = PLL1 */
-  i2c0_init(AIRSPY_I2C0_PLL1_LS_HS_CONF_VAL);
+  i2c0_init(airspy_conf->i2c_conf.i2c0_pll1_ls_hs_conf_val);
   /* Configure I2C1 (for R820T) to 400kHz when we switch over to APB3 clock = PLL1 */
-  i2c1_init(AIRSPY_I2C1_PLL1_LS_CONF_VAL);
+  i2c1_init(airspy_conf->i2c_conf.i2c1_pll1_ls_conf_val);
 
   /* ************************************************** */
   /* Connect PLL1 to M4/M0 core, Peripheral, APB1, APB3 */
@@ -491,12 +555,8 @@ void sys_clock_init(const airspy_sys_clock_t* const pt_airspy_sys_conf)
   /* Switch off SDIO clock */
   CGU_BASE_SDIO_CLK = CGU_BASE_SDIO_CLK_PD;
   CGU_BASE_SSP0_CLK = CGU_BASE_SSP0_CLK_PD;
-#ifdef AIRSPY_NOS
   /* Switch off SSP1 clock */
   CGU_BASE_SSP1_CLK = CGU_BASE_SSP1_CLK_PD;
-#else /* AIRSPY One/Demo */
-  //CGU_BASE_SSP1_CLK is used for LED
-#endif
   /* Switch off UART0 to 3 clock */
   CGU_BASE_UART0_CLK = CGU_BASE_UART0_CLK_PD;
   CGU_BASE_UART1_CLK = CGU_BASE_UART1_CLK_PD;
@@ -539,11 +599,7 @@ void sys_clock_init(const airspy_sys_clock_t* const pt_airspy_sys_conf)
   CCU1_CLK_M4_USART0_CFG &= ~(1);
   CCU1_CLK_M4_UART1_CFG &= ~(1);
   CCU1_CLK_M4_SSP0_CFG &= ~(1);
-#ifdef AIRSPY_NOS
   CCU1_CLK_M4_SSP1_CFG &= ~(1);
-#else /* AIRSPY One/Demo */
-  //CCU1_CLK_M4_SSP1_CFG is used for LED
-#endif
   CCU1_CLK_M4_TIMER0_CFG &= ~(1);
   CCU1_CLK_M4_TIMER1_CFG &= ~(1);
   //CCU1_CLK_M4_SCU_CFG &= ~(1);
@@ -561,7 +617,7 @@ void sys_clock_init(const airspy_sys_clock_t* const pt_airspy_sys_conf)
   /* ******************************************** */
   /*  ADCHS Configuration (GP_CLKIN clock source) */
   /* ******************************************** */
-  sys_clock_samplerate(&airspy_m4_conf[0]);
+  sys_clock_samplerate(&airspy_conf->airspy_m0_m4_conf[0].airspy_m4_conf);
 }
 
 /*
@@ -674,38 +730,17 @@ void cpu_clock_pll1_high_speed(const airspy_pll1_hs_t* const pt_airspy_pll1_hs_c
 
 void led_on(void)
 {
-  /* Hack Using SSP1 to blink led  */
-  /* Disable SSP before to configure it */
-#ifdef AIRSPY_NOS
   gpio_set(PORT_EN_LED1, PIN_EN_LED1);
-#else /* AIRSPY One/Demo */
-  SSP_CR1(SSP1) = 0x0;
-  SSP_CR0(SSP1) = (SSP_DATA_8BITS | SSP_FRAME_SPI | SSP_SLAVE_OUT_ENABLE | SSP_CPOL_1_CPHA_0);
-  SSP_CR1(SSP1) = (SSP_ENABLE | SSP_MODE_NORMAL | SSP_MASTER | SSP_SLAVE_OUT_ENABLE);
-#endif
 }
 
 void led_off(void)
 {
-#ifdef AIRSPY_NOS
   gpio_clear(PORT_EN_LED1, PIN_EN_LED1);
-#else /* AIRSPY One/Demo */
-  /* Hack Using SSP1 to blink led  */
-  /* Disable SSP before to configure it */
-  SSP_CR1(SSP1) = 0x0;
-  SSP_CR0(SSP1) = (SSP_DATA_8BITS | SSP_FRAME_SPI | SSP_SLAVE_OUT_ENABLE | SSP_CPOL_0_CPHA_0);
-  SSP_CR1(SSP1) = (SSP_ENABLE | SSP_MODE_NORMAL | SSP_MASTER | SSP_SLAVE_OUT_ENABLE);
-#endif
 }
 
 void pin_setup(void)
 {
   int i;
-  #ifdef AIRSPY_NOS
-  #else /* AIRSPY One/Demo */
-  uint8_t serial_clock_rate;
-  uint8_t clock_prescale_rate;
-  #endif
 
   /* Configure all GPIO as Input (safe state) */
   GPIO0_DIR = 0;
@@ -725,34 +760,14 @@ void pin_setup(void)
 
   /* GPIO1[7] on P1_14 as output. */
   GPIO1_DIR |= PIN_EN_R820T;
-  disable_r820t_power();
+  enable_r820t_power();
 
   /* GPIO1[13] on P2_13 as output. */
   GPIO1_DIR |= PIN_EN_BIAST;
   disable_biast_power();
 
-  #ifdef AIRSPY_NOS
-    /* GPIO0[12] on P1_17 as output. */
-    GPIO0_DIR |= PIN_EN_LED1;
-  #else /* AIRSPY One/Demo */
-    /* Configure SSP1 Peripheral */
-    #define SCU_SSP1_SCK        (P1_19) /* P1_19 */
-    scu_pinmux(SCU_SSP1_SCK,  (SCU_SSP_IO | SCU_CONF_FUNCTION1));
-
-    /* Freq About 1.12MHz => Freq = PCLK / (CPSDVSR * [SCR+1]) with PCLK=PLL1=288MHz */
-    clock_prescale_rate = 2;
-    serial_clock_rate = 128;
-
-    ssp_init(SSP1_NUM,
-        SSP_DATA_8BITS,
-        SSP_FRAME_SPI,
-        SSP_CPOL_0_CPHA_0,
-        serial_clock_rate,
-        clock_prescale_rate,
-        SSP_MODE_NORMAL,
-        SSP_MASTER,
-        SSP_SLAVE_OUT_ENABLE);
-  #endif
+  /* GPIO0[12] on P1_17 as output. */
+  GPIO0_DIR |= PIN_EN_LED1;
 
   led_off();
 }
@@ -762,11 +777,6 @@ void enable_r820t_power(void)
   gpio_set(PORT_EN_R820T, PIN_EN_R820T);
   /* Wait after PowerOn (stabilization of LDO & Internal Init of R820T) */
   delay(WAIT_R820T_POWER_ON_DELAY);
-}
-
-void disable_r820t_power(void)
-{
-  gpio_clear(PORT_EN_R820T, PIN_EN_R820T);
 }
 
 void enable_biast_power(void)

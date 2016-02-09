@@ -31,60 +31,60 @@
 void usb_peripheral_reset();
 
 void usb_device_init(
-	const uint_fast8_t device_ordinal,
-	usb_device_t* const device
+  const uint_fast8_t device_ordinal,
+  usb_device_t* const device
 );
 
 void usb_run(
-	usb_device_t* const device
+  usb_device_t* const device
 );
 
 void usb_run_tasks(
-	const usb_device_t* const device
+  const usb_device_t* const device
 );
 
 usb_speed_t usb_speed(
-	const usb_device_t* const device
+  const usb_device_t* const device
 );
 
 void usb_set_address_immediate(
-	const usb_device_t* const device,
-	const uint_fast8_t address
+  const usb_device_t* const device,
+  const uint_fast8_t address
 );
 
 void usb_set_address_deferred(
-	const usb_device_t* const device,
-	const uint_fast8_t address
+  const usb_device_t* const device,
+  const uint_fast8_t address
 );
 
 void usb_endpoint_init(
-	const usb_endpoint_t* const endpoint
+  const usb_endpoint_t* const endpoint
 );
 
 void usb_endpoint_stall(
-	const usb_endpoint_t* const endpoint
+  const usb_endpoint_t* const endpoint
 );
 
 void usb_endpoint_disable(
-	const usb_endpoint_t* const endpoint
+  const usb_endpoint_t* const endpoint
 );
 
 void usb_endpoint_flush(
-	const usb_endpoint_t* const endpoint
+  const usb_endpoint_t* const endpoint
 );
 
 bool usb_endpoint_is_ready(
-	const usb_endpoint_t* const endpoint
+  const usb_endpoint_t* const endpoint
 );
 
 void usb_endpoint_prime(
-	const usb_endpoint_t* const endpoint,
-	usb_transfer_descriptor_t* const first_td
+  const usb_endpoint_t* const endpoint,
+  usb_transfer_descriptor_t* const first_td
 );
 
 void usb_endpoint_schedule_wait(
-	const usb_endpoint_t* const endpoint,
-        usb_transfer_descriptor_t* const td
+  const usb_endpoint_t* const endpoint,
+  usb_transfer_descriptor_t* const td
 );
 
 void usb_endpoint_schedule_append(

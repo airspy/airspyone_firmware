@@ -20,12 +20,6 @@
 # Boston, MA 02110-1301, USA.
 #
 
-#export BOARD ?= AIRSPY_DEMO
-#export VERSION_STRING ?= -D'VERSION_STRING="AirSpy DEMO"'
-
-export BOARD ?= AIRSPY_NOS
-export VERSION_STRING ?= -D'VERSION_STRING="AirSpy NOS"'
-
 TARGETS = airspy_m0 \
 		  airspy_m0s \
 		  airspy_rom_to_ram

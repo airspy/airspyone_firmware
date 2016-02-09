@@ -1,7 +1,7 @@
 # Hey Emacs, this is a -*- makefile -*-
 #
 # Copyright 2012 Jared Boone <jared@sharebrained.com>
-# Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+# Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
 #
 # This file is part of AirSpy (based on HackRF project).
 #
@@ -28,8 +28,7 @@ SRC = $(BINARY).c\
 	airspy_usb_req.c \
 	usb_descriptor.c \
 	usb_device.c \
-	usb_endpoint.c \
-	airspy_m0_conf.c
+	usb_endpoint.c
 
 # Source from ../common dir
 VPATH += ../common
@@ -38,7 +37,6 @@ SRC += \
 	fault_handler.c \
 	si5351c.c \
 	r820t.c \
-	r820t_conf.c \
 	w25q80bv.c \
 	rom_iap.c \
 	signal_mcu.c \

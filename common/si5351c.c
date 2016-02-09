@@ -1,7 +1,7 @@
 /*
  * Copyright 2012 Michael Ossmann <mike@ossmann.com>
  * Copyright 2012 Jared Boone <jared@sharebrained.com>
- * Copyright 2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2014-2016 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy (based on HackRF project).
  *
@@ -22,7 +22,6 @@
  */
 
 #include "si5351c.h"
-#include "airspy_conf.h"
 #include <libopencm3/lpc43xx/i2c.h>
 
 /*
@@ -35,7 +34,7 @@ Like defined in http://community.silabs.com/t5/Silicon-Labs-Knowledge-Base/How-t
 #define SI5351C_WRITE_CONF_STEP2_REG (149)
 #define SI5351C_WRITE_CONF_STEP2_SIZE (22) /* 170 - 149 + 1 */
 
-void si5351c_airspy_config(int si5351c_config_num)
+void si5351c_airspy_config(const si5351c_conf_t* const pt_si5351c_conf)
 {
   int i;
 
@@ -46,7 +45,7 @@ void si5351c_airspy_config(int si5351c_config_num)
   i2c0_tx_byte(SI5351C_WRITE_CONF_STEP1_REG);
   for(i = SI5351C_WRITE_CONF_STEP1_REG; i < (SI5351C_WRITE_CONF_STEP1_REG+SI5351C_WRITE_CONF_STEP1_SIZE); i++)
   {
-    i2c0_tx_byte(si5351c_config[si5351c_config_num][i]);
+    i2c0_tx_byte(pt_si5351c_conf->conf[i]);
   }
   i2c0_stop();
   
@@ -57,10 +56,11 @@ void si5351c_airspy_config(int si5351c_config_num)
   i2c0_tx_byte(SI5351C_WRITE_CONF_STEP2_REG);
   for (i = SI5351C_WRITE_CONF_STEP2_REG; i < (SI5351C_WRITE_CONF_STEP2_REG+SI5351C_WRITE_CONF_STEP2_SIZE); i++)
   {
-    i2c0_tx_byte(si5351c_config[si5351c_config_num][i]);
+    i2c0_tx_byte(pt_si5351c_conf->conf[i]);
   }
   i2c0_stop();
 }
+
 
 /* write to single register */
 void si5351c_write_single(uint8_t reg, uint8_t val)
@@ -114,11 +114,48 @@ void si5351c_disable_all_outputs(void)
   si5351c_write(data, sizeof(data));
 }
 
-/* Turn off OEB pin control for all CLKx */
-void si5351c_disable_oeb_pin_control(void)
+/* Turn off OEB pin control for all CLKx
+   Check also the SI5351C work like expected 
+   write/read with different pattern
+ */
+bool si5351c_disable_oeb_pin_control(void)
 {
-  uint8_t data[] = { 9, 0xFF };
+  uint8_t data[] = { 9, 0x00 };
+  uint8_t val1;
+
+  /* Check Written Data */
+  data[1] = 0x55;
   si5351c_write(data, sizeof(data));
+  val1 = si5351c_read_single(9);
+  if(val1 == 0x55)
+  {
+    uint8_t val2;
+    uint8_t val3;
+    uint8_t val4;
+
+    data[1] = 0x99;
+    si5351c_write(data, sizeof(data));
+    val2 = si5351c_read_single(9);
+
+    data[1] = 0xAA;
+    si5351c_write(data, sizeof(data));
+    val3 = si5351c_read_single(9);
+
+    data[1] = 0xFF;
+    si5351c_write(data, sizeof(data));
+    val4 = si5351c_read_single(9);
+
+    if( (val2 == 0x99) && (val3 == 0xAA) && (val4 == 0xFF) )
+    {
+      return true;
+    }else
+    {
+      return false;
+    }
+  }else
+  {
+    return false;
+  }
 }
 
 /* Power down all CLKx */

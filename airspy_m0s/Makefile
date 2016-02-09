@@ -1,6 +1,6 @@
 # Hey Emacs, this is a -*- makefile -*-
 #
-# Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+# Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
 #
 # This file is part of AirSpy.
 #

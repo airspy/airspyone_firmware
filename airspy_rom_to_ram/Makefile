@@ -1,6 +1,6 @@
 # Hey Emacs, this is a -*- makefile -*-
 #
-# Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+# Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
 #
 # This file is part of AirSpy (based on HackRF project).
 #
@@ -24,7 +24,7 @@ BINARY = airspy_rom_to_ram
 
 SRC_DIR = airspy_m4
 
-SRC = airspy_m4.c adchs.c airspy_m4_conf.c
+SRC = airspy_m4.c adchs.c
 
 OBJ = m0_bin.o m0s_bin.o
 
@@ -36,7 +36,9 @@ SRC += \
 	si5351c.c \
 	w25q80bv.c \
 	rom_iap.c \
-	signal_mcu.c
+	signal_mcu.c \
+	airspy_nos_conf.c \
+	airspy_mini_conf.c
 
 LDSCRIPT = ../common/LPC4370_M4_rom_to_ram.ld
 

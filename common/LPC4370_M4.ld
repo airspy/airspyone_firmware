@@ -1,7 +1,7 @@
 /*
  * Copyright 2012 Michael Ossmann <mike@ossmann.com>
  * Copyright 2012 Jared Boone <jared@sharebrained.com>
- * Copyright 2013 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy (based on HackRF project).
  *

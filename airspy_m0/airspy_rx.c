@@ -1,6 +1,6 @@
 /*
  * Copyright 2012 Jared Boone
- * Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy (based on HackRF project).
  *
@@ -47,12 +47,12 @@ void set_receiver_mode(const receiver_mode_t new_receiver_mode)
   {
     ADCHS_stop(sample_rate_conf_no);
   }
-	receiver_mode = new_receiver_mode;
+  receiver_mode = new_receiver_mode;
 }
 
 receiver_mode_t get_receiver_mode(void)
 {
-	return receiver_mode;
+  return receiver_mode;
 }
 
 

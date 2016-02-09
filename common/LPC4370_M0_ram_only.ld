@@ -3,7 +3,7 @@
 
  * Copyright 2012 Michael Ossmann <mike@ossmann.com>
  * Copyright 2012 Jared Boone <jared@sharebrained.com>
- * Copyright 2013/2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This library is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -51,6 +51,9 @@ cm0_data_share = ORIGIN(ram_ahb1_m0_share);	/* M0 data shared (write by M0 read 
 
 cm0_exec_baseaddr = ORIGIN(ram_ahb2);	/* Used by M4 to load code from M4 RAM to M0 final exec/run addr */
 cm0s_exec_baseaddr = ORIGIN(ram_local_m0sub);	/* Used by M4 to load code from M4 RAM to M0Sub final exec/run addr */
+
+conf_data_share = ORIGIN(ram_ahb1_spare);	/* M4/M0 conf data shared */
+conf_data_share_size = LENGTH(ram_ahb1_spare);	/* M4/M0 conf data shared size */
 
 /* Include the common ld script. */
 INCLUDE libopencm3_lpc43xx_m0.ld

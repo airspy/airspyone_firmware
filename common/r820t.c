@@ -2,7 +2,7 @@
  * Rafael Micro R820T driver for AIRSPY
  *
  * Copyright 2013 Youssef Touil <youssef@airspy.com>
- * Copyright 2014 Benjamin Vernoux <bvernoux@gmail.com>
+ * Copyright 2014-2016 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -473,10 +473,10 @@ static int r820t_set_tf(r820t_priv_t *priv, uint32_t freq)
 
 int r820t_set_pll(r820t_priv_t *priv, uint32_t freq)
 {
-  const uint32_t pll_ref = (XTAL_FREQ_HZ >> 1);
-  const uint32_t pll_ref_2x = (pll_ref * 2);
   const uint32_t vco_min = 1770000000;
   const uint32_t vco_max = 3900000000;
+  uint32_t pll_ref = (priv->xtal_freq >> 1);
+  uint32_t pll_ref_2x = (pll_ref * 2);
 
   int rc;
   uint32_t vco_exact;
@@ -698,4 +698,34 @@ void r820t_set_if_bandwidth(r820t_priv_t *priv, uint8_t bw)
     uint8_t b = 0x0F | modes[bw >> 4];
     r820t_write_reg(priv, 0x0A, a);
     r820t_write_reg(priv, 0x0B, b);
+}
+
+/* write to single register but do not update priv (return 0 if success) */
+static void airspy_r820t_write_direct(uint8_t reg, uint8_t val)
+{
+  if(r820t_is_power_enabled() == true)
+  {
+    i2c1_tx_start();
+    i2c1_tx_byte(R820T_I2C_ADDR | I2C_WRITE);
+    i2c1_tx_byte(reg);
+    i2c1_tx_byte(val);
+    i2c1_stop();
+  }
+}
+
+int r820t_standby(void)
+{
+  airspy_r820t_write_direct(0x06, 0xb1);
+  airspy_r820t_write_direct(0x05, 0x03);
+  airspy_r820t_write_direct(0x07, 0x3a);
+  airspy_r820t_write_direct(0x08, 0x40);
+  airspy_r820t_write_direct(0x09, 0xc0);
+  airspy_r820t_write_direct(0x0a, 0x36);
+  airspy_r820t_write_direct(0x0c, 0x35);
+  airspy_r820t_write_direct(0x0f, 0x68);
+  airspy_r820t_write_direct(0x11, 0x03);
+  airspy_r820t_write_direct(0x17, 0xf4);
+  airspy_r820t_write_direct(0x19, 0x0c);
+
+  return 0;
 }

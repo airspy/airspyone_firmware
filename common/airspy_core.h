@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2015 Benjamin Vernoux <bvernoux@airspy.com>
+ * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy.
  *
@@ -203,7 +203,7 @@ void delay(uint32_t duration);
 
 void cpu_reset(void);
 
-void sys_clock_init(const airspy_sys_clock_t* const pt_airspy_sys_conf);
+void sys_clock_init();
 
 void sys_clock_samplerate(const airspy_sys_samplerate_t* const pt_airspy_sys_conf);
 
@@ -220,7 +220,6 @@ bool sample_rate_frac_set(uint32_t rate_num, uint32_t rate_denom);
 bool sample_rate_set(const uint32_t sampling_rate_hz);
 
 void enable_r820t_power(void);
-void disable_r820t_power(void);
 
 void enable_biast_power(void);
 void disable_biast_power(void);

@@ -1,7 +1,7 @@
 /*
- * This file is part of the libopencm3 project.
+ * Copyright 2012-2016 Benjamin Vernoux <bvernoux@airspy.com>
  *
- * Copyright 2012 Benjamin Vernoux <bvernoux@gmail.com>
+ * This file is part of AirSpy.
  *
  * This library is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -27,10 +27,10 @@ extern "C"
 
 extern uint8_t m0_bin[];
 extern uint32_t m0_bin_size;
-extern uint32_t cm0_exec_baseaddr;	/* defined in linker script */
+extern uint32_t cm0_exec_baseaddr; /* defined in linker script */
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif
+#endif /* __M0_BIN_H */

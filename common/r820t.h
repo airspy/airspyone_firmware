@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Benjamin Vernoux <bvernoux@airspy.com>
+ * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy.
  *
@@ -36,14 +36,15 @@ extern "C"
 #define NUM_REGS 30
 
 /* R820T Clock */
-#define XTAL_FREQ_HZ 20000000
 #define CALIBRATION_LO 88000
 
 typedef struct
 {
+  uint32_t xtal_freq; /* XTAL_FREQ_HZ */
   uint32_t freq;
   uint32_t if_freq;
   uint8_t regs[NUM_REGS];
+  uint16_t padding;
 } r820t_priv_t;
 
 void airspy_r820t_write_single(r820t_priv_t *priv, uint8_t reg, uint8_t val);
@@ -57,6 +58,7 @@ int r820t_set_vga_gain(r820t_priv_t *priv, uint8_t gain_index);
 int r820t_set_lna_agc(r820t_priv_t *priv, uint8_t value);
 int r820t_set_mixer_agc(r820t_priv_t *priv, uint8_t value);
 void r820t_set_if_bandwidth(r820t_priv_t *priv, uint8_t bw);
+int r820t_standby(void);
 
 #ifdef __cplusplus
 }

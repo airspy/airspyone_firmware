@@ -4,7 +4,7 @@
 # Copyright 2010 Piotr Esden-Tempski <piotr@esden.net>
 # Copyright 2012 Michael Ossmann <mike@ossmann.com>
 # Copyright 2012 Jared Boone <jared@sharebrained.com>
-# Copyright 2013 Benjamin Vernoux <bvernoux@gmail.com>
+# Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
 #
 # This file is part of AirSpy (based on HackRF project).
 #
@@ -25,9 +25,7 @@
 #
 # derived primarily from Makefiles in libopencm3
 
-AIRSPY_OPTS = -D$(BOARD) -DLPC43XX -DLPC43XX_M0 -DCORE_M0 -D__CORTEX_M=0
-
-AIRSPY_OPTS += $(VERSION_STRING)
+AIRSPY_OPTS = -DLPC43XX -DLPC43XX_M0 -DCORE_M0 -D__CORTEX_M=0
 
 LDSCRIPT ?= ../common/LPC4370_M0_ram_only.ld
 
