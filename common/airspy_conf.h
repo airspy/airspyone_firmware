@@ -41,6 +41,7 @@ extern uint32_t conf_data_share_size; /* defined in linker script */
 #define AIRSPY_CONF_MAX_DATA_SIZE ((uint32_t)(&conf_data_share_size))
 
 #define AIRSPY_SAMPLERATE_DEFAULT_CONF (0)
+#define AIRSPY_SAMPLERATE_CONF_ALT (BIT7)
 
 #define AIRSPY_CONF_NB_MAX (64) /* Maximum number of AIRSPY_CONF */
 

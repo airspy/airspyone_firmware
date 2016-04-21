@@ -155,9 +155,16 @@ void ADCHS_start(uint8_t conf_num)
   i2c0_init(airspy_conf->i2c_conf.i2c0_pll1_ls_hs_conf_val); /* Si5351C I2C peripheral */
   i2c1_init(airspy_conf->i2c_conf.i2c1_pll1_hs_conf_val); /* R820T I2C peripheral */
 
-  r820t_init(&airspy_conf->r820t_conf_rw, airspy_conf->airspy_m0_m4_conf[conf_num].airspy_m0_conf.r820t_if_freq);
-  r820t_set_if_bandwidth(&airspy_conf->r820t_conf_rw, airspy_conf->airspy_m0_m4_conf[conf_num].airspy_m0_conf.r820t_if_bw);
-
+  if((conf_num & AIRSPY_SAMPLERATE_CONF_ALT) == AIRSPY_SAMPLERATE_CONF_ALT)
+  {
+    conf_num = conf_num & (~AIRSPY_SAMPLERATE_CONF_ALT);
+    r820t_init(&airspy_conf->r820t_conf_rw, airspy_conf->airspy_m0_m4_alt_conf[conf_num].airspy_m0_conf.r820t_if_freq);
+    r820t_set_if_bandwidth(&airspy_conf->r820t_conf_rw, airspy_conf->airspy_m0_m4_alt_conf[conf_num].airspy_m0_conf.r820t_if_bw);
+  }else
+  {
+    r820t_init(&airspy_conf->r820t_conf_rw, airspy_conf->airspy_m0_m4_conf[conf_num].airspy_m0_conf.r820t_if_freq);
+    r820t_set_if_bandwidth(&airspy_conf->r820t_conf_rw, airspy_conf->airspy_m0_m4_conf[conf_num].airspy_m0_conf.r820t_if_bw);
+  }
   phase = 1;
 }
 

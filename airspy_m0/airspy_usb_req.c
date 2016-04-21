@@ -448,19 +448,61 @@ usb_request_status_t usb_vendor_request_set_samplerate(
 usb_endpoint_t* const endpoint,
 const usb_transfer_stage_t stage) 
 {
+  int i;
   uint16_t airspy_conf_nb;
   receiver_mode_t rx_mode;
+  uint16_t conf_no;
+  uint32_t conf_hz;
+  uint32_t freq_hz;
+  bool conf_found;
 
   if( stage == USB_TRANSFER_STAGE_SETUP )
   {
-    airspy_conf_nb = airspy_conf->nb_airspy_m0_m4_conf_t;
-    if( (endpoint->setup.index > (airspy_conf_nb-1)) || 
-        (endpoint->setup.index > AIRSPY_CONF_NB_MAX) )
+    conf_no = endpoint->setup.index;
+    if(conf_no < AIRSPY_CONF_NB_MAX)
     {
-        return USB_REQUEST_STATUS_STALL;
+      airspy_conf_nb = airspy_conf->nb_airspy_m0_m4_conf_t;
+      if(conf_no > (airspy_conf_nb-1))
+      {
+          return USB_REQUEST_STATUS_STALL;
+      }else
+      {
+        sample_rate_conf_no = conf_no;
+      }
     }else
     {
-      sample_rate_conf_no = endpoint->setup.index;
+      conf_found = false;
+      conf_hz = (uint32_t)(conf_no) * 1000;
+
+      for(i = 0; i < airspy_conf->nb_airspy_m0_m4_conf_t; i++)
+      {
+        freq_hz = (airspy_conf->airspy_m0_m4_conf[i].airspy_m0_conf.r820t_if_freq * 4);
+        if(freq_hz == conf_hz)
+        {
+          sample_rate_conf_no = i;
+          conf_found = true;
+          break;
+        }
+      }
+
+      if(conf_found == false)
+      {
+        for(i = 0; i < airspy_conf->nb_airspy_m0_m4_alt_conf_t; i++)
+        {
+          freq_hz = (airspy_conf->airspy_m0_m4_alt_conf[i].airspy_m0_conf.r820t_if_freq * 4);
+          if(freq_hz == conf_hz)
+          {
+            sample_rate_conf_no = AIRSPY_SAMPLERATE_CONF_ALT | i;
+            conf_found = true;
+            break;
+          }
+        }
+      }
+
+      if(conf_found == false)
+      {
+        return USB_REQUEST_STATUS_STALL;
+      }
     }
 
     rx_mode = get_receiver_mode();

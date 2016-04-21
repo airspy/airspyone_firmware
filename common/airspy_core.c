@@ -437,6 +437,9 @@ void sys_clock_init(void)
   /* 3rd Expansion Conf Point SI5351C Addr */ 
   airspy_conf->si5351c_config = (si5351c_conf_t*)addr;
 
+  /* Set default r820t_conf_rw.if_freq to airspy_m0_m4_conf[0] => r820t_if_freq  */
+  airspy_conf->r820t_conf_rw.if_freq = airspy_conf->airspy_m0_m4_conf[0].airspy_m0_conf.r820t_if_freq;
+
   if((airspy_conf->conf_hw.hardware_type & HW_FEATURE_SI5351C) == HW_FEATURE_SI5351C)
   {
     /* Programming the Si5351 via I2C

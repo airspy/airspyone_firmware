@@ -361,7 +361,14 @@ void m0core_isr(void)
   samplerate_cmd = get_samplerate(&adchs_conf);
   if(samplerate_cmd == SET_SAMPLERATE_CMD)
   {
-    sys_clock_samplerate(&airspy_conf->airspy_m0_m4_conf[adchs_conf].airspy_m4_conf);
+    if((adchs_conf & AIRSPY_SAMPLERATE_CONF_ALT) == AIRSPY_SAMPLERATE_CONF_ALT)
+    {
+      adchs_conf = adchs_conf & (~AIRSPY_SAMPLERATE_CONF_ALT);
+      sys_clock_samplerate(&airspy_conf->airspy_m0_m4_alt_conf[adchs_conf].airspy_m4_conf);
+    }else
+    {
+      sys_clock_samplerate(&airspy_conf->airspy_m0_m4_conf[adchs_conf].airspy_m4_conf);
+    }
     ack_samplerate();
   }
   
