@@ -73,14 +73,10 @@ extern "C"
 #define SCU_FLASH_HOLD      (P3_4) /* GPIO1[14] on P3_4 */
 #define SCU_FLASH_WP        (P3_5) /* GPIO1[15] on P3_5 */
 
-/* TODO add other Pins */
-
 /*
  * GPIO Pins
  */
-
 /* GPIO Output */
-
 #define PIN_FLASH_HOLD (BIT14) /* GPIO1[14] on P3_4 */
 #define PIN_FLASH_WP   (BIT15) /* GPIO1[15] on P3_5 */
 #define PORT_FLASH     (GPIO1)
@@ -99,8 +95,6 @@ extern "C"
 #define BOOT1_STATE       GPIO_STATE(GPIO0, PIN_BOOT1)
 #define BOOT2_STATE       GPIO_STATE(GPIO5, PIN_BOOT2)
 #define BOOT3_STATE       GPIO_STATE(GPIO1, PIN_BOOT3)
-
-/* TODO add other Pins */
 
 /* Params for pll0audio_ctrl_flags can be ORed together */
 #define PLL0AUDIO_CTRL_FLAG_DIRECT_I  (CGU_PLL0AUDIO_CTRL_DIRECTI)
@@ -216,14 +210,10 @@ void pin_setup(void);
 void led_on(void);
 void led_off(void);
 
-bool sample_rate_frac_set(uint32_t rate_num, uint32_t rate_denom);
-bool sample_rate_set(const uint32_t sampling_rate_hz);
-
 void enable_r820t_power(void);
 
 void enable_biast_power(void);
 void disable_biast_power(void);
-
 
 #ifdef __cplusplus
 }
