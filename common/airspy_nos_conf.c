@@ -21,7 +21,7 @@
 #include "airspy_conf.h"
 
 #define AIRSPY_CONF_M0_M4_NB (2)
-#define AIRSPY_CONF_M0_M4_ALT_NB (2)
+#define AIRSPY_CONF_M0_M4_ALT_NB (3)
 #define AIRSPY_CONF_SI5351C_NB (2)
 #define NULL_ADDR (0)
 
@@ -98,7 +98,7 @@ airspy_nos_conf_t __attribute__ ((section(".nocopy_data"))) airspy_nos_conf =
     /* r820t_priv_t r820t_conf_rw = */
     {
       20000000, // xtal_freq => 20MHz
-      5000000, // Freq 20MHz => 10Mhz IQ => IF Freq = 5MHz (r820t_if_freq)
+      0, // Set at boot to airspy_m0_m4_conf_t conf0 -> r820t_if_freq
       100000000, /* Default Freq 100Mhz */
       {
         /* 05 */ 0x90, // LNA manual gain mode, init to 0
@@ -150,7 +150,7 @@ airspy_nos_conf_t __attribute__ ((section(".nocopy_data"))) airspy_nos_conf =
 
   /* 1st Expansion Conf Point M0/M4 Data */
   /*
-  SampleRate configuration with GP_CLKIN=20MHz
+  SampleRate configuration with GP_CLKIN=20MHz from SI5351C CLK7 LPC4370 GP_CLKIN
   Configuration of PLL0AUDIO shall not exceed 80MHz for ADCHS
   For PLL0AUDIO sys_clock_samplerate() set SEL_EXT to 1 => MDEC enabled. Fractional divider not used.
   For PLL0AUDIO see UM10503 Rev1.8 "Fig 34. PLL0 with fractional divider" Page 184 / 1420 for more details.
@@ -161,7 +161,6 @@ airspy_nos_conf_t __attribute__ ((section(".nocopy_data"))) airspy_nos_conf =
     /* Conf 0 => 10 MSPS */
     {
       /*
-        CGU_SRC_GP_CLKIN=20MHz from SI5351C CLK7 LPC4370 GP_CLKIN
         airspy_sys_samplerate_t airspy_m4_conf
       */
       {
@@ -207,7 +206,7 @@ airspy_nos_conf_t __attribute__ ((section(".nocopy_data"))) airspy_nos_conf =
 
   /* 2nd Expansion Conf Point M0/M4 ALT Data */ 
   /*
-  SampleRate configuration with GP_CLKIN=20MHz
+  SampleRate configuration with GP_CLKIN=20MHz from SI5351C CLK7 LPC4370 GP_CLKIN
   Configuration of PLL0AUDIO shall not exceed 80MHz for ADCHS
   For PLL0AUDIO sys_clock_samplerate() set SEL_EXT to 1 => MDEC enabled. Fractional divider not used.
   For PLL0AUDIO see UM10503 Rev1.8 "Fig 34. PLL0 with fractional divider" Page 184 / 1420 for more details.
@@ -215,47 +214,68 @@ airspy_nos_conf_t __attribute__ ((section(".nocopy_data"))) airspy_nos_conf =
   */
   /* const airspy_m0_m4_conf_t airspy_m0_m4_alt_conf[AIRSPY_CONF_M0_M4_ALT_NB] = */
   {
-    /* Conf 0 => 10 MSPS */
+    /* Conf 0 => 12 MSPS */
     {
       /*
-        CGU_SRC_GP_CLKIN=20MHz from SI5351C CLK7 LPC4370 GP_CLKIN
         airspy_sys_samplerate_t airspy_m4_conf
       */
       {
         /* PLL0AUDIO */
-        0x00000000, // uint32_t pll0audio_mdiv;
-        0x00000000, // uint32_t pll0audio_npdiv;
-        0x00000000, // uint32_t pll0audio_ctrl_flags; DirectI=PLL0AUDIO_CTRL_FLAG_DIRECT_I or/and DirectO=PLL0AUDIO_CTRL_FLAG_DIRECT_O */
-        /* IDIVB (from GP_CLKIN) */
+        0x000003FF, // uint32_t pll0audio_mdiv;
+        0x0000000E, // uint32_t pll0audio_npdiv;
+        PLL0AUDIO_CTRL_FLAG_DIRECT_I, // uint32_t pll0audio_ctrl_flags; DirectI=PLL0AUDIO_CTRL_FLAG_DIRECT_I or/and DirectO=PLL0AUDIO_CTRL_FLAG_DIRECT_O */
+        /* IDIVB not used set it to 0 */
         0, // uint8_t adchs_idivb; /* 0 to 15 (0 means direct connection GP_CLKIN to ADCHS_CLK) */
         { 0, 0, 0 } /* uint8_t padding[3] */
       },
       /* airspy_m0_conf_t airspy_m0_conf */
       {
-        5000000, // Freq 20MHz => 10MHz IQ => IF Freq = 5MHz (r820t_if_freq)
-        59,  // uint8_t r820t_bw;
+        6000000, // Freq 24MHz => 12MHz IQ => IF Freq = 6MHz (r820t_if_freq)
+        63,  // uint8_t r820t_bw;
         0,// uint8_t padding0;
         0 // uint16_t padding1;
       }
     },
-    /* Conf 1 => 2.5 MSPS */
+    /* Conf 1 => 6 MSPS */
     {
       /*
         airspy_sys_samplerate_t airspy_m4_conf
       */
       {
         /* PLL0AUDIO */
-        0x00000000, // uint32_t pll0audio_mdiv;
-        0x00000000, // uint32_t pll0audio_npdiv;
-        0x00000000, // uint32_t pll0audio_ctrl_flags; DirectI=PLL0AUDIO_CTRL_FLAG_DIRECT_I or/and DirectO=PLL0AUDIO_CTRL_FLAG_DIRECT_O */
+        0x0000007F, // uint32_t pll0audio_mdiv;
+        0x00000018, // uint32_t pll0audio_npdiv;
+        PLL0AUDIO_CTRL_FLAG_DIRECT_I, // uint32_t pll0audio_ctrl_flags; DirectI=PLL0AUDIO_CTRL_FLAG_DIRECT_I or/and DirectO=PLL0AUDIO_CTRL_FLAG_DIRECT_O */
         /* IDIVB not used set it to 0 */
-        3, // uint8_t adchs_idivb; /* 0 to 15 (0 means direct connection GP_CLKIN to ADCHS_CLK) */
+        0, // uint8_t adchs_idivb; /* 0 to 15 (0 means direct connection GP_CLKIN to ADCHS_CLK) */
         { 0, 0, 0 } /* uint8_t padding[3] */
       },
       /* airspy_m0_conf_t airspy_m0_conf */
       {
-        1250000, // Freq 5MHz => 2.5MHz IQ => IF Freq = 1.25MHz (r820t_if_freq)
-        0, // uint8_t r820t_bw;
+        3000000, // Freq 12MHz => 6MHz IQ => IF Freq = 3MHz (r820t_if_freq)
+        32,  // uint8_t r820t_bw;
+        0,// uint8_t padding0;
+        0 // uint16_t padding1;
+      }
+    },
+    /* Conf 2 => 4.096 MSPS */
+    {
+      /*
+        airspy_sys_samplerate_t airspy_m4_conf
+      */
+      {
+        /* PLL0AUDIO */
+        0x00004924, // uint32_t pll0audio_mdiv;
+        0x0003F006, // uint32_t pll0audio_npdiv;
+        0x00000000, // uint32_t pll0audio_ctrl_flags; DirectI=PLL0AUDIO_CTRL_FLAG_DIRECT_I or/and DirectO=PLL0AUDIO_CTRL_FLAG_DIRECT_O */
+        /* IDIVB not used set it to 0 */
+        0, // uint8_t adchs_idivb; /* 0 to 15 (0 means direct connection GP_CLKIN to ADCHS_CLK) */
+        { 0, 0, 0 } /* uint8_t padding[3] */
+      },
+      /* airspy_m0_conf_t airspy_m0_conf */
+      {
+        2048000, // Freq 8.192MHz => 4.096MHz IQ => IF Freq = 2.048MHz (r820t_if_freq)
+        25, // uint8_t r820t_bw;
         0, // uint8_t padding0;
         0 // uint16_t padding1;
       }
