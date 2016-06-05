@@ -479,7 +479,7 @@ void sys_clock_init(void)
         for(i = 0; i < AIRSPY_FLASH_CALIB_SI5351C_REG_VAL_MAX; i++)
         {
           reg = airspy_calib_flash_data_si5351c[i].reg;
-          val = airspy_calib_flash_data_si5351c[i].reg;
+          val = airspy_calib_flash_data_si5351c[i].val;
           if( (reg == 0) && (val == 0) )
             break;
 
