@@ -507,7 +507,7 @@ void sys_clock_init(void)
     if(airspy_calib.header == AIRSPY_FLASH_CALIB_HEADER)
     {
       const int invppb = 1000000000;
-      airspy_conf->r820t_conf_rw.xtal_freq -= ((int64_t)airspy_conf->r820t_conf_rw.xtal_freq * (int64_t)airspy_calib.correction_ppb + invppb / 2) / invppb;
+      airspy_conf->r820t_conf_rw.xtal_freq += ((int64_t)airspy_conf->r820t_conf_rw.xtal_freq * (int64_t)airspy_calib.correction_ppb + invppb / 2) / invppb;
     }
   }
 
