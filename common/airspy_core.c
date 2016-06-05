@@ -24,6 +24,7 @@
 
 #include "airspy_core.h"
 #include "airspy_conf.h"
+#include "airspy_calib.h"
 #include "si5351c.h"
 #include <libopencm3/lpc43xx/i2c.h>
 #include <libopencm3/lpc43xx/ccu.h>
@@ -345,7 +346,10 @@ void sys_clock_init(void)
   uint32_t addr;
   uint16_t sizeof_struct_u16;
   uint16_t nb_struct_u16;
-  
+  airspy_calib_t airspy_calib = { 0 };
+  airspy_calib_t* airspy_calib_flash;
+  airspy_calib_si5351c_reg_val_t* airspy_calib_flash_data_si5351c;
+
   /* After boot the CPU runs at 96 MHz */
   /* cpu runs from: IRC (12MHz) >> PLL M = 24, FCCO @ 288 MHz direct mode >> IDIVC = 4 >> 96 MHz */
 
@@ -440,6 +444,13 @@ void sys_clock_init(void)
   /* Set default r820t_conf_rw.if_freq to airspy_m0_m4_conf[0] => r820t_if_freq  */
   airspy_conf->r820t_conf_rw.if_freq = airspy_conf->airspy_m0_m4_conf[0].airspy_m0_conf.r820t_if_freq;
 
+  /* Load calibration data */
+  addr = (ROMFLASH_BASE_ADDR + AIRSPY_FLASH_CALIB_OFFSET); /* Addr from Flash Configuration 0 (Calibration Data) */
+  airspy_calib_flash = (airspy_calib_t*)(addr);
+  airspy_calib.header = airspy_calib_flash->header;
+  airspy_calib.timestamp = airspy_calib_flash->timestamp;
+  airspy_calib.correction_ppb = airspy_calib_flash->correction_ppb;
+
   if((airspy_conf->conf_hw.hardware_type & HW_FEATURE_SI5351C) == HW_FEATURE_SI5351C)
   {
     /* Programming the Si5351 via I2C
@@ -457,9 +468,27 @@ void sys_clock_init(void)
     /* CLKIN Loss Of Signal (LOS) ? */
     if(si5351c_read[1] == SI5351C_REG0_CLKIN_LOS)
     {
-        si5351c_airspy_config(&airspy_conf->si5351c_config[AIRSPY_SI5351C_CONFIG_XTAL]);
-    }
-    else
+      /* Check calibration */
+      if(airspy_calib.header == AIRSPY_FLASH_CALIB_HEADER)
+      {
+        int i;
+        uint8_t reg;
+        uint8_t val;
+
+        airspy_calib_flash_data_si5351c = (airspy_calib_si5351c_reg_val_t*)((ROMFLASH_BASE_ADDR + AIRSPY_FLASH_CALIB_OFFSET) + sizeof(airspy_calib_t));
+        for(i = 0; i < AIRSPY_FLASH_CALIB_SI5351C_REG_VAL_MAX; i++)
+        {
+          reg = airspy_calib_flash_data_si5351c[i].reg;
+          val = airspy_calib_flash_data_si5351c[i].reg;
+          if( (reg == 0) && (val == 0) )
+            break;
+
+          airspy_conf->si5351c_config[AIRSPY_SI5351C_CONFIG_XTAL].conf[reg] = val;
+        }
+      }
+      /* Apply SI5351C configuration */
+      si5351c_airspy_config(&airspy_conf->si5351c_config[AIRSPY_SI5351C_CONFIG_XTAL]);
+    }else
     {
         si5351c_airspy_config(&airspy_conf->si5351c_config[AIRSPY_SI5351C_CONFIG_CLKIN]);
     }
@@ -472,6 +501,14 @@ void sys_clock_init(void)
     /* Wait at least 300us after SI5351C Clock Enable */
     delay(WAIT_CPU_CLOCK_INIT_DELAY);
     si5351c_read[3] = si5351c_read_single(0);
+  }else
+  {
+    /* Check calibration */
+    if(airspy_calib.header == AIRSPY_FLASH_CALIB_HEADER)
+    {
+      const int invppb = 1000000000;
+      airspy_conf->r820t_conf_rw.xtal_freq += ((uint64_t)airspy_conf->r820t_conf_rw.xtal_freq * airspy_calib.correction_ppb + invppb / 2) / invppb;
+    }
   }
 
   pt_airspy_sys_conf = &airspy_conf->airspy_m4_init_conf;
