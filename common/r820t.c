@@ -476,7 +476,7 @@ int r820t_set_pll(r820t_priv_t *priv, uint32_t freq)
   const uint32_t vco_min = 1770000000;
   const uint32_t vco_max = 3900000000;
   uint32_t pll_ref = (priv->xtal_freq >> 1);
-  uint32_t pll_ref_2x = (pll_ref * 2);
+  uint32_t pll_ref_2x = priv->xtal_freq;
 
   int rc;
   uint32_t vco_exact;
