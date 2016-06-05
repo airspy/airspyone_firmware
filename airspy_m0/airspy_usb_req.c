@@ -217,16 +217,11 @@ const usb_transfer_stage_t stage)
 usb_request_status_t usb_vendor_request_erase_spiflash(
 usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
 {
-  //FIXME This should refuse to run if executing from SPI flash.
-
   if (stage == USB_TRANSFER_STAGE_SETUP)
   {
     w25q80bv_setup();
-    /* only chip erase is implemented */
-    //w25q80bv_chip_erase();
-    w25q80bv_sector_erase(0); /* Erase 64KB */
+    w25q80bv_sector_erase(0); /* Erase 1st sector 64KB */
     usb_transfer_schedule_ack(endpoint->in);
-    //FIXME probably should undo w25q80bv_setup()
   }
   return USB_REQUEST_STATUS_OK;
 }
@@ -263,7 +258,6 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
     } else {
       w25q80bv_program(addr, len, &spiflash_buffer[0]);
       usb_transfer_schedule_ack(endpoint->in);
-      //FIXME probably should undo w25q80bv_setup()
       return USB_REQUEST_STATUS_OK;
     }
   } else {
@@ -285,30 +279,36 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
   {
     addr = (endpoint->setup.value << 16) | endpoint->setup.index;
     len = endpoint->setup.length;
+
     if(len > W25Q80BV_PAGE_LEN)
     {
       return USB_REQUEST_STATUS_STALL;
     } else 
     {
-      /* TODO flush SPIFI "cache" before to read the SPIFI memory */
-      if( (len >= 4) &&
-          ((len & ADDR_ALIGN_32BITS) == 0) &&
-          ((addr & ADDR_ALIGN_32BITS) == 0)
-        )
+      if((addr + len) > W25Q80BV_NUM_BYTES)
       {
-        u32_addr_pt = (uint32_t*)addr;
-        u32_dest_pt = (uint32_t*)&spiflash_buffer[0];
-        for(i=0; i<(len/4); i++)
+        if( (len >= 4) &&
+            ((len & ADDR_ALIGN_32BITS) == 0) &&
+            ((addr & ADDR_ALIGN_32BITS) == 0)
+          )
         {
-          u32_dest_pt[i] = u32_addr_pt[i];
+          u32_addr_pt = (uint32_t*)addr;
+          u32_dest_pt = (uint32_t*)&spiflash_buffer[0];
+          for(i=0; i<(len/4); i++)
+          {
+            u32_dest_pt[i] = u32_addr_pt[i];
+          }
+        } else
+        {
+          u8_addr_pt = (uint8_t*)addr;
+          for(i=0; i<len; i++)
+          {
+            spiflash_buffer[i] = u8_addr_pt[i];
+          }
         }
       } else
       {
-        u8_addr_pt = (uint8_t*)addr;
-        for(i=0; i<len; i++)
-        {
-          spiflash_buffer[i] = u8_addr_pt[i];
-        }
+        w25q80bv_read(addr, len, &spiflash_buffer[0]);
       }
       usb_transfer_schedule_block(endpoint->in, &spiflash_buffer[0], len);
       return USB_REQUEST_STATUS_OK;
@@ -539,9 +539,6 @@ const usb_transfer_stage_t stage)
     r820t_set_freq(&airspy_conf->r820t_conf_rw, set_freq_params.freq_hz);
     usb_transfer_schedule_ack(endpoint->in);
     return USB_REQUEST_STATUS_OK;
-    /*
-    return USB_REQUEST_STATUS_STALL;
-    */
   } else
   {
     return USB_REQUEST_STATUS_OK;
@@ -873,6 +870,31 @@ usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
   }
 }
 
+usb_request_status_t usb_vendor_request_erase_sector_spiflash(
+usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
+{
+  uint32_t addr;
+  uint32_t sector = 0;
+  #define MIN_SECTOR (2) /* 128KB Reserved (Firmware) */
+  #define MAX_SECTOR (13) /* 128KB Reserved + (13 * 64KB) Conf = 1MB Flash */
+  #define MAX_SECTOR_SIZE_64KB (64 * 1024)
+
+  if (stage == USB_TRANSFER_STAGE_SETUP)
+  {
+    sector = (uint32_t)endpoint->setup.value;
+    /* Check if we exceed Flash Size */
+    if(sector < MIN_SECTOR || sector > MAX_SECTOR)
+    {
+      return USB_REQUEST_STATUS_STALL;
+    }
+    w25q80bv_setup();
+    addr = (sector * MAX_SECTOR_SIZE_64KB);
+    w25q80bv_sector_erase(addr); /* Erase 64KB */
+    usb_transfer_schedule_ack(endpoint->in);
+  }
+  return USB_REQUEST_STATUS_OK;
+}
+
 /* ID 1 to X corresponds to user endpoint->setup.request */
 usb_request_handler_fn vendor_request_handler[AIRSPY_CMD_MAX+1];
 
@@ -926,6 +948,8 @@ void airspy_usb_req_init(void)
 
   vendor_request_handler[AIRSPY_GET_SAMPLERATES] = usb_vendor_request_get_samplerates_command;
   vendor_request_handler[AIRSPY_SET_PACKING] = usb_vendor_request_set_packing_command;
+
+  vendor_request_handler[AIRSPY_SPIFLASH_ERASE_SECTOR] = usb_vendor_request_erase_sector_spiflash;
 }
 
 usb_request_status_t usb_vendor_request(usb_endpoint_t* const endpoint, const usb_transfer_stage_t stage)
