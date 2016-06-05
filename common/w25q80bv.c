@@ -1,6 +1,6 @@
 /*
  * Copyright 2013 Michael Ossmann
- * Copyright 2013 Benjamin Vernoux
+ * Copyright 2013-2016 Benjamin Vernoux
  *
  * This file is part of AirSpy (based on HackRF project).
  *
@@ -232,7 +232,7 @@ void w25q80bv_sector_erase(const uint32_t addr)
   gpio_set(PORT_SSP0_SSEL, PIN_SSP0_SSEL);
 }
 
-/* write up a 256 byte page or partial page */
+/* write up to 256 byte page or partial page */
 void w25q80bv_page_program(const uint32_t addr, const uint16_t len, const uint8_t* data)
 {
   int i;
@@ -305,4 +305,27 @@ void w25q80bv_program(uint32_t addr, uint32_t len, const uint8_t* data)
   if (len) {
     w25q80bv_page_program(addr, len, data);
   }
+}
+
+/* read data */
+void w25q80bv_read(uint32_t addr, uint32_t len, uint8_t* const data)
+{
+  uint32_t i;
+
+  /* do nothing if we would overflow the flash */
+  if ((len > W25Q80BV_NUM_BYTES) || (addr > W25Q80BV_NUM_BYTES)
+      || ((addr + len) > W25Q80BV_NUM_BYTES))
+    return;
+
+  w25q80bv_wait_while_busy();
+
+  gpio_clear(PORT_SSP0_SSEL, PIN_SSP0_SSEL);
+  ssp_transfer(SSP0_NUM, W25Q80BV_FAST_READ);
+  ssp_transfer(SSP0_NUM, (addr >> 16) & 0xFF);
+  ssp_transfer(SSP0_NUM, (addr >>  8) & 0xFF);
+  ssp_transfer(SSP0_NUM, (addr >>  0) & 0xFF);
+  ssp_transfer(SSP0_NUM, 0xFF); // Dummy byte
+  for (i = 0; i < len; i++)
+    data[i] = ssp_transfer(SSP0_NUM, 0xFF);
+  gpio_set(PORT_SSP0_SSEL, PIN_SSP0_SSEL);
 }
