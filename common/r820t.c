@@ -715,17 +715,17 @@ static void airspy_r820t_write_direct(uint8_t reg, uint8_t val)
 
 int r820t_standby(void)
 {
-  airspy_r820t_write_direct(0x06, 0xb1);
-  airspy_r820t_write_direct(0x05, 0x03);
-  airspy_r820t_write_direct(0x07, 0x3a);
+  airspy_r820t_write_direct(0x05, 0xA0);
+  airspy_r820t_write_direct(0x06, 0xD0);
+  airspy_r820t_write_direct(0x07, 0x00);
   airspy_r820t_write_direct(0x08, 0x40);
-  airspy_r820t_write_direct(0x09, 0xc0);
-  airspy_r820t_write_direct(0x0a, 0x36);
-  airspy_r820t_write_direct(0x0c, 0x35);
-  airspy_r820t_write_direct(0x0f, 0x68);
+  airspy_r820t_write_direct(0x09, 0xC0);
+  airspy_r820t_write_direct(0x0a, 0x70);
+  airspy_r820t_write_direct(0x0c, 0xA0);
+  airspy_r820t_write_direct(0x0f, 0x2A);
   airspy_r820t_write_direct(0x11, 0x03);
-  airspy_r820t_write_direct(0x17, 0xf4);
-  airspy_r820t_write_direct(0x19, 0x0c);
+  airspy_r820t_write_direct(0x17, 0xF4);
+  airspy_r820t_write_direct(0x19, 0x0C);
 
   return 0;
 }
