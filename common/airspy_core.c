@@ -333,6 +333,14 @@ void sys_clock_samplerate(const airspy_sys_samplerate_t* const pt_airspy_sys_sam
   }
 }
 
+/* Return corrected xtal_freq */
+uint32_t sys_calib_r820t(uint32_t xtal_freq, int32_t correction_ppb)
+{
+  const int invppb = 1000000000;
+  xtal_freq += ((int64_t)xtal_freq * (int64_t)correction_ppb + invppb / 2) / invppb;
+  return xtal_freq;
+}
+
 /*
 Configure PLL1 to min speed (48MHz) => see cpu_clock_pll1_low_speed() .
 Configure PLL0USB @480MHz for USB0.
@@ -348,7 +356,6 @@ void sys_clock_init(void)
   uint16_t nb_struct_u16;
   airspy_calib_t airspy_calib = { 0 };
   airspy_calib_t* airspy_calib_flash;
-  airspy_calib_si5351c_reg_val_t* airspy_calib_flash_data_si5351c;
 
   /* After boot the CPU runs at 96 MHz */
   /* cpu runs from: IRC (12MHz) >> PLL M = 24, FCCO @ 288 MHz direct mode >> IDIVC = 4 >> 96 MHz */
@@ -468,26 +475,14 @@ void sys_clock_init(void)
     /* CLKIN Loss Of Signal (LOS) ? */
     if(si5351c_read[1] == SI5351C_REG0_CLKIN_LOS)
     {
-      /* Check calibration */
-      if(airspy_calib.header == AIRSPY_FLASH_CALIB_HEADER)
-      {
-        int i;
-        uint8_t reg;
-        uint8_t val;
-
-        airspy_calib_flash_data_si5351c = (airspy_calib_si5351c_reg_val_t*)((ROMFLASH_BASE_ADDR + AIRSPY_FLASH_CALIB_OFFSET) + sizeof(airspy_calib_t));
-        for(i = 0; i < AIRSPY_FLASH_CALIB_SI5351C_REG_VAL_MAX; i++)
-        {
-          reg = airspy_calib_flash_data_si5351c[i].reg;
-          val = airspy_calib_flash_data_si5351c[i].val;
-          if( (reg == 0) && (val == 0) )
-            break;
-
-          airspy_conf->si5351c_config[AIRSPY_SI5351C_CONFIG_XTAL].conf[reg] = val;
-        }
-      }
       /* Apply SI5351C configuration */
       si5351c_airspy_config(&airspy_conf->si5351c_config[AIRSPY_SI5351C_CONFIG_XTAL]);
+
+      /* Check calibration is valid / enabled */
+      if(airspy_calib.header == AIRSPY_FLASH_CALIB_HEADER)
+      {
+        airspy_conf->r820t_conf_rw.xtal_freq = sys_calib_r820t(airspy_conf->r820t_conf_rw.xtal_freq, airspy_calib.correction_ppb);
+      }
     }else
     {
         si5351c_airspy_config(&airspy_conf->si5351c_config[AIRSPY_SI5351C_CONFIG_CLKIN]);
@@ -503,11 +498,10 @@ void sys_clock_init(void)
     si5351c_read[3] = si5351c_read_single(0);
   }else
   {
-    /* Check calibration */
+    /* Check calibration is valid / enabled */
     if(airspy_calib.header == AIRSPY_FLASH_CALIB_HEADER)
     {
-      const int invppb = 1000000000;
-      airspy_conf->r820t_conf_rw.xtal_freq += ((int64_t)airspy_conf->r820t_conf_rw.xtal_freq * (int64_t)airspy_calib.correction_ppb + invppb / 2) / invppb;
+      airspy_conf->r820t_conf_rw.xtal_freq = sys_calib_r820t(airspy_conf->r820t_conf_rw.xtal_freq, airspy_calib.correction_ppb);
     }
   }
 

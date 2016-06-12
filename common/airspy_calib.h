@@ -29,7 +29,6 @@ extern "C"
 
 #define AIRSPY_FLASH_CALIB_OFFSET (0x20000) /* After 128KB (Reserved for Firmware + 64KB Spare) */
 #define AIRSPY_FLASH_CALIB_HEADER (0xCA1B0001)
-#define AIRSPY_FLASH_CALIB_SI5351C_REG_VAL_MAX (32)
 
 /* For each configuration the index corresponds to uint32_t */
 typedef struct
@@ -37,14 +36,7 @@ typedef struct
   uint32_t header; /* Shall be equal to AIRSPY_FLASH_CALIB_HEADER */
   uint32_t timestamp; /* Epoch Unix Time Stamp */
   int32_t correction_ppb;
-  /* SI5351C 8bits reg/val pairs until both reg/val = 0 (end of config) see airspy_calib_si5351c_reg_val_t */
 } airspy_calib_t;
-
-typedef struct
-{
-  uint8_t reg; /* Register Number */
-  uint8_t val; /* Value */
-} airspy_calib_si5351c_reg_val_t;
 
 #ifdef __cplusplus
 }
