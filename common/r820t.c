@@ -38,7 +38,9 @@ struct r820t_freq_range
 };
 
 #define R820T_READ_MAX_DATA 32
+#define R820T_INIT_NB_REGS (32-5)
 uint8_t r820t_read_data[R820T_READ_MAX_DATA]; /* Buffer for data read from I2C */
+uint8_t r820t_state_standby = 1; /* 1=standby/power off 0=r820t initialized/power on */
 
 /* Tuner frequency ranges
 "Copyright (C) 2013 Mauro Carvalho Chehab"
@@ -266,7 +268,13 @@ __attribute__ ((always_inline)) static inline bool r820t_is_power_enabled(void)
   value = ((GPIO_SET(port_num) & pin_num) != 0);
   if(value == 1)
   {
-    return true;
+    if(r820t_state_standby == 0)
+    {
+      return true;
+    } else
+    {
+      return false;
+    }
   } else
   {
     return false;
@@ -673,17 +681,26 @@ int r820t_calibrate(r820t_priv_t *priv)
 int r820t_init(r820t_priv_t *priv, const uint32_t if_freq)
 {
   int rc;
+  uint32_t saved_freq;
 
+  r820t_state_standby = 0;
   priv->if_freq = if_freq;
   /* Initialize registers */
-  airspy_r820t_write(REG_SHADOW_START, priv->regs, NUM_REGS);
-
+  airspy_r820t_write(REG_SHADOW_START, priv->regs, R820T_INIT_NB_REGS);
   r820t_write_reg_mask(priv, 0x12, 0x00, 0xe0);
 
+  r820t_set_freq(priv, priv->freq);
+
   /* Calibrate the IF filter */
+  saved_freq = priv->freq;
   rc = r820t_calibrate(priv);
+  priv->freq = saved_freq;
   if (rc < 0)
-    return rc;
+  {
+    saved_freq = priv->freq;
+    r820t_calibrate(priv);
+    priv->freq = saved_freq;
+  }
 
   /* Restore freq as it has been modified by r820t_calibrate() */
   rc = r820t_set_freq(priv, priv->freq);
@@ -726,6 +743,7 @@ int r820t_standby(void)
   airspy_r820t_write_direct(0x11, 0x03);
   airspy_r820t_write_direct(0x17, 0xF4);
   airspy_r820t_write_direct(0x19, 0x0C);
+  r820t_state_standby = 1;
 
   return 0;
 }
