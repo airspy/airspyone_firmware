@@ -56,11 +56,11 @@ airspy_mini_conf_t __attribute__ ((section(".nocopy_data"))) airspy_mini_conf =
 
     /* i2c_conf_t i2c_conf = */
     {
-        /* Configure I2C0 & IC21 to 400kHz (144MHz/(2*180)=0.4MHz) */
+        /* Configure I2C0 & IC21 to 400kHz (120MHz/(2*150)=0.4MHz) */
         /* Also i2c0_pll1_ls_hs_conf_val => I2C val (For 400KHz) = (5*FreqPLL1MHz)/4 */
-        180, /* uint16_t i2c0_pll1_ls_hs_conf_val; Si5351C */
-        180, /* uint16_t i2c1_pll1_hs_conf_val; R820T2 */
-        /* Configure I2C1 to 400kHz (72MHz/(2*90)=0.4MHz) */
+        150, /* uint16_t i2c0_pll1_ls_hs_conf_val; Si5351C */
+        150, /* uint16_t i2c1_pll1_hs_conf_val; R820T2 */
+        /* Configure I2C1 to 400kHz (48MHz/(2*90)=0.266MHz) */
         90, /* uint16_t i2c1_pll1_ls_conf_val; R820T2 */
         0, /* padding */
         0 /* spare */
@@ -77,13 +77,13 @@ airspy_mini_conf_t __attribute__ ((section(".nocopy_data"))) airspy_mini_conf =
       (0 << 0) | (0 << 12), // uint32_t pll0_usb_npdiv; PDEC NDEC
       (PLL0USB_CTRL_FLAG_DIRECT_I | PLL0USB_CTRL_FLAG_DIRECT_O), // uint32_t pll0usb_ctrl_flags; DirectI=PLL0USB_CTRL_FLAG_DIRECT_I or/and DirectO=PLL0USB_CTRL_FLAG_DIRECT_O */
       /* PLL1 clock from GP_CLKIN */
-      /* PLL1 High Speed Mode Set PLL1 to 24MHz * (5+1) = 144MHz */
+      /* PLL1 High Speed Mode Set PLL1 to 24MHz * (4+1) = 120MHz */
       {
         0, // uint32_t pll1_hs_psel;
         0, // uint32_t pll1_hs_nsel;
-        5, // uint32_t pll1_hs_msel;
+        4, // uint32_t pll1_hs_msel;
       },
-      /* PLL1 Low Speed Mode => Set PLL1 to 24MHz * (3+1) = 72MHz */
+      /* PLL1 Low Speed Mode => Set PLL1 to 24MHz * (1+1) = 48MHz */
       {
         0, // uint32_t pll1_ls_psel;
         0, // uint32_t pll1_ls_nsel;
