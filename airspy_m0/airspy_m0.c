@@ -195,6 +195,9 @@ int main(void)
   usb_descriptor_serial_number_t serial_number;
   airspy_usb_req_init();
 
+  /* R820T Startup */
+  r820t_startup(&airspy_conf->r820t_conf_rw);
+
   usb_set_configuration_changed_cb(usb_configuration_changed);
   usb_peripheral_reset();
 

@@ -50,6 +50,7 @@ typedef struct
 void airspy_r820t_write_single(r820t_priv_t *priv, uint8_t reg, uint8_t val);
 uint8_t airspy_r820t_read_single(r820t_priv_t *priv, uint8_t reg);
 
+void r820t_startup(r820t_priv_t *priv);
 int r820t_init(r820t_priv_t *priv, const uint32_t if_freq);
 int r820t_set_freq(r820t_priv_t *priv, uint32_t freq);
 int r820t_set_lna_gain(r820t_priv_t *priv, uint8_t gain_index);

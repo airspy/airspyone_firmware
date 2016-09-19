@@ -27,6 +27,8 @@
 #include <airspy_core.h>
 #include <r820t.h>
 
+static int r820t_read_cache_reg(r820t_priv_t *priv, int reg);
+
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
 
 /* Tuner frequency ranges */
@@ -282,9 +284,9 @@ __attribute__ ((always_inline)) static inline bool r820t_is_power_enabled(void)
 }
 
 /*
- * Write to one or more contiguous registers starting from reg.
+ * Write regs 5 to 32 (R820T_INIT_NB_REGS values) using data parameter and write last reg to 0
  */
-void airspy_r820t_write(uint8_t start_reg, const uint8_t* data, const uint8_t data_count)
+void airspy_r820t_write_init(const uint8_t* data)
 {
   uint_fast8_t i;
 
@@ -292,10 +294,12 @@ void airspy_r820t_write(uint8_t start_reg, const uint8_t* data, const uint8_t da
   {
     i2c1_tx_start();
     i2c1_tx_byte(R820T_I2C_ADDR | I2C_WRITE);
-    i2c1_tx_byte(start_reg);
+    i2c1_tx_byte(REG_SHADOW_START); /* Start reg */
 
-    for (i = 0; i < data_count; i++)
+    for (i = 0; i < R820T_INIT_NB_REGS; i++)
       i2c1_tx_byte(data[i]);
+
+    i2c1_tx_byte(0); /* Set last reg to 0 (errata r820t) */
 
     i2c1_stop();
   }
@@ -313,7 +317,7 @@ static uint8_t r82xx_bitrev(uint8_t byte)
  return (lut[byte & 0xf] << 4) | lut[byte >> 4];
 }
 
-void airspy_r820t_read(uint8_t* const data, const uint8_t data_count)
+void airspy_r820t_read(r820t_priv_t *priv, uint8_t* const data, const uint8_t data_count)
 {
   int i;
   uint32_t val;
@@ -344,10 +348,10 @@ void airspy_r820t_read(uint8_t* const data, const uint8_t data_count)
     i2c1_stop();
   }else
   {
-    /* Data cannot be read when R820T is OFF, just clear the buffer */
+    /* Data cannot be read when R820T is OFF, just read cache */
     for(i=0; i<data_count; i++)
     {
-      data[i] = 0;
+      data[i] = r820t_read_cache_reg(priv, i);
     }
   }
   
@@ -370,11 +374,10 @@ void airspy_r820t_write_single(r820t_priv_t *priv, uint8_t reg, uint8_t val)
 /* read single register */
 uint8_t airspy_r820t_read_single(r820t_priv_t *priv, uint8_t reg)
 {
-  (void)priv;
   uint8_t val;
 
   /* read the value */
-  airspy_r820t_read(r820t_read_data, reg+1);
+  airspy_r820t_read(priv, r820t_read_data, reg+1);
   val = r820t_read_data[reg];
   return val;
 }
@@ -408,10 +411,10 @@ static int r820t_write_reg_mask(r820t_priv_t *priv, uint8_t reg, uint8_t val, ui
   return r820t_write_reg(priv, reg, val);
 }
 
-static int r820t_read(uint8_t *val, int len)
+static int r820t_read(r820t_priv_t *priv, uint8_t *val, int len)
 {
   /* reg not used and assumed to be always 0 because start from reg0 to reg0+len */
-  airspy_r820t_read(val, len);
+  airspy_r820t_read(priv, val, len);
 
   return 0;
 }
@@ -666,7 +669,7 @@ int r820t_calibrate(r820t_priv_t *priv)
       return rc;
 
     /* Check if calibration worked */
-    rc = r820t_read(data, sizeof(data));
+    rc = r820t_read(priv, data, sizeof(data));
     if (rc < 0)
       return rc;
 
@@ -686,8 +689,7 @@ int r820t_init(r820t_priv_t *priv, const uint32_t if_freq)
   r820t_state_standby = 0;
   priv->if_freq = if_freq;
   /* Initialize registers */
-  airspy_r820t_write(REG_SHADOW_START, priv->regs, R820T_INIT_NB_REGS);
-  r820t_write_reg_mask(priv, 0x12, 0x00, 0xe0);
+  airspy_r820t_write_init(priv->regs);
 
   r820t_set_freq(priv, priv->freq);
 
@@ -705,6 +707,15 @@ int r820t_init(r820t_priv_t *priv, const uint32_t if_freq)
   /* Restore freq as it has been modified by r820t_calibrate() */
   rc = r820t_set_freq(priv, priv->freq);
   return rc;
+}
+
+void r820t_startup(r820t_priv_t *priv)
+{
+  r820t_state_standby = 0;
+  /* Initialize registers */
+  airspy_r820t_write_init(priv->regs);
+  /* Enter in Standby mode */
+  r820t_standby();
 }
 
 void r820t_set_if_bandwidth(r820t_priv_t *priv, uint8_t bw)
