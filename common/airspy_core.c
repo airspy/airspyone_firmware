@@ -35,13 +35,23 @@
 #include <libopencm3/lpc43xx/ssp.h>
 #include <libopencm3/lpc43xx/rgu.h>
 
-#define ROMFLASH_BASE_ADDR (0x80000000)
+#define ROMFLASH_BASE_ADDR (0x80000000UL)
 
 #define WAIT_CPU_CLOCK_INIT_DELAY (10000)  /* Wait about 150us@200Mhz, 300us@96MHz & 2400us@12Mhz (about 3cycles*20000) */
 #define WAIT_R820T_POWER_ON_DELAY (100000) /* Wait about 1500us@200Mhz, 3000us@96MHz & 24000us@12Mhz (about 3cycles*100000) */
 
-extern airspy_conf_t airspy_mini_conf;
-extern airspy_conf_t airspy_nos_conf;
+typedef struct 
+{
+  airspy_conf_t airspy_conf;
+}airspy_nos_conf_t;
+
+typedef struct 
+{
+  airspy_conf_t airspy_conf;
+}airspy_mini_conf_t;
+
+extern airspy_mini_conf_t __attribute__ ((section(".nocopy_data"))) airspy_mini_conf;
+extern airspy_nos_conf_t __attribute__ ((section(".nocopy_data"))) airspy_nos_conf;
 
 airspy_conf_t* airspy_conf = (airspy_conf_t*)AIRSPY_CONF_SRAM_ADDR;
 
