@@ -415,7 +415,7 @@ const usb_transfer_stage_t stage)
 
   if( stage == USB_TRANSFER_STAGE_SETUP )
   {
-    if(endpoint->setup.index > 1)
+    if(endpoint->setup.index > 2)
     {
       return USB_REQUEST_STATUS_STALL;
     }else
