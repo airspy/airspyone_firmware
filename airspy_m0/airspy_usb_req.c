@@ -1,6 +1,6 @@
 /*
  * Copyright 2012 Jared Boone
- * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
+ * Copyright 2013-2018 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy (based on HackRF project).
  *
@@ -415,7 +415,7 @@ const usb_transfer_stage_t stage)
 
   if( stage == USB_TRANSFER_STAGE_SETUP )
   {
-    if(endpoint->setup.index > 1)
+    if(endpoint->setup.index > AIRSPY_PACKING_TIMESTAMP)
     {
       return USB_REQUEST_STATUS_STALL;
     }else

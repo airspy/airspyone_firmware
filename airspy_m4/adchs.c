@@ -88,7 +88,7 @@ void ADCHS_DMA_init(uint32_t dest_addr, uint8_t packed)
     /* Modulo with round robin last LLI point to First in infinite loop */
     adchs_dma_lli[i].next_lli = (uint32_t)(&adchs_dma_lli[(i+1)%ADCHS_DMA_NUM_LLI]);
 
-    if (packed==2) {
+    if (packed == AIRSPY_PACKING_TIMESTAMP) {
      adchs_dma_lli[i].dst_addr+=4;
      adchs_dma_lli[i].control = ( (nb_dma_transfer-1) << 0) |
                                (0x2 << 12)  |
