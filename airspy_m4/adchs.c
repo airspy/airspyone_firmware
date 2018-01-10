@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
+ * Copyright 2013-2018 Benjamin Vernoux <bvernoux@airspy.com>
  * Copyright 2015 Ian Gilmour <ian@sdrsharp.com>
  *
  * This file is part of AirSpy.
@@ -85,10 +85,23 @@ void ADCHS_DMA_init(uint32_t dest_addr, uint8_t packed)
   {
     adchs_dma_lli[i].src_addr = ADCHS_DMA_READ_SRC;
     adchs_dma_lli[i].dst_addr = ((uint32_t)dest_addr) + (nb_dma_transfer*4*i);
-    /* Modulo with round rubin last LLI point to First in infinite loop */
+    /* Modulo with round robin last LLI point to First in infinite loop */
     adchs_dma_lli[i].next_lli = (uint32_t)(&adchs_dma_lli[(i+1)%ADCHS_DMA_NUM_LLI]);
 
-    adchs_dma_lli[i].control = ( (nb_dma_transfer) << 0) |
+    if (packed==2) {
+     adchs_dma_lli[i].dst_addr+=4;
+     adchs_dma_lli[i].control = ( (nb_dma_transfer-1) << 0) |
+                               (0x2 << 12)  |
+                               (0x1 << 15)  | // can't do the 8x burst, 4x is good enough. 8x would require skipping 16 bytes
+                               (0x2 << 18)  |
+                               (0x2 << 21)  |
+                               (0x1 << 24)  |
+                               (0x1 << 25)  |
+                               (0x0 << 26)  |
+                               (0x1 << 27)  |
+                               (0x0UL << 31);
+    } else {
+     adchs_dma_lli[i].control = ( (nb_dma_transfer) << 0) |
                                (0x2 << 12)  |
                                (0x2 << 15)  |
                                (0x2 << 18)  |
@@ -98,6 +111,7 @@ void ADCHS_DMA_init(uint32_t dest_addr, uint8_t packed)
                                (0x0 << 26)  |
                                (0x1 << 27)  |
                                (0x0UL << 31);
+    }
   }
 
   if(packed)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
+ * Copyright 2013-2018 Benjamin Vernoux <bvernoux@airspy.com>
  *
  * This file is part of AirSpy.
  *
@@ -192,6 +192,14 @@ typedef struct
     uint32_t raw;
   };
 } airspy_mcore_t;
+
+typedef enum
+{
+  AIRSPY_PACKING_OFF = 0, /* No Packing */
+  AIRSPY_PACKING_ON = 1, /* Packing(16bits=>12bits) Only */
+  AIRSPY_PACKING_TIMESTAMP = 2 /* Packing(16bits=>12bits) + Timestamp on each frame */
+  /* Max Value shall not exceed 255/8bits as used by ADCHS_DMA_init() & set_packing_state() */
+} airspy_packing_type;
 
 void delay(uint32_t duration);
 

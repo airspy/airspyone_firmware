@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2016 Benjamin Vernoux <bvernoux@airspy.com>
+ * Copyright 2013-2018 Benjamin Vernoux <bvernoux@airspy.com>
  * Copyright 2015 Ian Gilmour <ian@sdrsharp.com>
  *
  * This file is part of AirSpy.
@@ -49,6 +49,8 @@
 #undef DMA_ISR_DEBUG
 //#define DMA_ISR_DEBUG
 
+#define DATA_PACKED_BUFFER_LEN ((ADCHS_DATA_TRANSFER_SIZE_BYTE/2)/16*12)
+
 #define USB_DATA_TRANSFER_SIZE_BYTE (ADCHS_DATA_TRANSFER_SIZE_BYTE)
 #define USB_BULK_BUFFER_MASK ((32768) - 1)
 #define get_usb_buffer_offset() (usb_bulk_buffer_offset[0])
@@ -73,7 +75,7 @@ extern uint32_t cm0_data_share; /* defined in linker script */
 volatile int adchs_stopped = 0;
 volatile int adchs_started = 0;
 
-volatile int use_packing = 0;
+volatile airspy_packing_type use_packing = AIRSPY_PACKING_OFF;
 
 volatile uint32_t *usb_bulk_buffer_offset = &cm4_data_share;
 volatile uint32_t *usb_bulk_buffer_length = ((&cm4_data_share)+1);
@@ -86,6 +88,8 @@ volatile airspy_mcore_t *set_samplerate = (airspy_mcore_t *)((&cm0_data_share)+1
 volatile airspy_mcore_t *set_packing = (airspy_mcore_t *)((&cm0_data_share)+2);
 
 volatile int first_start = 0;
+
+volatile int framecounter = 0;
 
 /*
 uint32_t nb_cycles[5] = { 0 };
@@ -168,14 +172,14 @@ __attribute__ ((always_inline)) static void pack(uint32_t* input, uint32_t* outp
 
 static __inline__ void clr_usb_buffer_offset(void)
 {  
-  if(use_packing)
+  if(use_packing == AIRSPY_PACKING_OFF)
+  {
+    usb_bulk_buffer_offset[0] = ADCHS_DATA_TRANSFER_SIZE_BYTE;
+  }
+  else /* Other Case Packing is ON */
   {
     usb_bulk_buffer_offset[0] = ADCHS_DATA_TRANSFER_SIZE_BYTE / 2;
     usb_bulk_buffer_offset_m4[0] = ADCHS_DATA_TRANSFER_SIZE_BYTE;
-  }
-  else
-  {
-    usb_bulk_buffer_offset[0] = ADCHS_DATA_TRANSFER_SIZE_BYTE;
   }
   
   last_offset_m4 = 0;
@@ -220,13 +224,16 @@ void set_packing_state(uint8_t state)
 {
   if(state == 0)
   {
-    use_packing = 0;
-    *usb_bulk_buffer_length = 0x4000;
-  }
-  else
+    use_packing = AIRSPY_PACKING_OFF;
+    *usb_bulk_buffer_length = ADCHS_DATA_TRANSFER_SIZE_BYTE;
+  } else if (state == 1)
   {
-    use_packing = 1;
-    *usb_bulk_buffer_length = 0x1800;
+    use_packing = AIRSPY_PACKING_ON;
+    *usb_bulk_buffer_length = DATA_PACKED_BUFFER_LEN;
+  } else if (state == 2)
+  {
+    use_packing = AIRSPY_PACKING_TIMESTAMP;
+    *usb_bulk_buffer_length = DATA_PACKED_BUFFER_LEN;
   }
 }
 
@@ -251,6 +258,7 @@ void adchs_start(uint8_t chan_num)
     dst[i] = 0;
   }
   clr_usb_buffer_offset();
+  framecounter = 0;
 
   ADCHS_init();
   ADCHS_desc_init(chan_num);
@@ -329,11 +337,19 @@ void dma_isr(void)
   {
     LPC_GPDMA->INTTCCLEAR |= INTTC0; /* Clear Chan0 */
 
-    if(use_packing)
+    if(use_packing == AIRSPY_PACKING_TIMESTAMP)
     {
-        set_usb_buffer_offset_m4( inc_mask_usb_buffer_offset_m4(get_usb_buffer_offset_m4(), 8192));    
-    }
-    else
+        uint32_t ofs = get_usb_buffer_offset_m4();
+        uint32_t* hdr = (uint32_t*)(usb_bulk_buffer+ofs);
+        uint32_t ads = LPC_ADCHS->STATUS0;
+        LPC_ADCHS->CLR_STAT0 = ads;
+        hdr[0]=framecounter|(ads<<16);
+        set_usb_buffer_offset_m4( inc_mask_usb_buffer_offset_m4(ofs, USB_DATA_TRANSFER_SIZE_BYTE/2));
+        framecounter=(framecounter+1)&4095;
+    } else if(use_packing == AIRSPY_PACKING_ON)
+    {
+        set_usb_buffer_offset_m4( inc_mask_usb_buffer_offset_m4(get_usb_buffer_offset_m4(), USB_DATA_TRANSFER_SIZE_BYTE/2));
+    } else // default AIRSPY_PACKING_OFF
     {
         set_usb_buffer_offset( inc_mask_usb_buffer_offset(get_usb_buffer_offset(), USB_DATA_TRANSFER_SIZE_BYTE) );
         signal_sev();
@@ -429,10 +445,10 @@ void m0s_startup(void)
 {
   uint32_t *src, *dest;
 
-  /* Halt M0 core (in case it was running) */
+  /* Halt M0s core (in case it was running) */
   ipc_halt_m0s();
 
-  /* Copy M0 code from M4 embedded addr to final addr M0 */
+  /* Copy M0s code from M4 embedded addr to final addr M0s */
   dest = &cm0s_exec_baseaddr;
   for(src = (uint32_t *)&m0s_bin[0]; src < (uint32_t *)(&m0s_bin[0]+m0s_bin_size); )
   {
@@ -466,8 +482,8 @@ int main(void)
   adchs_stopped = 1;
   adchs_started = 0;
   
-  use_packing = 0;
-  *usb_bulk_buffer_length = 0x4000;
+  use_packing = AIRSPY_PACKING_OFF;
+  *usb_bulk_buffer_length = ADCHS_DATA_TRANSFER_SIZE_BYTE;
 
   ack_start_stop_adchs();
   ack_samplerate();
