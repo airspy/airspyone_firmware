@@ -384,7 +384,8 @@ uint8_t airspy_r820t_read_single(r820t_priv_t *priv, uint8_t reg)
 
 static int r820t_write_reg(r820t_priv_t *priv, uint8_t reg, uint8_t val)
 {
-  
+  if (r820t_read_cache_reg(priv, reg) == val)
+    return 0;
   airspy_r820t_write_single(priv, reg, val);
   return 0;
 }
