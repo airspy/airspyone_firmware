@@ -1,0 +1,1350 @@
+Archive member included because of file (symbol)
+
+../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+                              airspy_core.o (gpio_set)
+../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+                              airspy_core.o (scu_pinmux)
+../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+                              airspy_core.o (i2c0_init)
+../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+                              w25q80bv.o (ssp_init)
+../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+                              airspy_m4.o (ipc_halt_m0)
+../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+                              (reset_handler)
+../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+                              airspy_m4.o (nvic_enable_irq)
+c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_aeabi_ldivmod.o)
+                              airspy_core.o (__aeabi_ldivmod)
+c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(bpabi.o)
+                              c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_aeabi_ldivmod.o) (__gnu_ldivmod_helper)
+c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_dvmd_tls.o)
+                              c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_aeabi_ldivmod.o) (__aeabi_ldiv0)
+c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_divdi3.o)
+                              c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(bpabi.o) (__divdi3)
+c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_udivdi3.o)
+                              c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(bpabi.o) (__udivdi3)
+
+Allocating common symbols
+Common symbol       size              file
+
+__gnu_lto_v1        0x1               airspy_m4.o
+
+Discarded input sections
+
+ .text          0x00000000        0x0 m0_bin.o
+ .data          0x00000000        0x0 m0_bin.o
+ .bss           0x00000000        0x0 m0_bin.o
+ .text          0x00000000        0x0 m0s_bin.o
+ .data          0x00000000        0x0 m0s_bin.o
+ .bss           0x00000000        0x0 m0s_bin.o
+ .rodata        0x00000000      0x270 m0s_bin.o
+ .ARM.attributes
+                0x00000000       0x27 m0s_bin.o
+ .text          0x00000000        0x0 airspy_m4.o
+ .data          0x00000000        0x0 airspy_m4.o
+ .bss           0x00000000        0x0 airspy_m4.o
+ .gnu.lto_.jmpfuncs.f192e8d7
+                0x00000000       0x58 airspy_m4.o
+ .gnu.lto_.inline.f192e8d7
+                0x00000000       0xdc airspy_m4.o
+ .gnu.lto_.pureconst.f192e8d7
+                0x00000000       0x2a airspy_m4.o
+ .gnu.lto_set_packing_state.part.0.f192e8d7
+                0x00000000      0x153 airspy_m4.o
+ .gnu.lto_dma_isr.part.1.f192e8d7
+                0x00000000      0x1b0 airspy_m4.o
+ .gnu.lto_set_packing_state.f192e8d7
+                0x00000000      0x193 airspy_m4.o
+ .gnu.lto_adchs_start.f192e8d7
+                0x00000000      0x4cc airspy_m4.o
+ .gnu.lto_adchs_stop.f192e8d7
+                0x00000000       0xc0 airspy_m4.o
+ .gnu.lto_dma_isr.f192e8d7
+                0x00000000      0x2ad airspy_m4.o
+ .gnu.lto_m0core_isr.f192e8d7
+                0x00000000      0x6fe airspy_m4.o
+ .gnu.lto_m0_startup.f192e8d7
+                0x00000000      0x26b airspy_m4.o
+ .gnu.lto_m0s_startup.f192e8d7
+                0x00000000      0x26a airspy_m4.o
+ .gnu.lto_scs_dwt_cycle_counter_enabled.f192e8d7
+                0x00000000      0x12c airspy_m4.o
+ .gnu.lto_main.f192e8d7
+                0x00000000      0x84a airspy_m4.o
+ .gnu.lto_.cgraph.f192e8d7
+                0x00000000      0x12d airspy_m4.o
+ .gnu.lto_.vars.f192e8d7
+                0x00000000       0x60 airspy_m4.o
+ .gnu.lto_.refs.f192e8d7
+                0x00000000       0x76 airspy_m4.o
+ .gnu.lto_.statics.f192e8d7
+                0x00000000       0x14 airspy_m4.o
+ .gnu.lto_.decls.f192e8d7
+                0x00000000     0x1c77 airspy_m4.o
+ .gnu.lto_.symtab.f192e8d7
+                0x00000000      0x593 airspy_m4.o
+ .gnu.lto_.opts
+                0x00000000       0x84 airspy_m4.o
+ .text.m0s_startup
+                0x00000000       0x64 airspy_m4.o
+ .text.scs_dwt_cycle_counter_enabled
+                0x00000000       0x24 airspy_m4.o
+ .rodata.usb_bulk_buffer
+                0x00000000        0x4 airspy_m4.o
+ COMMON         0x00000000        0x1 airspy_m4.o
+ .text          0x00000000        0x0 adchs.o
+ .data          0x00000000        0x0 adchs.o
+ .bss           0x00000000        0x0 adchs.o
+ .gnu.lto_.jmpfuncs.f1928237
+                0x00000000       0x23 adchs.o
+ .gnu.lto_.inline.f1928237
+                0x00000000       0x8b adchs.o
+ .gnu.lto_.pureconst.f1928237
+                0x00000000       0x20 adchs.o
+ .gnu.lto_ADCHS_DMA_init_stop.f1928237
+                0x00000000      0x210 adchs.o
+ .gnu.lto_ADCHS_DMA_init.f1928237
+                0x00000000      0x4d4 adchs.o
+ .gnu.lto_ADCHS_init_stop.f1928237
+                0x00000000      0x234 adchs.o
+ .gnu.lto_ADCHS_deinit.f1928237
+                0x00000000       0xd8 adchs.o
+ .gnu.lto_ADCHS_init.f1928237
+                0x00000000      0x22d adchs.o
+ .gnu.lto_ADCHS_desc_init.f1928237
+                0x00000000      0x17f adchs.o
+ .gnu.lto_.cgraph.f1928237
+                0x00000000       0x48 adchs.o
+ .gnu.lto_.vars.f1928237
+                0x00000000       0x1d adchs.o
+ .gnu.lto_.refs.f1928237
+                0x00000000       0x23 adchs.o
+ .gnu.lto_.statics.f1928237
+                0x00000000       0x14 adchs.o
+ .gnu.lto_.decls.f1928237
+                0x00000000      0xd79 adchs.o
+ .gnu.lto_.symtab.f1928237
+                0x00000000       0xfa adchs.o
+ .gnu.lto_.opts
+                0x00000000       0x84 adchs.o
+ .data.adchs_data_buffer_filled
+                0x00000000        0x4 adchs.o
+ .text          0x00000000        0x0 fault_handler.o
+ .data          0x00000000        0x0 fault_handler.o
+ .bss           0x00000000        0x0 fault_handler.o
+ .gnu.lto_.jmpfuncs.f192a565
+                0x00000000       0x1e fault_handler.o
+ .gnu.lto_.inline.f192a565
+                0x00000000       0x3e fault_handler.o
+ .gnu.lto_.pureconst.f192a565
+                0x00000000       0x1e fault_handler.o
+ .gnu.lto_hard_fault_handler.f192a565
+                0x00000000       0xe1 fault_handler.o
+ .gnu.lto_hard_fault_handler_c.f192a565
+                0x00000000      0x101 fault_handler.o
+ .gnu.lto_mem_manage_handler.f192a565
+                0x00000000       0x88 fault_handler.o
+ .gnu.lto_bus_fault_handler.f192a565
+                0x00000000       0x88 fault_handler.o
+ .gnu.lto_usage_fault_handler.f192a565
+                0x00000000       0x88 fault_handler.o
+ .gnu.lto_.cgraph.f192a565
+                0x00000000       0x3c fault_handler.o
+ .gnu.lto_.vars.f192a565
+                0x00000000       0x19 fault_handler.o
+ .gnu.lto_.refs.f192a565
+                0x00000000       0x17 fault_handler.o
+ .gnu.lto_.statics.f192a565
+                0x00000000       0x14 fault_handler.o
+ .gnu.lto_.decls.f192a565
+                0x00000000      0x3c3 fault_handler.o
+ .gnu.lto_.symtab.f192a565
+                0x00000000       0xcf fault_handler.o
+ .gnu.lto_.opts
+                0x00000000       0x84 fault_handler.o
+ .text          0x00000000        0x0 airspy_core.o
+ .data          0x00000000        0x0 airspy_core.o
+ .bss           0x00000000        0x0 airspy_core.o
+ .gnu.lto_.jmpfuncs.f192878d
+                0x00000000       0x67 airspy_core.o
+ .gnu.lto_.inline.f192878d
+                0x00000000       0xe5 airspy_core.o
+ .gnu.lto_.pureconst.f192878d
+                0x00000000       0x30 airspy_core.o
+ .gnu.lto_sys_clock_samplerate.part.0.f192878d
+                0x00000000      0x26e airspy_core.o
+ .gnu.lto_delay.f192878d
+                0x00000000      0x162 airspy_core.o
+ .gnu.lto_cpu_reset.f192878d
+                0x00000000       0xb8 airspy_core.o
+ .gnu.lto_sys_clock_samplerate.f192878d
+                0x00000000      0x370 airspy_core.o
+ .gnu.lto_sys_calib_r820t.f192878d
+                0x00000000      0x1d8 airspy_core.o
+ .gnu.lto_cpu_clock_pll1_low_speed.f192878d
+                0x00000000      0x2c6 airspy_core.o
+ .gnu.lto_sys_clock_init.f192878d
+                0x00000000     0x1402 airspy_core.o
+ .gnu.lto_cpu_clock_pll1_high_speed.f192878d
+                0x00000000      0x3fc airspy_core.o
+ .gnu.lto_led_on.f192878d
+                0x00000000       0xab airspy_core.o
+ .gnu.lto_led_off.f192878d
+                0x00000000       0xab airspy_core.o
+ .gnu.lto_enable_r820t_power.f192878d
+                0x00000000      0x190 airspy_core.o
+ .gnu.lto_enable_biast_power.f192878d
+                0x00000000       0xac airspy_core.o
+ .gnu.lto_disable_biast_power.f192878d
+                0x00000000       0xac airspy_core.o
+ .gnu.lto_pin_setup.f192878d
+                0x00000000      0x2b3 airspy_core.o
+ .gnu.lto_.cgraph.f192878d
+                0x00000000      0x12a airspy_core.o
+ .gnu.lto_.vars.f192878d
+                0x00000000       0x30 airspy_core.o
+ .gnu.lto_.refs.f192878d
+                0x00000000       0x33 airspy_core.o
+ .gnu.lto_.statics.f192878d
+                0x00000000       0x14 airspy_core.o
+ .gnu.lto_.decls.f192878d
+                0x00000000     0x1e82 airspy_core.o
+ .gnu.lto_.symtab.f192878d
+                0x00000000      0x447 airspy_core.o
+ .gnu.lto_.opts
+                0x00000000       0x84 airspy_core.o
+ .text.delay    0x00000000       0x2c airspy_core.o
+ .text.cpu_reset
+                0x00000000       0x10 airspy_core.o
+ .text.sys_calib_r820t
+                0x00000000       0x38 airspy_core.o
+ .text.enable_biast_power
+                0x00000000       0x10 airspy_core.o
+ .text          0x00000000        0x0 si5351c.o
+ .data          0x00000000        0x0 si5351c.o
+ .bss           0x00000000        0x0 si5351c.o
+ .gnu.lto_.jmpfuncs.f192aa69
+                0x00000000       0x66 si5351c.o
+ .gnu.lto_.inline.f192aa69
+                0x00000000       0xa5 si5351c.o
+ .gnu.lto_.pureconst.f192aa69
+                0x00000000       0x29 si5351c.o
+ .gnu.lto_si5351c_airspy_config.f192aa69
+                0x00000000      0x269 si5351c.o
+ .gnu.lto_si5351c_write_single.f192aa69
+                0x00000000      0x113 si5351c.o
+ .gnu.lto_si5351c_read_single.f192aa69
+                0x00000000      0x143 si5351c.o
+ .gnu.lto_si5351c_write.f192aa69
+                0x00000000      0x1fc si5351c.o
+ .gnu.lto_si5351c_disable_all_outputs.f192aa69
+                0x00000000      0x111 si5351c.o
+ .gnu.lto_si5351c_disable_oeb_pin_control.f192aa69
+                0x00000000      0x2ac si5351c.o
+ .gnu.lto_si5351c_power_down_all_clocks.f192aa69
+                0x00000000      0x112 si5351c.o
+ .gnu.lto_si5351c_init_fanout.f192aa69
+                0x00000000      0x111 si5351c.o
+ .gnu.lto_si5351c_init_xtal.f192aa69
+                0x00000000      0x110 si5351c.o
+ .gnu.lto_si5351c_init_pll_soft_reset.f192aa69
+                0x00000000      0x111 si5351c.o
+ .gnu.lto_si5351c_enable_clock_outputs.f192aa69
+                0x00000000      0x112 si5351c.o
+ .gnu.lto_.cgraph.f192aa69
+                0x00000000       0xeb si5351c.o
+ .gnu.lto_.vars.f192aa69
+                0x00000000       0x2b si5351c.o
+ .gnu.lto_.refs.f192aa69
+                0x00000000       0x28 si5351c.o
+ .gnu.lto_.statics.f192aa69
+                0x00000000       0x14 si5351c.o
+ .gnu.lto_.decls.f192aa69
+                0x00000000      0x78a si5351c.o
+ .gnu.lto_.symtab.f192aa69
+                0x00000000      0x219 si5351c.o
+ .gnu.lto_.opts
+                0x00000000       0x84 si5351c.o
+ .text.si5351c_write_single
+                0x00000000       0x24 si5351c.o
+ .text          0x00000000        0x0 w25q80bv.o
+ .data          0x00000000        0x0 w25q80bv.o
+ .bss           0x00000000        0x0 w25q80bv.o
+ .gnu.lto_.jmpfuncs.f1928eb0
+                0x00000000      0x106 w25q80bv.o
+ .gnu.lto_.inline.f1928eb0
+                0x00000000      0x15e w25q80bv.o
+ .gnu.lto_.pureconst.f1928eb0
+                0x00000000       0x30 w25q80bv.o
+ .gnu.lto_w25q80bv_page_program.part.0.f1928eb0
+                0x00000000      0x1ce w25q80bv.o
+ .gnu.lto_w25q80bv_get_status.f1928eb0
+                0x00000000      0x147 w25q80bv.o
+ .gnu.lto_w25q80bv_get_device_id.f1928eb0
+                0x00000000      0x161 w25q80bv.o
+ .gnu.lto_w25q80bv_setup.f1928eb0
+                0x00000000      0x318 w25q80bv.o
+ .gnu.lto_w25q80bv_get_unique_id.f1928eb0
+                0x00000000      0x3b4 w25q80bv.o
+ .gnu.lto_w25q80bv_wait_while_busy.f1928eb0
+                0x00000000      0x13c w25q80bv.o
+ .gnu.lto_w25q80bv_read.part.2.f1928eb0
+                0x00000000      0x321 w25q80bv.o
+ .gnu.lto_w25q80bv_write_enable.f1928eb0
+                0x00000000       0xda w25q80bv.o
+ .gnu.lto_w25q80bv_chip_erase.f1928eb0
+                0x00000000      0x1d5 w25q80bv.o
+ .gnu.lto_w25q80bv_sector_erase.f1928eb0
+                0x00000000      0x2d1 w25q80bv.o
+ .gnu.lto_w25q80bv_page_program.f1928eb0
+                0x00000000      0x3bf w25q80bv.o
+ .gnu.lto_w25q80bv_program.part.1.f1928eb0
+                0x00000000      0x3c7 w25q80bv.o
+ .gnu.lto_w25q80bv_program.f1928eb0
+                0x00000000      0x253 w25q80bv.o
+ .gnu.lto_w25q80bv_read.f1928eb0
+                0x00000000      0x1a6 w25q80bv.o
+ .gnu.lto_.cgraph.f1928eb0
+                0x00000000      0x1a6 w25q80bv.o
+ .gnu.lto_.vars.f1928eb0
+                0x00000000       0x19 w25q80bv.o
+ .gnu.lto_.refs.f1928eb0
+                0x00000000       0x23 w25q80bv.o
+ .gnu.lto_.statics.f1928eb0
+                0x00000000       0x14 w25q80bv.o
+ .gnu.lto_.decls.f1928eb0
+                0x00000000     0x1189 w25q80bv.o
+ .gnu.lto_.symtab.f1928eb0
+                0x00000000      0x21d w25q80bv.o
+ .gnu.lto_.opts
+                0x00000000       0x84 w25q80bv.o
+ .text.w25q80bv_get_status
+                0x00000000       0x34 w25q80bv.o
+ .text.w25q80bv_get_device_id
+                0x00000000       0x4c w25q80bv.o
+ .text.w25q80bv_setup
+                0x00000000      0x124 w25q80bv.o
+ .text.w25q80bv_get_unique_id
+                0x00000000       0xd0 w25q80bv.o
+ .text.w25q80bv_wait_while_busy
+                0x00000000        0xc w25q80bv.o
+ .text.w25q80bv_write_enable
+                0x00000000       0x30 w25q80bv.o
+ .text.w25q80bv_chip_erase
+                0x00000000       0x50 w25q80bv.o
+ .text.w25q80bv_sector_erase
+                0x00000000       0x70 w25q80bv.o
+ .text.w25q80bv_page_program
+                0x00000000       0xac w25q80bv.o
+ .text.w25q80bv_program
+                0x00000000       0xec w25q80bv.o
+ .text.w25q80bv_read
+                0x00000000       0xbc w25q80bv.o
+ .bss.device_id
+                0x00000000        0x1 w25q80bv.o
+ .debug_info    0x00000000     0x1618 w25q80bv.o
+ .debug_abbrev  0x00000000      0x2a0 w25q80bv.o
+ .debug_loc     0x00000000      0x658 w25q80bv.o
+ .debug_aranges
+                0x00000000       0x70 w25q80bv.o
+ .debug_ranges  0x00000000       0xf0 w25q80bv.o
+ .debug_line    0x00000000      0x2ec w25q80bv.o
+ .debug_str     0x00000000      0x89f w25q80bv.o
+ .comment       0x00000000       0x71 w25q80bv.o
+ .ARM.attributes
+                0x00000000       0x3b w25q80bv.o
+ .debug_frame   0x00000000      0x144 w25q80bv.o
+ .text          0x00000000        0x0 rom_iap.o
+ .data          0x00000000        0x0 rom_iap.o
+ .bss           0x00000000        0x0 rom_iap.o
+ .gnu.lto_.jmpfuncs.f192fecc
+                0x00000000       0x27 rom_iap.o
+ .gnu.lto_.inline.f192fecc
+                0x00000000       0x50 rom_iap.o
+ .gnu.lto_.pureconst.f192fecc
+                0x00000000       0x18 rom_iap.o
+ .gnu.lto_iap_is_implemented.f192fecc
+                0x00000000      0x147 rom_iap.o
+ .gnu.lto_iap_cmd_call.f192fecc
+                0x00000000      0x414 rom_iap.o
+ .gnu.lto_.cgraph.f192fecc
+                0x00000000       0x4a rom_iap.o
+ .gnu.lto_.vars.f192fecc
+                0x00000000       0x12 rom_iap.o
+ .gnu.lto_.refs.f192fecc
+                0x00000000       0x13 rom_iap.o
+ .gnu.lto_.statics.f192fecc
+                0x00000000       0x14 rom_iap.o
+ .gnu.lto_.decls.f192fecc
+                0x00000000      0x878 rom_iap.o
+ .gnu.lto_.symtab.f192fecc
+                0x00000000       0x82 rom_iap.o
+ .gnu.lto_.opts
+                0x00000000       0x84 rom_iap.o
+ .text.iap_is_implemented
+                0x00000000       0x1c rom_iap.o
+ .text.iap_cmd_call
+                0x00000000       0x6c rom_iap.o
+ .debug_info    0x00000000      0x3ae rom_iap.o
+ .debug_abbrev  0x00000000      0x1af rom_iap.o
+ .debug_loc     0x00000000       0x9c rom_iap.o
+ .debug_aranges
+                0x00000000       0x28 rom_iap.o
+ .debug_ranges  0x00000000       0x58 rom_iap.o
+ .debug_line    0x00000000      0x125 rom_iap.o
+ .debug_str     0x00000000      0x41b rom_iap.o
+ .comment       0x00000000       0x71 rom_iap.o
+ .ARM.attributes
+                0x00000000       0x3b rom_iap.o
+ .debug_frame   0x00000000       0x3c rom_iap.o
+ .text          0x00000000        0x0 signal_mcu.o
+ .data          0x00000000        0x0 signal_mcu.o
+ .bss           0x00000000        0x0 signal_mcu.o
+ .gnu.lto_.inline.f192af6a
+                0x00000000       0x12 signal_mcu.o
+ .gnu.lto_.pureconst.f192af6a
+                0x00000000       0x12 signal_mcu.o
+ .gnu.lto_.cgraph.f192af6a
+                0x00000000       0x13 signal_mcu.o
+ .gnu.lto_.vars.f192af6a
+                0x00000000       0x12 signal_mcu.o
+ .gnu.lto_.refs.f192af6a
+                0x00000000       0x13 signal_mcu.o
+ .gnu.lto_.statics.f192af6a
+                0x00000000       0x14 signal_mcu.o
+ .gnu.lto_.decls.f192af6a
+                0x00000000       0x1a signal_mcu.o
+ .gnu.lto_.symtab.f192af6a
+                0x00000000        0x0 signal_mcu.o
+ .gnu.lto_.opts
+                0x00000000       0x84 signal_mcu.o
+ .debug_line    0x00000000        0x0 signal_mcu.o
+ .comment       0x00000000       0x71 signal_mcu.o
+ .ARM.attributes
+                0x00000000       0x3b signal_mcu.o
+ .text          0x00000000        0x0 airspy_nos_conf.o
+ .data          0x00000000        0x0 airspy_nos_conf.o
+ .bss           0x00000000        0x0 airspy_nos_conf.o
+ .gnu.lto_.inline.f1928edc
+                0x00000000       0x12 airspy_nos_conf.o
+ .gnu.lto_.pureconst.f1928edc
+                0x00000000       0x12 airspy_nos_conf.o
+ .gnu.lto_.cgraph.f1928edc
+                0x00000000       0x13 airspy_nos_conf.o
+ .gnu.lto_.vars.f1928edc
+                0x00000000       0x19 airspy_nos_conf.o
+ .gnu.lto_.refs.f1928edc
+                0x00000000       0x13 airspy_nos_conf.o
+ .gnu.lto_.statics.f1928edc
+                0x00000000       0x14 airspy_nos_conf.o
+ .gnu.lto_.decls.f1928edc
+                0x00000000      0xf02 airspy_nos_conf.o
+ .gnu.lto_.symtab.f1928edc
+                0x00000000       0x1f airspy_nos_conf.o
+ .gnu.lto_.opts
+                0x00000000       0x84 airspy_nos_conf.o
+ .text          0x00000000        0x0 airspy_mini_conf.o
+ .data          0x00000000        0x0 airspy_mini_conf.o
+ .bss           0x00000000        0x0 airspy_mini_conf.o
+ .gnu.lto_.inline.f192c271
+                0x00000000       0x12 airspy_mini_conf.o
+ .gnu.lto_.pureconst.f192c271
+                0x00000000       0x12 airspy_mini_conf.o
+ .gnu.lto_.cgraph.f192c271
+                0x00000000       0x13 airspy_mini_conf.o
+ .gnu.lto_.vars.f192c271
+                0x00000000       0x19 airspy_mini_conf.o
+ .gnu.lto_.refs.f192c271
+                0x00000000       0x13 airspy_mini_conf.o
+ .gnu.lto_.statics.f192c271
+                0x00000000       0x14 airspy_mini_conf.o
+ .gnu.lto_.decls.f192c271
+                0x00000000      0xc5b airspy_mini_conf.o
+ .gnu.lto_.symtab.f192c271
+                0x00000000       0x20 airspy_mini_conf.o
+ .gnu.lto_.opts
+                0x00000000       0x84 airspy_mini_conf.o
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .text          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .data          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .bss           0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .text.gpio_toggle
+                0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .text.gpio_get
+                0x00000000       0x10 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .text          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .data          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .bss           0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_macro   0x00000000      0x802 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_macro   0x00000000       0x3a ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_macro   0x00000000       0x10 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_macro   0x00000000       0x2e ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_macro   0x00000000       0xa2 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_macro   0x00000000      0x20e ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_macro   0x00000000       0x22 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_macro   0x00000000       0xfa ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_macro   0x00000000      0x16f ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .text          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .data          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .bss           0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .text.i2c1_tx_start
+                0x00000000       0x44 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .text.i2c1_tx_byte
+                0x00000000       0x54 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .text.i2c1_rx_byte
+                0x00000000       0x6c ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .text.i2c1_stop
+                0x00000000       0x2c ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x00000000      0x802 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x00000000       0x3a ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x00000000       0x10 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x00000000       0x2e ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x00000000       0xa2 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x00000000      0x20e ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x00000000       0x22 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x00000000       0xfa ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x00000000      0x16f ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .text          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .data          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .bss           0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .text.ssp_disable
+                0x00000000       0x1c ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .text.ssp_init
+                0x00000000       0xac ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .text.ssp_transfer
+                0x00000000       0x60 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_info    0x00000000      0x347 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_abbrev  0x00000000      0x11e ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_loc     0x00000000      0x1b6 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_aranges
+                0x00000000       0x30 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_ranges  0x00000000       0x50 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000       0xa6 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000      0x802 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000       0x3a ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000       0x10 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000       0x2e ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000       0xa2 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000      0x20e ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000       0x22 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000       0xfa ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000      0x16f ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000       0xf5 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000      0x328 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_macro   0x00000000      0xaca ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_line    0x00000000      0x353 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_str     0x00000000     0xa589 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .comment       0x00000000       0x71 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .ARM.attributes
+                0x00000000       0x3b ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .debug_frame   0x00000000       0x54 ../libopencm3/lib\libopencm3_lpc43xx.a(ssp.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .text          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .data          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .bss           0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .text.ipc_m0apptxevent_clear
+                0x00000000       0x14 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .text.ipc_start_m0s
+                0x00000000       0x40 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .text.ipc_m0subtxevent_clear
+                0x00000000       0x14 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00000000      0x802 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00000000       0x3a ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00000000       0x10 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00000000       0x2e ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00000000       0xa2 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00000000      0x20e ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00000000       0x22 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00000000       0xfa ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00000000      0x16f ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .text          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .data          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .bss           0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00000000      0x802 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00000000       0x3a ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00000000       0x10 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00000000       0x2e ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00000000       0xa2 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00000000      0x20e ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00000000       0x22 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00000000       0xfa ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .group         0x00000000        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .text          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .data          0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .bss           0x00000000        0x0 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .text.nvic_disable_irq
+                0x00000000       0x1c ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .text.nvic_get_pending_irq
+                0x00000000       0x24 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .text.nvic_set_pending_irq
+                0x00000000       0x1c ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .text.nvic_clear_pending_irq
+                0x00000000       0x1c ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .text.nvic_get_irq_enabled
+                0x00000000       0x24 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .text.nvic_get_active_irq
+                0x00000000       0x24 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .text.nvic_generate_software_interrupt
+                0x00000000       0x14 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x00000000      0x802 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x00000000       0x3a ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x00000000       0x10 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x00000000       0x2e ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x00000000       0xa2 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x00000000      0x20e ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x00000000       0x22 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x00000000       0xfa ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x00000000       0x52 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x00000000       0x6b ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x00000000      0x136 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .data          0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_aeabi_ldivmod.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_aeabi_ldivmod.o)
+ .data          0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(bpabi.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(bpabi.o)
+ .data          0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_dvmd_tls.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_dvmd_tls.o)
+ .data          0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_divdi3.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_divdi3.o)
+ .ARM.extab     0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_divdi3.o)
+ .data          0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_udivdi3.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_udivdi3.o)
+ .ARM.extab     0x00000000        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_udivdi3.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+rom_flash        0x80000000         0x00100000         xr
+rom              0x00000000         0x00100000         xr
+ram_local1       0x10000000         0x00020000         xrw
+ram_local2       0x10080000         0x00012000         xrw
+ram_local_m0sub  0x18000000         0x00004800         xrw
+ram_ahb1_m0_stack 0x20000000         0x00001000         xrw
+ram_ahb1_spare   0x20001000         0x00000c00         xrw
+ram_ahb1_m4_share 0x20001c00         0x00000400         xrw
+ram_ahb1_adchs   0x20002000         0x00001000         xrw
+ram_ahb1_m0_share 0x20003000         0x00001000         xrw
+ram_ahb2         0x2000c000         0x00004000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc_s.a
+LOAD c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libnosys.a
+LOAD m0_bin.o
+LOAD m0s_bin.o
+LOAD airspy_m4.o
+LOAD adchs.o
+LOAD fault_handler.o
+LOAD airspy_core.o
+LOAD si5351c.o
+LOAD w25q80bv.o
+LOAD rom_iap.o
+LOAD signal_mcu.o
+LOAD airspy_nos_conf.o
+LOAD airspy_mini_conf.o
+LOAD ../libopencm3/lib\libopencm3_lpc43xx.a
+START GROUP
+LOAD c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a
+LOAD c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc_s.a
+END GROUP
+                0x20001c00                cm4_data_share = ORIGIN (ram_ahb1_m4_share)
+                0x20002000                adchs_data = ORIGIN (ram_ahb1_adchs)
+                0x20003000                cm0_data_share = ORIGIN (ram_ahb1_m0_share)
+                0x2000c000                cm0_exec_baseaddr = ORIGIN (ram_ahb2)
+                0x18000000                cm0s_exec_baseaddr = ORIGIN (ram_local_m0sub)
+                0x20001000                conf_data_share = ORIGIN (ram_ahb1_spare)
+                0x00000c00                conf_data_share_size = 0xc00
+
+.text           0x00000000     0x50b8
+                0x00000000                . = ALIGN (0x400)
+                0x10000000                _text_ram = ((. - ORIGIN (rom)) + ORIGIN (ram_local1))
+ *(.vectors)
+ .vectors       0x00000000      0x114 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+                0x00000000                vector_table
+ *(.text*)
+ .text.set_packing_state
+                0x00000114       0x28 airspy_m4.o
+                0x00000114                set_packing_state
+ .text.adchs_start
+                0x0000013c       0xbc airspy_m4.o
+                0x0000013c                adchs_start
+ .text.adchs_stop
+                0x000001f8       0x10 airspy_m4.o
+                0x000001f8                adchs_stop
+ .text.dma_isr  0x00000208       0x54 airspy_m4.o
+                0x00000208                dma_isr
+ .text.m0core_isr
+                0x0000025c       0xb8 airspy_m4.o
+                0x0000025c                m0core_isr
+ .text.m0_startup
+                0x00000314       0x64 airspy_m4.o
+                0x00000314                m0_startup
+ .text.startup.main
+                0x00000378      0x1a8 airspy_m4.o
+                0x00000378                main
+ .text.ADCHS_DMA_init_stop
+                0x00000520       0x50 adchs.o
+                0x00000520                ADCHS_DMA_init_stop
+ .text.ADCHS_DMA_init
+                0x00000570       0xa0 adchs.o
+                0x00000570                ADCHS_DMA_init
+ .text.ADCHS_init_stop
+                0x00000610       0x68 adchs.o
+                0x00000610                ADCHS_init_stop
+ .text.ADCHS_deinit
+                0x00000678       0x18 adchs.o
+                0x00000678                ADCHS_deinit
+ .text.ADCHS_init
+                0x00000690       0x60 adchs.o
+                0x00000690                ADCHS_init
+ .text.ADCHS_desc_init
+                0x000006f0       0x20 adchs.o
+                0x000006f0                ADCHS_desc_init
+ .text.hard_fault_handler
+                0x00000710       0x14 fault_handler.o
+                0x00000710                hard_fault_handler
+ .text.hard_fault_handler_c
+                0x00000724        0xc fault_handler.o
+                0x00000724                hard_fault_handler_c
+ .text.mem_manage_handler
+                0x00000730        0x4 fault_handler.o
+                0x00000730                mem_manage_handler
+ .text.bus_fault_handler
+                0x00000734        0x4 fault_handler.o
+                0x00000734                bus_fault_handler
+ .text.usage_fault_handler
+                0x00000738        0x4 fault_handler.o
+                0x00000738                usage_fault_handler
+ .text.sys_clock_samplerate
+                0x0000073c       0xb4 airspy_core.o
+                0x0000073c                sys_clock_samplerate
+ .text.cpu_clock_pll1_low_speed
+                0x000007f0       0x40 airspy_core.o
+                0x000007f0                cpu_clock_pll1_low_speed
+ .text.sys_clock_init
+                0x00000830      0x558 airspy_core.o
+                0x00000830                sys_clock_init
+ .text.cpu_clock_pll1_high_speed
+                0x00000d88       0x78 airspy_core.o
+                0x00000d88                cpu_clock_pll1_high_speed
+ .text.led_on   0x00000e00       0x10 airspy_core.o
+                0x00000e00                led_on
+ .text.led_off  0x00000e10       0x10 airspy_core.o
+                0x00000e10                led_off
+ .text.enable_r820t_power
+                0x00000e20       0x24 airspy_core.o
+                0x00000e20                enable_r820t_power
+ .text.disable_biast_power
+                0x00000e44       0x10 airspy_core.o
+                0x00000e44                disable_biast_power
+ .text.pin_setup
+                0x00000e54       0xc0 airspy_core.o
+                0x00000e54                pin_setup
+ .text.si5351c_airspy_config
+                0x00000f14       0x5c si5351c.o
+                0x00000f14                si5351c_airspy_config
+ .text.si5351c_read_single
+                0x00000f70       0x2c si5351c.o
+                0x00000f70                si5351c_read_single
+ .text.si5351c_write
+                0x00000f9c       0x58 si5351c.o
+                0x00000f9c                si5351c_write
+ .text.si5351c_disable_all_outputs
+                0x00000ff4       0x20 si5351c.o
+                0x00000ff4                si5351c_disable_all_outputs
+ .text.si5351c_disable_oeb_pin_control
+                0x00001014       0x7c si5351c.o
+                0x00001014                si5351c_disable_oeb_pin_control
+ .text.si5351c_power_down_all_clocks
+                0x00001090       0x28 si5351c.o
+                0x00001090                si5351c_power_down_all_clocks
+ .text.si5351c_init_fanout
+                0x000010b8       0x1c si5351c.o
+                0x000010b8                si5351c_init_fanout
+ .text.si5351c_init_xtal
+                0x000010d4       0x1c si5351c.o
+                0x000010d4                si5351c_init_xtal
+ .text.si5351c_init_pll_soft_reset
+                0x000010f0       0x1c si5351c.o
+                0x000010f0                si5351c_init_pll_soft_reset
+ .text.si5351c_enable_clock_outputs
+                0x0000110c       0x1c si5351c.o
+                0x0000110c                si5351c_enable_clock_outputs
+ .text.gpio_set
+                0x00001128        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+                0x00001128                gpio_set
+ .text.gpio_clear
+                0x00001130        0x8 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+                0x00001130                gpio_clear
+ .text.scu_pinmux
+                0x00001138        0x4 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+                0x00001138                scu_pinmux
+ .text.i2c0_init
+                0x0000113c       0x40 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+                0x0000113c                i2c0_init
+ .text.i2c1_init
+                0x0000117c       0x40 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+                0x0000117c                i2c1_init
+ .text.i2c0_tx_start
+                0x000011bc       0x48 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+                0x000011bc                i2c0_tx_start
+ .text.i2c0_tx_byte
+                0x00001204       0x60 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+                0x00001204                i2c0_tx_byte
+ .text.i2c0_rx_byte
+                0x00001264       0x60 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+                0x00001264                i2c0_rx_byte
+ .text.i2c0_stop
+                0x000012c4       0x34 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+                0x000012c4                i2c0_stop
+ .text.ipc_halt_m0
+                0x000012f8       0x34 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+                0x000012f8                ipc_halt_m0
+ .text.ipc_start_m0
+                0x0000132c       0x40 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+                0x0000132c                ipc_start_m0
+ .text.ipc_halt_m0s
+                0x0000136c       0x34 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+                0x0000136c                ipc_halt_m0s
+ .text.blocking_handler
+                0x000013a0        0x4 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+                0x000013a0                adc0_isr
+                0x000013a0                qei_isr
+                0x000013a0                m0sub_isr
+                0x000013a0                spi_isr
+                0x000013a0                usart3_isr
+                0x000013a0                rtc_isr
+                0x000013a0                gint1_isr
+                0x000013a0                adchs_isr
+                0x000013a0                timer1_isr
+                0x000013a0                i2c0_isr
+                0x000013a0                usart0_isr
+                0x000013a0                blocking_handler
+                0x000013a0                pin_int1_isr
+                0x000013a0                ssp1_isr
+                0x000013a0                spifi_isr
+                0x000013a0                gint0_isr
+                0x000013a0                i2c1_isr
+                0x000013a0                ritimer_isr
+                0x000013a0                dac_isr
+                0x000013a0                flasheeprom_isr
+                0x000013a0                sdio_isr
+                0x000013a0                ethernet_isr
+                0x000013a0                c_can0_isr
+                0x000013a0                eventrouter_isr
+                0x000013a0                usb0_isr
+                0x000013a0                uart1_isr
+                0x000013a0                pin_int6_isr
+                0x000013a0                usart2_isr
+                0x000013a0                pin_int5_isr
+                0x000013a0                timer2_isr
+                0x000013a0                pin_int0_isr
+                0x000013a0                sct_isr
+                0x000013a0                pin_int2_isr
+                0x000013a0                timer3_isr
+                0x000013a0                lcd_isr
+                0x000013a0                pin_int7_isr
+                0x000013a0                ssp0_isr
+                0x000013a0                atimer_isr
+                0x000013a0                sgpio_isr
+                0x000013a0                i2s0_isr
+                0x000013a0                wwdt_isr
+                0x000013a0                pin_int3_isr
+                0x000013a0                adc1_isr
+                0x000013a0                mcpwm_isr
+                0x000013a0                timer0_isr
+                0x000013a0                i2s1_isr
+                0x000013a0                usb1_isr
+                0x000013a0                pin_int4_isr
+                0x000013a0                c_can1_isr
+ .text.null_handler
+                0x000013a4        0x4 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+                0x000013a4                sv_call_handler
+                0x000013a4                pend_sv_handler
+                0x000013a4                debug_monitor_handler
+                0x000013a4                sys_tick_handler
+                0x000013a4                nmi_handler
+                0x000013a4                null_handler
+ .text.reset_handler
+                0x000013a8      0x294 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+                0x000013a8                reset_handler
+ .text.nvic_enable_irq
+                0x0000163c       0x1c ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+                0x0000163c                nvic_enable_irq
+ .text.nvic_set_priority
+                0x00001658       0x20 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+                0x00001658                nvic_set_priority
+ .text          0x00001678       0x38 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_aeabi_ldivmod.o)
+                0x00001678                __aeabi_ldivmod
+ .text          0x000016b0       0x58 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(bpabi.o)
+                0x000016b0                __gnu_ldivmod_helper
+                0x000016dc                __gnu_uldivmod_helper
+ .text          0x00001708        0x4 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_dvmd_tls.o)
+                0x00001708                __aeabi_idiv0
+                0x00001708                __aeabi_ldiv0
+ .text          0x0000170c      0x2bc c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_divdi3.o)
+                0x0000170c                __divdi3
+ .text          0x000019c8      0x288 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_udivdi3.o)
+                0x000019c8                __udivdi3
+                0x00001c50                . = ALIGN (0x4)
+ *(.rodata*)
+ .rodata        0x00001c50     0x2f40 m0_bin.o
+                0x00001c50                m0_bin
+                0x00004b80                m0_bin_size
+ .rodata.gpio_conf
+                0x00004b90      0x508 airspy_core.o
+                0x00004b90                gpio_conf
+ .rodata        0x00005098       0x20 si5351c.o
+                0x000050b8                . = ALIGN (0x4)
+
+.glue_7         0x000050b8        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x000050b8        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x000050b8        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x000050b8        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+
+.iplt           0x000050b8        0x0
+ .iplt          0x00000000        0x0 airspy_m4.o
+
+.preinit_array  0x000050b8        0x0
+                0x000050b8                . = ALIGN (0x4)
+                0x000050b8                __preinit_array_start = .
+ *(.preinit_array)
+                0x000050b8                __preinit_array_end = .
+
+.init_array     0x000050b8        0x0
+                0x000050b8                . = ALIGN (0x4)
+                0x000050b8                __init_array_start = .
+ *(SORT(.init_array.*))
+ *(.init_array)
+                0x000050b8                __init_array_end = .
+
+.fini_array     0x000050b8        0x0
+                0x000050b8                . = ALIGN (0x4)
+                0x000050b8                __fini_array_start = .
+ *(.fini_array)
+ *(SORT(.fini_array.*))
+                0x000050b8                __fini_array_end = .
+
+.ARM.extab
+ *(.ARM.extab*)
+ *(.ARM.extab*)
+
+.ARM.exidx      0x000050b8        0x8
+                0x000050b8                __exidx_start = .
+ *(.ARM.exidx*)
+ .ARM.exidx     0x000050b8        0x8 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_divdi3.o)
+ .ARM.exidx     0x000050c0        0x0 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_udivdi3.o)
+                                  0x8 (size before relaxing)
+                0x000050c0                __exidx_end = .
+
+.rel.dyn        0x000050c0        0x0
+ .rel.iplt      0x00000000        0x0 airspy_m4.o
+                0x000050c0                . = ALIGN (0x4)
+                0x000050c0                _etext = .
+                0x100050c0                _etext_ram = ((. - ORIGIN (rom)) + ORIGIN (ram_local1))
+                0x800050c0                _etext_rom = ((. - ORIGIN (rom)) + ORIGIN (rom_flash))
+                0x10080000                . = ORIGIN (ram_local2)
+
+.data           0x10080000       0x1c load address 0x000050c0
+                0x10080000                _data = .
+ *(.data*)
+ .data.set_samplerate
+                0x10080000        0x4 airspy_m4.o
+                0x10080000                set_samplerate
+ .data.start_adchs
+                0x10080004        0x4 airspy_m4.o
+                0x10080004                start_adchs
+ .data.usb_bulk_buffer_offset
+                0x10080008        0x4 airspy_m4.o
+                0x10080008                usb_bulk_buffer_offset
+ .data.usb_bulk_buffer_length
+                0x1008000c        0x4 airspy_m4.o
+                0x1008000c                usb_bulk_buffer_length
+ .data.last_offset_m0
+                0x10080010        0x4 airspy_m4.o
+                0x10080010                last_offset_m0
+ .data.set_packing
+                0x10080014        0x4 airspy_m4.o
+                0x10080014                set_packing
+ .data.airspy_conf
+                0x10080018        0x4 airspy_core.o
+                0x10080018                airspy_conf
+                0x1008001c                . = ALIGN (0x4)
+                0x1008001c                _edata = .
+                0x000050c0                _data_loadaddr = LOADADDR (.data)
+                0x800050c0                _data_rom = (LOADADDR (.data) + ORIGIN (rom_flash))
+                0x800050dc                _edata_rom = (_data_rom + SIZEOF (.data))
+
+.igot.plt       0x1008001c        0x0 load address 0x000050dc
+ .igot.plt      0x00000000        0x0 airspy_m4.o
+
+.bss            0x10080020       0x68 load address 0x000050dc
+                0x10080020                _bss = .
+ *(.bss_aligned*)
+ *(.bss*)
+ .bss.last_offset_m4
+                0x10080020        0x4 airspy_m4.o
+                0x10080020                last_offset_m4
+ .bss.adchs_started
+                0x10080024        0x4 airspy_m4.o
+                0x10080024                adchs_started
+ .bss.use_packing
+                0x10080028        0x4 airspy_m4.o
+                0x10080028                use_packing
+ .bss.usb_bulk_buffer_offset_uint32_m4
+                0x1008002c        0x4 airspy_m4.o
+                0x1008002c                usb_bulk_buffer_offset_uint32_m4
+ .bss.adchs_stopped
+                0x10080030        0x4 airspy_m4.o
+                0x10080030                adchs_stopped
+ .bss.usb_bulk_buffer_offset_m4
+                0x10080034        0x4 airspy_m4.o
+                0x10080034                usb_bulk_buffer_offset_m4
+ .bss.first_start
+                0x10080038        0x4 airspy_m4.o
+                0x10080038                first_start
+ *fill*         0x1008003c        0x4 00
+ .bss.adchs_dma_lli
+                0x10080040       0x40 adchs.o
+                0x10080040                adchs_dma_lli
+ .bss.hard_fault_stack_pt
+                0x10080080        0x4 fault_handler.o
+                0x10080080                hard_fault_stack_pt
+ .bss.si5351c_read
+                0x10080084        0x4 airspy_core.o
+                0x10080084                si5351c_read
+ *(COMMON)
+                0x10080088                . = ALIGN (0x4)
+                0x10080088                _ebss = .
+
+/DISCARD/
+ *(.eh_frame)
+
+.data2          0x000050dc      0x358
+                0x000050dc                _nocopy_data = .
+ *(.nocopy_data)
+ .nocopy_data   0x000050dc      0x26c airspy_nos_conf.o
+                0x000050dc                airspy_nos_conf
+ .nocopy_data   0x00005348       0xec airspy_mini_conf.o
+                0x00005348                airspy_mini_conf
+                0x00005434                . = ALIGN (0x4)
+                0x00005434                _enocopy_data = .
+                0x000050dc                _nocopy_data_loadaddr = LOADADDR (.data2)
+                0x800050dc                _nocopy_data_rom = (LOADADDR (.data2) + ORIGIN (rom_flash))
+                0x80005434                _enocopy_data_rom = (_nocopy_data_rom + SIZEOF (.data2))
+                0x00005434                . = ALIGN (0x4)
+                0x00005434                end = .
+                0x10091fe0                __StackTop = ((ORIGIN (ram_local2) + 0x12000) - 0x20)
+                0x10091fe0                PROVIDE (_stack, __StackTop)
+OUTPUT(airspy_rom_to_ram.elf elf32-littlearm)
+
+.ARM.attributes
+                0x00000000       0x37
+ .ARM.attributes
+                0x00000000       0x27 m0_bin.o
+ .ARM.attributes
+                0x00000027       0x3b airspy_m4.o
+ .ARM.attributes
+                0x00000062       0x3b adchs.o
+ .ARM.attributes
+                0x0000009d       0x3b fault_handler.o
+ .ARM.attributes
+                0x000000d8       0x3b airspy_core.o
+ .ARM.attributes
+                0x00000113       0x3b si5351c.o
+ .ARM.attributes
+                0x0000014e       0x3b airspy_nos_conf.o
+ .ARM.attributes
+                0x00000189       0x3b airspy_mini_conf.o
+ .ARM.attributes
+                0x000001c4       0x3b ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .ARM.attributes
+                0x000001ff       0x3b ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .ARM.attributes
+                0x0000023a       0x3b ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .ARM.attributes
+                0x00000275       0x3b ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .ARM.attributes
+                0x000002b0       0x3b ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .ARM.attributes
+                0x000002eb       0x3b ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .ARM.attributes
+                0x00000326       0x24 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_aeabi_ldivmod.o)
+ .ARM.attributes
+                0x0000034a       0x36 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(bpabi.o)
+ .ARM.attributes
+                0x00000380       0x24 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_dvmd_tls.o)
+ .ARM.attributes
+                0x000003a4       0x36 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_divdi3.o)
+ .ARM.attributes
+                0x000003da       0x36 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_udivdi3.o)
+
+.comment        0x00000000       0x70
+ .comment       0x00000000       0x70 airspy_m4.o
+                                 0x71 (size before relaxing)
+ .comment       0x00000000       0x71 adchs.o
+ .comment       0x00000000       0x71 fault_handler.o
+ .comment       0x00000000       0x71 airspy_core.o
+ .comment       0x00000000       0x71 si5351c.o
+ .comment       0x00000000       0x71 airspy_nos_conf.o
+ .comment       0x00000000       0x71 airspy_mini_conf.o
+ .comment       0x00000000       0x71 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .comment       0x00000000       0x71 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .comment       0x00000000       0x71 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .comment       0x00000000       0x71 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .comment       0x00000000       0x71 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .comment       0x00000000       0x71 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+
+.debug_info     0x00000000     0x586d
+ .debug_info    0x00000000     0x13f5 airspy_m4.o
+ .debug_info    0x000013f5      0x8f0 adchs.o
+ .debug_info    0x00001ce5      0x3a5 fault_handler.o
+ .debug_info    0x0000208a     0x14d9 airspy_core.o
+ .debug_info    0x00003563      0x654 si5351c.o
+ .debug_info    0x00003bb7      0x536 airspy_nos_conf.o
+ .debug_info    0x000040ed      0x506 airspy_mini_conf.o
+ .debug_info    0x000045f3      0x151 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_info    0x00004744      0x7b9 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_info    0x00004efd      0x24a ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_info    0x00005147      0x174 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_info    0x000052bb      0x397 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_info    0x00005652      0x21b ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+
+.debug_abbrev   0x00000000      0xfdf
+ .debug_abbrev  0x00000000      0x375 airspy_m4.o
+ .debug_abbrev  0x00000375      0x12f adchs.o
+ .debug_abbrev  0x000004a4      0x113 fault_handler.o
+ .debug_abbrev  0x000005b7      0x30c airspy_core.o
+ .debug_abbrev  0x000008c3      0x17c si5351c.o
+ .debug_abbrev  0x00000a3f       0x88 airspy_nos_conf.o
+ .debug_abbrev  0x00000ac7       0x7b airspy_mini_conf.o
+ .debug_abbrev  0x00000b42       0x8e ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_abbrev  0x00000bd0       0x86 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_abbrev  0x00000c56       0xd8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_abbrev  0x00000d2e       0x93 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_abbrev  0x00000dc1      0x176 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_abbrev  0x00000f37       0xa8 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+
+.debug_loc      0x00000000     0x128b
+ .debug_loc     0x00000000      0x276 airspy_m4.o
+ .debug_loc     0x00000276      0x134 adchs.o
+ .debug_loc     0x000003aa      0x57a airspy_core.o
+ .debug_loc     0x00000924      0x3c9 si5351c.o
+ .debug_loc     0x00000ced       0x21 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_loc     0x00000d0e      0x176 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_loc     0x00000e84      0x184 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_loc     0x00001008      0x141 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_loc     0x00001149      0x142 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+
+.debug_aranges  0x00000000      0x3a0
+ .debug_aranges
+                0x00000000       0x60 airspy_m4.o
+ .debug_aranges
+                0x00000060       0x48 adchs.o
+ .debug_aranges
+                0x000000a8       0x40 fault_handler.o
+ .debug_aranges
+                0x000000e8       0x80 airspy_core.o
+ .debug_aranges
+                0x00000168       0x70 si5351c.o
+ .debug_aranges
+                0x000001d8       0x18 airspy_nos_conf.o
+ .debug_aranges
+                0x000001f0       0x18 airspy_mini_conf.o
+ .debug_aranges
+                0x00000208       0x38 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_aranges
+                0x00000240       0x20 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_aranges
+                0x00000260       0x68 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_aranges
+                0x000002c8       0x48 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_aranges
+                0x00000310       0x30 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_aranges
+                0x00000340       0x60 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+
+.debug_ranges   0x00000000      0x440
+ .debug_ranges  0x00000000      0x188 airspy_m4.o
+ .debug_ranges  0x00000188       0x38 adchs.o
+ .debug_ranges  0x000001c0       0x30 fault_handler.o
+ .debug_ranges  0x000001f0       0x70 airspy_core.o
+ .debug_ranges  0x00000260       0x78 si5351c.o
+ .debug_ranges  0x000002d8       0x28 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_ranges  0x00000300       0x10 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_ranges  0x00000310       0x58 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_ranges  0x00000368       0x38 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_ranges  0x000003a0       0x50 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_ranges  0x000003f0       0x50 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+
+.debug_line     0x00000000     0x263d
+ .debug_line    0x00000000      0x3b2 airspy_m4.o
+ .debug_line    0x000003b2      0x1bb adchs.o
+ .debug_line    0x0000056d      0x131 fault_handler.o
+ .debug_line    0x0000069e      0x511 airspy_core.o
+ .debug_line    0x00000baf      0x272 si5351c.o
+ .debug_line    0x00000e21       0xf3 airspy_nos_conf.o
+ .debug_line    0x00000f14       0xf4 airspy_mini_conf.o
+ .debug_line    0x00001008      0x320 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_line    0x00001328      0x2ed ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_line    0x00001615      0x43d ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_line    0x00001a52      0x377 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_line    0x00001dc9      0x4ab ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_line    0x00002274      0x3c9 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+
+.debug_str      0x00000000    0x1cc8d
+ .debug_str     0x00000000      0xb0e airspy_m4.o
+                                0xc17 (size before relaxing)
+ .debug_str     0x00000b0e       0xb7 adchs.o
+                                0x57c (size before relaxing)
+ .debug_str     0x00000bc5      0x18d fault_handler.o
+                                0x296 (size before relaxing)
+ .debug_str     0x00000d52      0x6f8 airspy_core.o
+                                0xc17 (size before relaxing)
+ .debug_str     0x0000144a       0xa5 si5351c.o
+                                0x2af (size before relaxing)
+ .debug_str     0x000014ef       0x1c airspy_nos_conf.o
+                                0x4ee (size before relaxing)
+ .debug_str     0x0000150b       0x1d airspy_mini_conf.o
+                                0x4f1 (size before relaxing)
+ .debug_str     0x00001528     0x8fda ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+                               0x90e8 (size before relaxing)
+ .debug_str     0x0000a502     0x2631 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+                               0x64cd (size before relaxing)
+ .debug_str     0x0000cb33     0x5531 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+                               0xb68a (size before relaxing)
+ .debug_str     0x00012064     0x810f ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+                               0xbc12 (size before relaxing)
+ .debug_str     0x0001a173     0x21dd ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+                               0x54b1 (size before relaxing)
+ .debug_str     0x0001c350      0x93d ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+                               0x43e3 (size before relaxing)
+
+.debug_frame    0x00000000      0x79c
+ .debug_frame   0x00000000       0xf4 airspy_m4.o
+ .debug_frame   0x000000f4       0x94 adchs.o
+ .debug_frame   0x00000188       0x60 fault_handler.o
+ .debug_frame   0x000001e8      0x138 airspy_core.o
+ .debug_frame   0x00000320      0x12c si5351c.o
+ .debug_frame   0x0000044c       0x50 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_frame   0x0000049c       0x20 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_frame   0x000004bc       0xc8 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_frame   0x00000584       0x80 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_frame   0x00000604       0x40 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_frame   0x00000644       0xa0 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_frame   0x000006e4       0x50 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(bpabi.o)
+ .debug_frame   0x00000734       0x34 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_divdi3.o)
+ .debug_frame   0x00000768       0x34 c:/program files (x86)/gnu tools arm embedded/4.7 2013q3/bin/../lib/gcc/arm-none-eabi/4.7.4/armv7e-m/fpu\libgcc.a(_udivdi3.o)
+
+.debug_macro    0x00000000     0x552d
+ .debug_macro   0x00000000       0x94 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_macro   0x00000094      0x802 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_macro   0x00000896       0x3a ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_macro   0x000008d0       0x10 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_macro   0x000008e0       0x2e ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_macro   0x0000090e       0xa2 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_macro   0x000009b0      0x20e ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_macro   0x00000bbe       0x22 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_macro   0x00000be0       0xfa ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_macro   0x00000cda      0x16f ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_macro   0x00000e49     0x1112 ../libopencm3/lib\libopencm3_lpc43xx.a(gpio.o)
+ .debug_macro   0x00001f5b       0x94 ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_macro   0x00001fef      0x6db ../libopencm3/lib\libopencm3_lpc43xx.a(scu.o)
+ .debug_macro   0x000026ca       0xb2 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x0000277c      0x180 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x000028fc      0x6e1 ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x00002fdd      0xaca ../libopencm3/lib\libopencm3_lpc43xx.a(i2c.o)
+ .debug_macro   0x00003aa7       0xa1 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00003b48      0x3fc ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00003f44      0xd32 ../libopencm3/lib\libopencm3_lpc43xx.a(ipc.o)
+ .debug_macro   0x00004c76       0xdb ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00004d51       0x52 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00004da3       0x6b ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00004e0e      0x136 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x00004f44      0x3a7 ../libopencm3/lib\libopencm3_lpc43xx.a(vector.o)
+ .debug_macro   0x000052eb       0xb5 ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)
+ .debug_macro   0x000053a0      0x18d ../libopencm3/lib\libopencm3_lpc43xx.a(nvic.o)

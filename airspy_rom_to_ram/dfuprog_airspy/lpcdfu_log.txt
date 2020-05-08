@@ -1,0 +1,6 @@
+main: libusb_kernel_driver_active() unsupported
+main: PREPARE Done. Result = 0
+main: ERASE-REGION Done. Result = 0
+main: PROGRAM Done. Result = 0
+main: READBACK Done. Result = 0
+main: EXIT Result=0

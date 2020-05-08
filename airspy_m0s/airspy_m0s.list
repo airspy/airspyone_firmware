@@ -1,0 +1,457 @@
+
+airspy_m0s.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+18000000 <vector_table>:
+18000000:	e0 47 00 18 ed 00 00 18 e9 00 00 18 c5 00 00 18     .G..............
+	...
+1800002c:	e9 00 00 18 00 00 00 00 00 00 00 00 e9 00 00 18     ................
+1800003c:	e9 00 00 18 e5 00 00 18 e5 00 00 18 e5 00 00 18     ................
+1800004c:	00 00 00 00 e5 00 00 18 e5 00 00 18 e5 00 00 18     ................
+1800005c:	e5 00 00 18 e5 00 00 18 e5 00 00 18 e5 00 00 18     ................
+1800006c:	e5 00 00 18 e5 00 00 18 e5 00 00 18 e5 00 00 18     ................
+1800007c:	e5 00 00 18 e5 00 00 18 e5 00 00 18 e5 00 00 18     ................
+1800008c:	e5 00 00 18 e5 00 00 18 e5 00 00 18 e5 00 00 18     ................
+1800009c:	e5 00 00 18 e5 00 00 18 e5 00 00 18 e5 00 00 18     ................
+180000ac:	e5 00 00 18 e5 00 00 18 e5 00 00 18 e5 00 00 18     ................
+180000bc:	e5 00 00 18                                         ....
+
+180000c0 <main>:
+If the event register is 1, WFE clears it to 0 and completes immediately.
+Instruction for Cortex M0, M3/M4
+*/
+__attribute__ ((always_inline)) static inline void signal_wfe(void)
+{
+  __asm("wfe");
+180000c0:	bf20      	wfe
+180000c2:	e7fd      	b.n	180000c0 <main>
+
+180000c4 <hard_fault_handler>:
+/* Code Compatible with CortexM0, M3, M4 (R4 & R5 are modified for ARCH 6M) */
+__attribute__((naked))
+void hard_fault_handler(void)
+{
+#if defined(__ARM_ARCH_6M__)
+  __asm__("MOVS R4, #4");
+180000c4:	2404      	movs	r4, #4
+  __asm__("MOV  R5, LR");
+180000c6:	4675      	mov	r5, lr
+  __asm__("TST R4, R5");
+180000c8:	422c      	tst	r4, r5
+  __asm__("BEQ _MSP");
+180000ca:	d002      	beq.n	180000d2 <_MSP>
+  __asm__("MRS R0, PSP");
+180000cc:	f3ef 8009 	mrs	r0, PSP
+  __asm__("B hard_fault_handler_c");
+180000d0:	e002      	b.n	180000d8 <hard_fault_handler_c>
+
+180000d2 <_MSP>:
+  __asm__("_MSP:");
+  __asm__("MRS R0, MSP");
+180000d2:	f3ef 8008 	mrs	r0, MSP
+  __asm__("B hard_fault_handler_c");
+180000d6:	e7ff      	b.n	180000d8 <hard_fault_handler_c>
+
+180000d8 <hard_fault_handler_c>:
+volatile hard_fault_stack_t* hard_fault_stack_pt;
+
+__attribute__((used)) void hard_fault_handler_c(uint32_t* args)
+{
+  /* hard_fault_stack_pt contains registers saved before the hard fault */
+  hard_fault_stack_pt = (hard_fault_stack_t*)args;
+180000d8:	4b01      	ldr	r3, [pc, #4]	; (180000e0 <hard_fault_handler_c+0x8>)
+180000da:	6018      	str	r0, [r3, #0]
+      if( SCB->CFSR & CSCB_CFSR_BFSR_PRECISERR ) {
+      }
+    }
+  }
+  */
+  __asm("BKPT #0\n") ; // Break into the debugger
+180000dc:	be00      	bkpt	0x0000
+180000de:	e7fe      	b.n	180000de <hard_fault_handler_c+0x6>
+180000e0:	18000254 	.word	0x18000254
+
+180000e4 <blocking_handler>:
+	}
+
+}
+
+void blocking_handler(void)
+{
+180000e4:	e7fe      	b.n	180000e4 <blocking_handler>
+180000e6:	46c0      	nop			; (mov r8, r8)
+
+180000e8 <null_handler>:
+}
+
+void null_handler(void)
+{
+	/* Do nothing. */
+}
+180000e8:	4770      	bx	lr
+180000ea:	46c0      	nop			; (mov r8, r8)
+
+180000ec <reset_handler>:
+void WEAK __attribute__ ((naked)) reset_handler(void)
+{
+	volatile unsigned *src, *dest;
+	funcp_t *fp;
+
+	for (src = &_data_loadaddr, dest = &_data;
+180000ec:	4a4f      	ldr	r2, [pc, #316]	; (1800022c <reset_handler+0x140>)
+180000ee:	4b50      	ldr	r3, [pc, #320]	; (18000230 <reset_handler+0x144>)
+180000f0:	429a      	cmp	r2, r3
+180000f2:	d21f      	bcs.n	18000134 <reset_handler+0x48>
+	.irq = {
+		IRQ_HANDLERS
+	}
+};
+
+void WEAK __attribute__ ((naked)) reset_handler(void)
+180000f4:	1cdf      	adds	r7, r3, #3
+180000f6:	1d14      	adds	r4, r2, #4
+180000f8:	1b38      	subs	r0, r7, r4
+180000fa:	0881      	lsrs	r1, r0, #2
+180000fc:	3101      	adds	r1, #1
+180000fe:	008f      	lsls	r7, r1, #2
+18000100:	4b4c      	ldr	r3, [pc, #304]	; (18000234 <reset_handler+0x148>)
+18000102:	1f38      	subs	r0, r7, #4
+18000104:	0741      	lsls	r1, r0, #29
+18000106:	18fe      	adds	r6, r7, r3
+18000108:	0fc8      	lsrs	r0, r1, #31
+	funcp_t *fp;
+
+	for (src = &_data_loadaddr, dest = &_data;
+		dest < &_edata;
+		src++, dest++) {
+		*dest = *src;
+1800010a:	cb02      	ldmia	r3!, {r1}
+1800010c:	6011      	str	r1, [r2, #0]
+void WEAK __attribute__ ((naked)) reset_handler(void)
+{
+	volatile unsigned *src, *dest;
+	funcp_t *fp;
+
+	for (src = &_data_loadaddr, dest = &_data;
+1800010e:	42b3      	cmp	r3, r6
+18000110:	d00f      	beq.n	18000132 <reset_handler+0x46>
+18000112:	2800      	cmp	r0, #0
+18000114:	d003      	beq.n	1800011e <reset_handler+0x32>
+		dest < &_edata;
+		src++, dest++) {
+		*dest = *src;
+18000116:	cb01      	ldmia	r3!, {r0}
+18000118:	c401      	stmia	r4!, {r0}
+void WEAK __attribute__ ((naked)) reset_handler(void)
+{
+	volatile unsigned *src, *dest;
+	funcp_t *fp;
+
+	for (src = &_data_loadaddr, dest = &_data;
+1800011a:	42b3      	cmp	r3, r6
+1800011c:	d009      	beq.n	18000132 <reset_handler+0x46>
+		dest < &_edata;
+		src++, dest++) {
+		*dest = *src;
+1800011e:	1c18      	adds	r0, r3, #0
+18000120:	c820      	ldmia	r0!, {r5}
+18000122:	1c21      	adds	r1, r4, #0
+18000124:	c120      	stmia	r1!, {r5}
+18000126:	685b      	ldr	r3, [r3, #4]
+18000128:	6063      	str	r3, [r4, #4]
+	volatile unsigned *src, *dest;
+	funcp_t *fp;
+
+	for (src = &_data_loadaddr, dest = &_data;
+		dest < &_edata;
+		src++, dest++) {
+1800012a:	1d03      	adds	r3, r0, #4
+1800012c:	1d0c      	adds	r4, r1, #4
+void WEAK __attribute__ ((naked)) reset_handler(void)
+{
+	volatile unsigned *src, *dest;
+	funcp_t *fp;
+
+	for (src = &_data_loadaddr, dest = &_data;
+1800012e:	42b3      	cmp	r3, r6
+18000130:	d1f5      	bne.n	1800011e <reset_handler+0x32>
+18000132:	19d2      	adds	r2, r2, r7
+		dest < &_edata;
+		src++, dest++) {
+		*dest = *src;
+	}
+
+	while (dest < &_ebss) {
+18000134:	4840      	ldr	r0, [pc, #256]	; (18000238 <reset_handler+0x14c>)
+18000136:	4282      	cmp	r2, r0
+18000138:	d216      	bcs.n	18000168 <reset_handler+0x7c>
+	.irq = {
+		IRQ_HANDLERS
+	}
+};
+
+void WEAK __attribute__ ((naked)) reset_handler(void)
+1800013a:	1cc4      	adds	r4, r0, #3
+1800013c:	1d13      	adds	r3, r2, #4
+1800013e:	1ae5      	subs	r5, r4, r3
+18000140:	08a9      	lsrs	r1, r5, #2
+18000142:	3101      	adds	r1, #1
+18000144:	0088      	lsls	r0, r1, #2
+18000146:	1810      	adds	r0, r2, r0
+18000148:	1ac4      	subs	r4, r0, r3
+		src++, dest++) {
+		*dest = *src;
+	}
+
+	while (dest < &_ebss) {
+		*dest++ = 0;
+1800014a:	2100      	movs	r1, #0
+1800014c:	0765      	lsls	r5, r4, #29
+1800014e:	d508      	bpl.n	18000162 <reset_handler+0x76>
+18000150:	6011      	str	r1, [r2, #0]
+18000152:	1c1a      	adds	r2, r3, #0
+18000154:	3304      	adds	r3, #4
+18000156:	6011      	str	r1, [r2, #0]
+		dest < &_edata;
+		src++, dest++) {
+		*dest = *src;
+	}
+
+	while (dest < &_ebss) {
+18000158:	4283      	cmp	r3, r0
+1800015a:	d005      	beq.n	18000168 <reset_handler+0x7c>
+		*dest++ = 0;
+1800015c:	1d1a      	adds	r2, r3, #4
+1800015e:	6019      	str	r1, [r3, #0]
+18000160:	1d13      	adds	r3, r2, #4
+18000162:	6011      	str	r1, [r2, #0]
+		dest < &_edata;
+		src++, dest++) {
+		*dest = *src;
+	}
+
+	while (dest < &_ebss) {
+18000164:	4283      	cmp	r3, r0
+18000166:	d1f9      	bne.n	1800015c <reset_handler+0x70>
+		*dest++ = 0;
+	}
+
+	/* Constructors. */
+	for (fp = &__preinit_array_start; fp < &__preinit_array_end; fp++) {
+18000168:	4834      	ldr	r0, [pc, #208]	; (1800023c <reset_handler+0x150>)
+1800016a:	4935      	ldr	r1, [pc, #212]	; (18000240 <reset_handler+0x154>)
+1800016c:	4288      	cmp	r0, r1
+1800016e:	d21b      	bcs.n	180001a8 <reset_handler+0xbc>
+	.irq = {
+		IRQ_HANDLERS
+	}
+};
+
+void WEAK __attribute__ ((naked)) reset_handler(void)
+18000170:	3103      	adds	r1, #3
+18000172:	1d06      	adds	r6, r0, #4
+18000174:	1b8f      	subs	r7, r1, r6
+18000176:	08bd      	lsrs	r5, r7, #2
+18000178:	2401      	movs	r4, #1
+1800017a:	1c6f      	adds	r7, r5, #1
+1800017c:	402c      	ands	r4, r5
+		*dest++ = 0;
+	}
+
+	/* Constructors. */
+	for (fp = &__preinit_array_start; fp < &__preinit_array_end; fp++) {
+		(*fp)();
+1800017e:	6802      	ldr	r2, [r0, #0]
+18000180:	2501      	movs	r5, #1
+18000182:	4790      	blx	r2
+	while (dest < &_ebss) {
+		*dest++ = 0;
+	}
+
+	/* Constructors. */
+	for (fp = &__preinit_array_start; fp < &__preinit_array_end; fp++) {
+18000184:	42bd      	cmp	r5, r7
+18000186:	d00f      	beq.n	180001a8 <reset_handler+0xbc>
+18000188:	2c00      	cmp	r4, #0
+1800018a:	d004      	beq.n	18000196 <reset_handler+0xaa>
+		(*fp)();
+1800018c:	ce08      	ldmia	r6!, {r3}
+1800018e:	2502      	movs	r5, #2
+18000190:	4798      	blx	r3
+	while (dest < &_ebss) {
+		*dest++ = 0;
+	}
+
+	/* Constructors. */
+	for (fp = &__preinit_array_start; fp < &__preinit_array_end; fp++) {
+18000192:	42bd      	cmp	r5, r7
+18000194:	d008      	beq.n	180001a8 <reset_handler+0xbc>
+		(*fp)();
+18000196:	1c34      	adds	r4, r6, #0
+18000198:	cc01      	ldmia	r4!, {r0}
+1800019a:	4780      	blx	r0
+1800019c:	3502      	adds	r5, #2
+1800019e:	6876      	ldr	r6, [r6, #4]
+180001a0:	47b0      	blx	r6
+	while (dest < &_ebss) {
+		*dest++ = 0;
+	}
+
+	/* Constructors. */
+	for (fp = &__preinit_array_start; fp < &__preinit_array_end; fp++) {
+180001a2:	1d26      	adds	r6, r4, #4
+180001a4:	42bd      	cmp	r5, r7
+180001a6:	d1f6      	bne.n	18000196 <reset_handler+0xaa>
+		(*fp)();
+	}
+	for (fp = &__init_array_start; fp < &__init_array_end; fp++) {
+180001a8:	4b26      	ldr	r3, [pc, #152]	; (18000244 <reset_handler+0x158>)
+180001aa:	4927      	ldr	r1, [pc, #156]	; (18000248 <reset_handler+0x15c>)
+180001ac:	428b      	cmp	r3, r1
+180001ae:	d21b      	bcs.n	180001e8 <reset_handler+0xfc>
+	.irq = {
+		IRQ_HANDLERS
+	}
+};
+
+void WEAK __attribute__ ((naked)) reset_handler(void)
+180001b0:	3103      	adds	r1, #3
+180001b2:	1d1e      	adds	r6, r3, #4
+180001b4:	1b8f      	subs	r7, r1, r6
+180001b6:	08bd      	lsrs	r5, r7, #2
+180001b8:	2401      	movs	r4, #1
+180001ba:	1c6f      	adds	r7, r5, #1
+180001bc:	402c      	ands	r4, r5
+	/* Constructors. */
+	for (fp = &__preinit_array_start; fp < &__preinit_array_end; fp++) {
+		(*fp)();
+	}
+	for (fp = &__init_array_start; fp < &__init_array_end; fp++) {
+		(*fp)();
+180001be:	681a      	ldr	r2, [r3, #0]
+180001c0:	2501      	movs	r5, #1
+180001c2:	4790      	blx	r2
+
+	/* Constructors. */
+	for (fp = &__preinit_array_start; fp < &__preinit_array_end; fp++) {
+		(*fp)();
+	}
+	for (fp = &__init_array_start; fp < &__init_array_end; fp++) {
+180001c4:	42bd      	cmp	r5, r7
+180001c6:	d00f      	beq.n	180001e8 <reset_handler+0xfc>
+180001c8:	2c00      	cmp	r4, #0
+180001ca:	d004      	beq.n	180001d6 <reset_handler+0xea>
+		(*fp)();
+180001cc:	ce01      	ldmia	r6!, {r0}
+180001ce:	2502      	movs	r5, #2
+180001d0:	4780      	blx	r0
+
+	/* Constructors. */
+	for (fp = &__preinit_array_start; fp < &__preinit_array_end; fp++) {
+		(*fp)();
+	}
+	for (fp = &__init_array_start; fp < &__init_array_end; fp++) {
+180001d2:	42bd      	cmp	r5, r7
+180001d4:	d008      	beq.n	180001e8 <reset_handler+0xfc>
+		(*fp)();
+180001d6:	1c34      	adds	r4, r6, #0
+180001d8:	cc08      	ldmia	r4!, {r3}
+180001da:	4798      	blx	r3
+180001dc:	3502      	adds	r5, #2
+180001de:	6876      	ldr	r6, [r6, #4]
+180001e0:	47b0      	blx	r6
+
+	/* Constructors. */
+	for (fp = &__preinit_array_start; fp < &__preinit_array_end; fp++) {
+		(*fp)();
+	}
+	for (fp = &__init_array_start; fp < &__init_array_end; fp++) {
+180001e2:	1d26      	adds	r6, r4, #4
+180001e4:	42bd      	cmp	r5, r7
+180001e6:	d1f6      	bne.n	180001d6 <reset_handler+0xea>
+
+	/* might be provided by platform specific vector.c */
+	pre_main();
+
+	/* Call the application's entry point. */
+	main();
+180001e8:	f7ff ff6a 	bl	180000c0 <main>
+
+	/* Destructors. */
+	for (fp = &__fini_array_start; fp < &__fini_array_end; fp++) {
+180001ec:	4817      	ldr	r0, [pc, #92]	; (1800024c <reset_handler+0x160>)
+180001ee:	4918      	ldr	r1, [pc, #96]	; (18000250 <reset_handler+0x164>)
+180001f0:	4288      	cmp	r0, r1
+180001f2:	d21b      	bcs.n	1800022c <reset_handler+0x140>
+	.irq = {
+		IRQ_HANDLERS
+	}
+};
+
+void WEAK __attribute__ ((naked)) reset_handler(void)
+180001f4:	3103      	adds	r1, #3
+180001f6:	1d06      	adds	r6, r0, #4
+180001f8:	1b8f      	subs	r7, r1, r6
+180001fa:	08bd      	lsrs	r5, r7, #2
+180001fc:	2401      	movs	r4, #1
+180001fe:	1c6f      	adds	r7, r5, #1
+18000200:	402c      	ands	r4, r5
+	/* Call the application's entry point. */
+	main();
+
+	/* Destructors. */
+	for (fp = &__fini_array_start; fp < &__fini_array_end; fp++) {
+		(*fp)();
+18000202:	6802      	ldr	r2, [r0, #0]
+18000204:	2501      	movs	r5, #1
+18000206:	4790      	blx	r2
+
+	/* Call the application's entry point. */
+	main();
+
+	/* Destructors. */
+	for (fp = &__fini_array_start; fp < &__fini_array_end; fp++) {
+18000208:	42bd      	cmp	r5, r7
+1800020a:	d00f      	beq.n	1800022c <reset_handler+0x140>
+1800020c:	2c00      	cmp	r4, #0
+1800020e:	d004      	beq.n	1800021a <reset_handler+0x12e>
+		(*fp)();
+18000210:	ce08      	ldmia	r6!, {r3}
+18000212:	2502      	movs	r5, #2
+18000214:	4798      	blx	r3
+
+	/* Call the application's entry point. */
+	main();
+
+	/* Destructors. */
+	for (fp = &__fini_array_start; fp < &__fini_array_end; fp++) {
+18000216:	42bd      	cmp	r5, r7
+18000218:	d008      	beq.n	1800022c <reset_handler+0x140>
+		(*fp)();
+1800021a:	1c34      	adds	r4, r6, #0
+1800021c:	cc01      	ldmia	r4!, {r0}
+1800021e:	4780      	blx	r0
+18000220:	3502      	adds	r5, #2
+18000222:	6876      	ldr	r6, [r6, #4]
+18000224:	47b0      	blx	r6
+
+	/* Call the application's entry point. */
+	main();
+
+	/* Destructors. */
+	for (fp = &__fini_array_start; fp < &__fini_array_end; fp++) {
+18000226:	1d26      	adds	r6, r4, #4
+18000228:	42bd      	cmp	r5, r7
+1800022a:	d1f6      	bne.n	1800021a <reset_handler+0x12e>
+1800022c:	18000254 	.word	0x18000254
+18000230:	18000254 	.word	0x18000254
+18000234:	18000254 	.word	0x18000254
+18000238:	18000258 	.word	0x18000258
+1800023c:	18000254 	.word	0x18000254
+18000240:	18000254 	.word	0x18000254
+18000244:	18000254 	.word	0x18000254
+18000248:	18000254 	.word	0x18000254
+1800024c:	18000254 	.word	0x18000254
+18000250:	18000254 	.word	0x18000254
