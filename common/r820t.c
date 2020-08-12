@@ -487,79 +487,80 @@ int r820t_set_pll(r820t_priv_t *priv, uint32_t freq)
 {
   const uint32_t vco_min = 1770000000;
   const uint32_t vco_max = 3900000000;
-  uint32_t pll_ref = (priv->xtal_freq >> 1);
-  uint32_t pll_ref_2x = priv->xtal_freq;
+  uint32_t ref = priv->xtal_freq >> 1;
 
   int rc;
-  uint32_t vco_exact;
-  uint32_t vco_frac;
-  uint32_t con_frac;
+  uint32_t vco;
   uint32_t div_num;
-  uint32_t n_sdm;
   uint16_t sdm;
+  uint16_t mask;
+  uint8_t nint;
   uint8_t ni;
   uint8_t si;
-  uint8_t nint;
 
   /* Calculate divider */
   for (div_num = 0; div_num < 5; div_num++)
   {
-    vco_exact = freq << (div_num + 1);
-    if (vco_exact >= vco_min && vco_exact <= vco_max)
+    vco = freq << (div_num + 1);
+    if (vco >= vco_min && vco <= vco_max)
     {
       break;
     }
   }
 
-  vco_exact = freq << (div_num + 1);
-  nint = (uint8_t) ((vco_exact + (pll_ref >> 16)) / pll_ref_2x);
-  vco_frac = vco_exact - pll_ref_2x * nint;
+  vco = (freq << (div_num + 1)) + (ref >> 16);
+
+  ref <<= 7 + 1;
+  mask = 1 << 7;
+  nint = 0;
+  while (mask > 0 && vco > 0)
+  {
+    if (vco >= ref)
+    {
+      nint |= mask;
+	  vco -= ref;
+    }
+    ref >>= 1;
+    mask >>= 1;
+  }
 
   nint -= 13;
-  ni = (nint >> 2);
-  si = nint - (ni << 2);
+  ni = nint >> 2;
+  si = nint & 3;
+
+  mask = 1 << 15;
+  sdm = 0;
+  while (mask > 0 && vco > 0)
+  {
+    if (vco >= ref)
+    {
+      sdm |= mask;
+      vco -= ref;
+    }
+	ref >>= 1;
+    mask >>= 1;
+  }
 
   /* Set the phase splitter */
   rc = r820t_write_reg_mask(priv, 0x10, (uint8_t) (div_num << 5), 0xe0);
   if(rc < 0)
     return rc;
 
-  /* Set the rough VCO frequency */
+  /* Set the integer part of the PLL */
   rc = r820t_write_reg(priv, 0x14, (uint8_t) (ni + (si << 6)));
   if(rc < 0)
     return rc;
 
-  if (vco_frac == 0)
+  if (sdm == 0)
   {
-    /* Disable frac pll */
+    /* Disable SDM */
     rc = r820t_write_reg_mask(priv, 0x12, 0x08, 0x08);
     if(rc < 0)
       return rc;
   }
   else
   {
-    vco_frac += pll_ref >> 16;
-    sdm = 0;
-    for(n_sdm = 0; n_sdm < 16; n_sdm++)
-    {
-        con_frac = pll_ref >> n_sdm;
-        if (vco_frac >= con_frac)
-        {
-            sdm |= (uint16_t) (0x8000 >> n_sdm);
-            vco_frac -= con_frac;
-            if (vco_frac == 0)
-                break;
-        }
-    }
-
-/*
-    actual_freq = (((nint << 16) + sdm) * (uint64_t) pll_ref_2x) >> (div_num + 1 + 16);
-    delta = freq - actual_freq
-    if (actual_freq != freq)
-    {
-      fprintf(stderr,"Tunning delta: %d Hz", delta);
-    }
-*/
+	/* Write SDM */
     rc = r820t_write_reg(priv, 0x15, (uint8_t)(sdm & 0xff));
     if (rc < 0)
       return rc;
@@ -568,7 +569,7 @@ int r820t_set_pll(r820t_priv_t *priv, uint32_t freq)
     if (rc < 0)
       return rc;
 
-    /* Enable frac pll */
+    /* Enable SDM */
     rc = r820t_write_reg_mask(priv, 0x12, 0x00, 0x08);
     if (rc < 0)
       return rc;
