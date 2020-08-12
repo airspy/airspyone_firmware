@@ -490,56 +490,52 @@ int r820t_set_pll(r820t_priv_t *priv, uint32_t freq)
   uint32_t ref = priv->xtal_freq >> 1;
 
   int rc;
-  uint32_t vco;
   uint32_t div_num;
+  uint32_t vco;
+  uint32_t rem;
+  uint32_t mask;
   uint16_t sdm;
-  uint16_t mask;
   uint8_t nint;
   uint8_t ni;
   uint8_t si;
+  uint8_t div_found;
 
-  /* Calculate divider */
-  for (div_num = 0; div_num < 5; div_num++)
+  /* Find a suitable divider */
+  div_found = 0;
+  for (div_num = 0; div_num <= 5; div_num++)
   {
     vco = freq << (div_num + 1);
     if (vco >= vco_min && vco <= vco_max)
     {
+      div_found = 1;
       break;
     }
   }
 
-  vco = (freq << (div_num + 1)) + (ref >> 16);
+  if (!div_found)
+    return -1;
 
-  ref <<= 7 + 1;
-  mask = 1 << 7;
-  nint = 0;
+  vco += ref >> 16;
+  ref <<= 8;
+  mask = 1 << 23;
+  rem = 0;
   while (mask > 0 && vco > 0)
   {
     if (vco >= ref)
     {
-      nint |= mask;
-	  vco -= ref;
+      rem |= mask;
+      vco -= ref;
     }
     ref >>= 1;
     mask >>= 1;
   }
 
+  nint = rem >> 16;
+  sdm = rem & 0xffff;
+
   nint -= 13;
   ni = nint >> 2;
   si = nint & 3;
-
-  mask = 1 << 15;
-  sdm = 0;
-  while (mask > 0 && vco > 0)
-  {
-    if (vco >= ref)
-    {
-      sdm |= mask;
-      vco -= ref;
-    }
-	ref >>= 1;
-    mask >>= 1;
-  }
 
   /* Set the phase splitter */
   rc = r820t_write_reg_mask(priv, 0x10, (uint8_t) (div_num << 5), 0xe0);
